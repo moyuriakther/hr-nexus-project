@@ -6,9 +6,10 @@ import Awarded from "@/app/components/home/Awarded";
 const DashboardPage = () => {
   return (
   <div>
-      <div className=' p-5 bg-gray-200 min-h-screen grid grid-cols-1 lg:grid-cols-10 gap-10'>
+      <div className='h-screen grid bg-gray-200   p-3 grid-cols-1 lg:grid-cols-12
+      gap-4'>
         {/* Dashboard Stats */}
-      <div className='lg:col-span-2 flex justify-center' >
+      <div className='lg:col-span-3 ' >
       <Stats/>
       </div>
         {/* Attendance Chart */}
@@ -18,7 +19,7 @@ const DashboardPage = () => {
         
 
         {/* Leave Application */}
-        <div className='lg:col-span-3'>
+        <div className='lg:col-span-4'>
         <LeaveApplicationList/>
       </div>
       </div>
