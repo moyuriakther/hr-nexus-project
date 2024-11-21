@@ -1,8 +1,13 @@
 import AttendanceChart from "@/app/components/dashboard/AttendanceChart";
 import LeaveApplicationList from "@/app/components/dashboard/LeaveApplicationList";
 import Stats from "@/app/components/dashboard/Stats";
+import DynamicNoticeAndAwardList from "@/app/components/DynamicNoticeAndAwardList";
 import Awarded from "@/app/components/home/Awarded";
+
 import RecruitmentData from "@/app/components/recruitment/RecruitmentData";
+
+import Recruitment from "@/app/components/Recruitment";
+
 
 const DashboardPage = () => {
   return (
@@ -23,10 +28,15 @@ const DashboardPage = () => {
         <LeaveApplicationList/>
       </div>
       </div>
+
       <div>
         <RecruitmentData/>
       </div>
+
+      <Recruitment />
+
       <Awarded />
+      <DynamicNoticeAndAwardList />
   </div>
   );
 };
