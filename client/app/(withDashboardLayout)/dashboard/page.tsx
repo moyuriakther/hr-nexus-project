@@ -6,8 +6,6 @@ import Awarded from "@/app/components/home/Awarded";
 
 import RecruitmentData from "@/app/components/recruitment/RecruitmentData";
 
-import Recruitment from "@/app/components/Recruitment";
-
 
 const DashboardPage = () => {
   return (
@@ -33,7 +31,7 @@ const DashboardPage = () => {
         <RecruitmentData/>
       </div>
 
-      <Recruitment />
+      {/* <RecruitmentData /> */}
 
       <Awarded />
       <DynamicNoticeAndAwardList />
