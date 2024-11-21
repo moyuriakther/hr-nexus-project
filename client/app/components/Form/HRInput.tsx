@@ -26,7 +26,7 @@ const HRInput = ({
         control={control}
         render={({ field: { value, ...field }, fieldState: { error } }) => (
           <>
-            <label className="mb-2 block">{label}</label>
+            <label className="mb-2 block font-medium">{label}</label>
             <input
               {...field}
               value={value}
