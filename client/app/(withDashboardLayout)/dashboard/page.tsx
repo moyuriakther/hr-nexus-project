@@ -2,6 +2,7 @@ import AttendanceChart from "@/app/components/dashboard/AttendanceChart";
 import LeaveApplicationList from "@/app/components/dashboard/LeaveApplicationList";
 import Stats from "@/app/components/dashboard/Stats";
 import Awarded from "@/app/components/home/Awarded";
+import RecruitmentData from "@/app/components/recruitment/RecruitmentData";
 
 const DashboardPage = () => {
   return (
@@ -21,6 +22,9 @@ const DashboardPage = () => {
         <div className='lg:col-span-3'>
         <LeaveApplicationList/>
       </div>
+      </div>
+      <div>
+        <RecruitmentData/>
       </div>
       <Awarded />
   </div>
