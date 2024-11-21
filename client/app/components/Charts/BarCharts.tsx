@@ -64,7 +64,7 @@ const BarCharts = () => {
     ],
     dataLabels: {
       enabled: true,
-      textAnchor: "start" as "start",
+      textAnchor: "start" as const,
       style: {
         colors: ["#fff"],
       },
