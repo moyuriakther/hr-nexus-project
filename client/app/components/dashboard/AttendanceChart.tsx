@@ -1,33 +1,44 @@
-"use client";
-
-import React from 'react';
-import dynamic from 'next/dynamic';
+"use client"
+import dynamic from "next/dynamic";
 
 
-const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const AttendanceChart = () => {
   const chartOptions = {
     chart: {
+    id:'graph1',
       type: 'bar',
-      height: 435,
+      height: 450,
       stacked: true,
       stackType: '100%',
     },
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          legend: {
-            position: 'bottom',
-            offsetX: -10,
-            offsetY: 0,
-          },
-        },
+    dataLabels: {
+        formatter: (val: string) => {
+          return val + '%'
+        }
       },
-    ],
+    // responsive: [
+    //   {
+    //     breakpoint: 480,
+    //     options: {
+    //       legend: {
+    //         position: 'bottom',
+    //         offsetX: -10,
+    //         offsetY: 0,
+    //       },
+    //     },
+    //   },
+    // ],
     xaxis: {
         categories: [ 'Staff', 'Internal Audit',  'Marketing', 'Accounts', 'Electrical'],
+    },
+    yaxis:{
+        labels: {
+            formatter: (val:string) => {
+              return val + '%'
+            }
+          }
     },
     fill: {
       opacity: 1,
@@ -40,7 +51,7 @@ const AttendanceChart = () => {
   };
 
   const chartSeries = [
-    {
+        {
         name: 'Leave %',
         data: [10, 20, 15, 10, 5 ], 
       },
@@ -55,9 +66,9 @@ const AttendanceChart = () => {
   ];
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md">
-<h2 className="text-lg font-semibold mb-4">Daily Attendance Statistics (Department-wise)</h2>
-      <ReactApexChart options={chartOptions} series={chartSeries} type="bar" height={435} />
+    <div className="bg-white py-4 h-[92%] rounded-2xl shadow-md">
+<h2 className="text-xl font-semibold border-b px-4 pb-4">Daily Attendance Statistics (Department-wise)</h2>
+      <ApexChart options={chartOptions} series={chartSeries} type="bar" height={'92%'} />
     </div>
   );
 };
