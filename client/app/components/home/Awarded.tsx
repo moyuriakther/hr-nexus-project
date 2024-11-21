@@ -104,7 +104,7 @@ const chartData2 = {
     series: [100], // Progress percentage
   };
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="bg-gray-100 p-3">
       <div className="grid grid-cols-12 gap-4">
         {/* Awarded Chart */}
         <Card className="col-span-12 md:col-span-8 lg:col-span-8">
