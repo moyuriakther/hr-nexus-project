@@ -27,11 +27,11 @@ const stats = [
 
 const Stats = () => {
   return (
-    <div>
+    <div className="space-y-4 w-[250px]">
       {stats.map((stat) => {
         return (
           <div
-            className="p-5 py-8 rounded-lg w-[230px] shadow-md flex justify-between text-md font-semibold"
+            className="p-5 py-8 bg-white rounded-lg w-[230px] shadow-md flex justify-between text-md font-semibold"
             key={stat.label}
           >
             <div>
