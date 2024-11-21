@@ -2,20 +2,48 @@
 
 import { useState } from "react";
 import ReactApexChart from "react-apexcharts";
+import { FaChevronDown } from "react-icons/fa";
 
 const BarCharts = () => {
   const [timeframe, setTimeframe] = useState("Yearly");
 
-  var options = {
+  const [chartData, setChartData] = useState([0, 1, 0, 1, 0]);
+
+  const handleTimeframeChange = (value: string) => {
+    setTimeframe(value);
+
+    // Update chart data based on selected timeframe
+    switch (value) {
+      case "Daily":
+        setChartData([0.9, 0.5, 1.2, 0, 1]);
+        break;
+      case "Weekly":
+        setChartData([1.5, 0, 1, 0.8, 0.2]);
+        break;
+      case "Monthly":
+        setChartData([0.5, 1, 2, 2.5, 0]);
+        break;
+      case "Yearly":
+        setChartData([0, 1, 0, 1, 0]);
+        break;
+      default:
+        setChartData([0, 1, 0, 1, 0]);
+        break;
+    }
+  };
+
+  const options = {
     series: [
       {
-        data: [0, 1, 0, 1, 0],
+        data: chartData,
       },
     ],
     chart: {
       type: "bar" as const,
       height: 53.6,
-      menubar: false,
+      toolbar: {
+        show: false, // Disable toolbar (menu)
+      },
     },
     plotOptions: {
       bar: {
@@ -74,8 +102,13 @@ const BarCharts = () => {
       lines: {
         show: false,
       },
+      axisBorder: {
+        show: false,
+      },
+      axisTicks: {
+        show: false,
+      },
     },
-
     legend: {
       show: false,
     },
@@ -100,22 +133,19 @@ const BarCharts = () => {
         <h1 className="font-[600] text-[18px] leading-[26px]">
           Position wise recruitment
         </h1>
-        <select
-          className="block px-3 py-1.5 font-normal leading-6 text-gray-900 bg-white bg-no-repeat bg-right pr-8 border-1 border-[#ced4da] rounded appearance-none focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-200"
-          style={{
-            backgroundImage:
-              "url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3e%3cpath fill=%27none%27 stroke=%27%23343a40%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M2 5l6 6 6-6%27/%3e%3c/svg%3e')",
-            backgroundSize: "16px 12px",
-            paddingRight: "24px",
-          }}
-          value={timeframe}
-          onChange={(e) => setTimeframe(e.target.value)}
-        >
-          <option value="Daily">Daily</option>
-          <option value="Weekly">Weekly</option>
-          <option value="Monthly">Monthly</option>
-          <option value="Yearly">Yearly</option>
-        </select>
+        <div className="relative w-fit">
+          <select
+            className="block w-full px-3 py-1.5 pr-10 font-normal leading-6 text-gray-900 bg-white border-1 border-[#ced4da] rounded appearance-none focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-200"
+            value={timeframe}
+            onChange={(e) => handleTimeframeChange(e.target.value)}
+          >
+            <option value="Daily">Daily</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Yearly">Yearly</option>
+          </select>
+          <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
+        </div>
       </div>
       <div className="p-[24px]">
         <ReactApexChart

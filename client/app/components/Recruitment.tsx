@@ -1,24 +1,24 @@
 const recruiters = [
   {
-    image: "https://example.com/images/employee1.jpg",
+    image: "https://i.ibb.co.com/BZyGzbB/download-2.jpg",
     name: "John Doe",
     position: "Software Engineer",
     recruitment_date: "2023-05-15",
   },
   {
-    image: "https://example.com/images/employee2.jpg",
+    image: "https://i.ibb.co.com/BZyGzbB/download-2.jpg",
     name: "Jane Smith",
     position: "Project Manager",
     recruitment_date: "2022-11-30",
   },
   {
-    image: "https://example.com/images/employee3.jpg",
+    image: "https://i.ibb.co.com/BZyGzbB/download-2.jpg",
     name: "Michael Johnson",
     position: "UI/UX Designer",
     recruitment_date: "2024-01-20",
   },
   {
-    image: "https://example.com/images/employee4.jpg",
+    image: "https://i.ibb.co.com/BZyGzbB/download-2.jpg",
     name: "Emily Brown",
     position: "HR Manager",
     recruitment_date: "2021-08-10",
@@ -42,9 +42,9 @@ const Recruitment = () => {
           <div className="flex gap-3 items-start ">
             <div>
               <img
-                className="w-[48px] h-[48px] object-contain rounded-[4.8px]"
+                className="w-12 h-12 object-contain rounded-xl"
                 src={item.image}
-                alt=""
+                alt="image"
               />
             </div>
             <div>
@@ -70,7 +70,7 @@ const Recruitment = () => {
       <div className="py-4">
         <a
           className="font-[600] text-[14px] leading-[14px] flex items-center justify-center gap-1 text-[#0d0d0]"
-          href=""
+          href="hr/selection"
         >
           See More
         </a>
