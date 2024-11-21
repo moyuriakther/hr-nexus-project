@@ -42,7 +42,9 @@ const LoginForm = () => {
           placeholder="Enter Password"
         />
       </div>
-
+      <div className="flex justify-end pb-3">
+        <p className="cursor-pointer font-medium">Forgot Password</p>
+      </div>
       <Button
         type="submit"
         fullWidth
