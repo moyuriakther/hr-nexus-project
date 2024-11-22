@@ -23,8 +23,8 @@ const DashboardPage = () => {
           <LeaveApplicationList />
         </div>
       </div>
-      <RecruitmentData />
       <Awarded />
+      <RecruitmentData />
       <DynamicNoticeAndAwardList />
     </div>
   );
