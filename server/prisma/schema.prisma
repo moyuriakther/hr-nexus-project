@@ -8,3 +8,103 @@ datasource db {
 }
 
 // models will be here 
+model Employee {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  phoneNumber String
+  designation String
+  dateOfBirth DateTime
+  joiningDate DateTime
+  status      Status   @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Department {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model SubDepartment {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model Salary {
+  id                 Int @id @default(autoincrement())
+  employeeId         Int
+  basicSalary        Int
+  totalBenifits      Int
+  transportAllowance Int
+  grossSalary        Int
+  stateIncomeTax     Int
+  socialSecurity     Int
+  contribution       Int
+  loanDeduction      Int
+  selaryAdvance      Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("salaries")
+}
+
+model Leave {
+  id                Int         @id @default(autoincrement())
+  applyDate         DateTime
+  leaveType         String
+  startDate         DateTime
+  endDate           DateTime
+  days              Int
+  reason            String
+  approvedDate      DateTime
+  approvedStartDate DateTime
+  approvedEndDate   DateTime
+  approvedDays      Int
+  managerComment    String
+  status            LeaveStatus
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @default(now())
+
+  @@map("leaves")
+}
+
+model Holidays {
+  id          Int      @id @default(autoincrement())
+  holidayName String
+  fromDate    DateTime
+  toDate      DateTime
+  totalDays   Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  @@map("holidays")
+}
+
+model WeeklyHolidays {
+  id        Int      @id @default(autoincrement())
+  dayName   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("weekly_holidays")
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
