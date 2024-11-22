@@ -6,7 +6,7 @@ const createUser = async (payload: any) => {
   const userData = {
     email: payload.email,
     name: payload.name,
-    username: payload.username,
+    phoneNumber: payload.phoneNumber,
     password: hashPassword,
   };
 
@@ -17,5 +17,5 @@ const createUser = async (payload: any) => {
 };
 
 export const UserServices = {
-    createUser
-}
+  createUser,
+};
