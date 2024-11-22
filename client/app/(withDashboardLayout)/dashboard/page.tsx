@@ -10,8 +10,9 @@ import RecruitmentData from "@/app/components/recruitment/RecruitmentData";
 const DashboardPage = () => {
   return (
   <div>
-      <div className='h-screen grid bg-gray-100 p-3 grid-cols-1 lg:grid-cols-12
-      gap-4'>
+
+
+      <div className='min-h-screen grid bg-gray-200   p-3 grid-cols-1 lg:grid-cols-12 gap-4'>
         {/* Dashboard Stats */}
       <div className='lg:col-span-3 ' >
       <Stats/>
