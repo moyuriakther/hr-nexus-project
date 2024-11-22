@@ -35,7 +35,7 @@ const Stats = () => {
             key={stat.label || index}
           >
             <div>
-              <h4 className="text-gray-700"> {stat.label}</h4>
+              <h4 className="text-gray-700 text-md"> {stat.label}</h4>
               <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
             </div>
             <span className={`p-2 h-[40px] ${stat.bg} rounded-md mt-2`}>
