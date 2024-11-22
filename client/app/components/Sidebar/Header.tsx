@@ -19,7 +19,7 @@ const Header = () => {
   const { open } = useAppSelector((state) => state.sidebar);
 
   return (
-    <div className="px-4 py-3 shadow-xl">
+    <div className="px-4 py-3 shadow-md sticky top-0 bg-white z-[9]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-5">
           <CgMenuRight
