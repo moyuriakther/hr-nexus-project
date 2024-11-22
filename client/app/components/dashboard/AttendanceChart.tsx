@@ -1,10 +1,11 @@
 "use client";
 import dynamic from "next/dynamic";
+import { ApexOptions } from "apexcharts";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const AttendanceChart = () => {
-  const chartOptions = {
+  const chartOptions: ApexOptions = {
     chart: {
       id: "graph1",
       type: "bar",
@@ -12,23 +13,16 @@ const AttendanceChart = () => {
       stacked: true,
       stackType: "100%",
     },
+    plotOptions: {
+      bar: {
+        columnWidth: "40%",
+      },
+    },
     dataLabels: {
-      formatter: (val: string) => {
+      formatter: (val: number) => {
         return val + "%";
       },
     },
-    // responsive: [
-    //   {
-    //     breakpoint: 480,
-    //     options: {
-    //       legend: {
-    //         position: 'bottom',
-    //         offsetX: -10,
-    //         offsetY: 0,
-    //       },
-    //     },
-    //   },
-    // ],
     xaxis: {
       categories: [
         "Staff",
@@ -40,7 +34,7 @@ const AttendanceChart = () => {
     },
     yaxis: {
       labels: {
-        formatter: (val: string) => {
+        formatter: (val: number) => {
           return val + "%";
         },
       },
@@ -71,7 +65,7 @@ const AttendanceChart = () => {
   ];
 
   return (
-    <div className="bg-white py-4 lg:h-[525px]  h-[450px] rounded-2xl shadow-md">
+    <div className="bg-white py-4 lg:h-[525px] h-[450px] rounded-2xl shadow-md">
       <h2 className="lg:text-xl text-md font-semibold border-b px-4 pb-4">
         Daily Attendance Statistics
       </h2>

@@ -27,7 +27,7 @@ const stats = [
 
 const Stats = () => {
   return (
-    <div className="space-y-4 w-full">
+    <div className="space-y-4 w-full md:lg:w-[300px] ]">
       {stats.map((stat, index) => {
         return (
           <div
