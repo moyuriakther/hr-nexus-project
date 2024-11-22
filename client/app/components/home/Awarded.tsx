@@ -80,7 +80,7 @@ export default function Awarded() {
             },
             value: {
               show: true, // Show value inside the circle
-              formatter: () => "12509", // Custom amount
+              formatter: () => "", // Custom amount
               fontSize: "24px",
               fontWeight: "semibold",
               color: "#424a94", // Text color
