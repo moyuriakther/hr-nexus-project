@@ -17,22 +17,95 @@ model User {
   password    String
   phoneNumber String
 
-  photo              String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   needPasswordChange Boolean  @default(true)
-  status             Status?  @default(INACTIVE)
+  status             Status?  @default(ACTIVE)
 
   @@map("users")
 }
 
 model Employee {
-  id          String    @id @default(uuid())
-  address     String?
-  designation String?
-  dateOfBirth DateTime?
-  joiningDate DateTime?
-  status      Status    @default(ACTIVE)
+  id              String    @id @default(uuid())
+  firstName       String
+  lastName        String
+  middleName      String?
+  email           String    @unique
+  password        String
+  phoneNumber     String
+  country         String?
+  passport        String?
+  nidNumber       String
+  alternateNumber String?
+  city            String?
+  attendanceShift Shift?
+  address         String?
+  designation     String?
+  dateOfBirth     DateTime?
+  joiningDate     DateTime?
+
+  // Bank info  
+  accountNumber         String?
+  tinNumber             String?
+  branchAddress         String?
+  routingNumber         String?
+  basicSalary           Float?
+  transportAllowance    Float?
+  grossSalary           Float?
+  medicalBenefit        Float?
+  transportationBenefit Float?
+  familyBenefit         Float?
+  otherBenefit          Float?
+
+  // Dept Info 
+  department    String
+  subDepartment String?
+  position      String
+  dutyType      String?
+
+  // Employee info
+  hireDate          DateTime?
+  rehireDate        DateTime?
+  terminationDate   DateTime?
+  cardNumber        String?
+  monthlyWorkHours  Float?
+  workPermit        Boolean?
+  payFrequency      String?
+  payFrequencyText  String?
+  hourlyRate        Float?
+  hourlyRate2       Float?
+  employeeGrade     String?
+  terminationReason String?
+  workInCity        String?
+  employeeType      String
+
+  gender        Gender
+  maritalStatus MaritalStatus
+  numberOfKids  Int?          @default(0)
+  sosNumber     String?
+  religion      String?
+  ethnicGroup   String?
+  profileImage  String?
+  passportPhoto String?
+
+  emergencyContactPerson       String?
+  emergencyContactRelationship String?
+  emergencyContactNumber       String?
+  emergencyHomePhone           String?
+  emergencyWorkPhone           String?
+  alternateEmergencyContact    String?
+  alternateEmergencyHomePhone  String?
+  alternateEmergencyWorkPhone  String?
+
+  bloodGroup              String?
+  healthCondition         String?
+  isDisabled              Boolean @default(false)
+  disabilitiesDescription String?
+
+  homeEmail String?
+  homePhone String?
+
+  status Status @default(ACTIVE)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -41,15 +114,21 @@ model Employee {
 }
 
 model Department {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id            String          @id @default(uuid())
+  name          String
+  description   String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now())
+  subDepartment SubDepartment[]
+
+  @@map("departments")
 }
 
 model SubDepartment {
-  id          String   @id @default(uuid())
+  id           String     @id @default(uuid())
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+
   name        String
   description String
   createdAt   DateTime @default(now())
@@ -60,14 +139,14 @@ model Salary {
   id                 String @id @default(uuid())
   employeeId         Int
   basicSalary        Int
-  totalBenifits      Int
+  totalBenefits      Int
   transportAllowance Int
   grossSalary        Int
   stateIncomeTax     Int
   socialSecurity     Int
   contribution       Int
   loanDeduction      Int
-  selaryAdvance      Int
+  salaryAdvance      Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -116,6 +195,21 @@ model WeeklyHolidays {
   @@map("weekly_holidays")
 }
 
+enum EmployeeType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERN
+  TEMPORARY
+  REMOTE
+}
+
+enum Shift {
+  GENERAL
+  OVERTIME
+  NIGHT
+}
+
 enum Status {
   ACTIVE
   INACTIVE
@@ -130,4 +224,17 @@ enum LeaveStatus {
 enum UserRole {
   ADMIN
   EMPLOYEE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
 }
