@@ -1,43 +1,28 @@
 import AttendanceChart from "@/app/components/dashboard/AttendanceChart";
 import LeaveApplicationList from "@/app/components/dashboard/LeaveApplicationList";
 import Stats from "@/app/components/dashboard/Stats";
-import DynamicNoticeAndAwardList from "@/app/components/DynamicNoticeAndAwardList";
 import Awarded from "@/app/components/home/Awarded";
-
-import RecruitmentData from "@/app/components/recruitment/RecruitmentData";
-
 
 const DashboardPage = () => {
   return (
-  <div>
-
-      <div className='h-screen grid bg-gray-100 p-3 grid-cols-1 lg:grid-cols-12
-
-      <div className='h-screen grid bg-gray-200   p-3 grid-cols-1 lg:grid-cols-12
-
-      gap-4'>
+    <div>
+      <div className=" p-5 bg-gray-200 min-h-screen grid grid-cols-1 lg:grid-cols-10 gap-10">
         {/* Dashboard Stats */}
-      <div className='lg:col-span-3 ' >
-      <Stats/>
-      </div>
+        <div className="lg:col-span-2 flex justify-center">
+          <Stats />
+        </div>
         {/* Attendance Chart */}
-        <div className='lg:col-span-5'>
-        <AttendanceChart/>
-      </div>
-        
+        <div className="lg:col-span-5">
+          <AttendanceChart />
+        </div>
 
         {/* Leave Application */}
-        <div className='lg:col-span-4'>
-        <LeaveApplicationList/>
-      </div>
-      </div>
-
-      <div>
-        <RecruitmentData/>
+        <div className="lg:col-span-3">
+          <LeaveApplicationList />
+        </div>
       </div>
       <Awarded />
-      <DynamicNoticeAndAwardList />
-  </div>
+    </div>
   );
 };
 
