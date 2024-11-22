@@ -16,7 +16,7 @@ export default function AuthLayout({
         <div className="h-full w-full  flex-1">
           <div className="">
             <Header />
-            <div className="bg-secondary px-4">{children}</div>
+            <div className="bg-secondary p-4">{children}</div>
           </div>
         </div>
       </div>

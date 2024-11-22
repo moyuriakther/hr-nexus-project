@@ -71,7 +71,7 @@ const AttendanceChart = () => {
   ];
 
   return (
-    <div className="bg-white py-4 lg:h-[92%]  h-[450px] rounded-2xl shadow-md">
+    <div className="bg-white py-4 lg:h-[525px]  h-[450px] rounded-2xl shadow-md">
       <h2 className="lg:text-xl text-md font-semibold border-b px-4 pb-4">
         Daily Attendance Statistics
       </h2>
