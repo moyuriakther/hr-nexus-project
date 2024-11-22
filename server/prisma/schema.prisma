@@ -8,6 +8,25 @@ datasource db {
 }
 
 // models will be here 
+
+model User {
+  id                 String             @id @default(uuid())
+  email              String             @unique
+  name               String?
+  username           String             @unique
+  role               UserRole?          @default(employee)
+  password           String
+  phoneNumber        String?
+  address            String?
+  photo              String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  needPasswordChange Boolean            @default(true)
+  status             UserAccountStatus? @default(Activate)
+
+  @@map("users")
+}
+
 model Employee {
   id          Int      @id @default(autoincrement())
   name        String
@@ -107,4 +126,14 @@ enum LeaveStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum UserAccountStatus {
+  Activate
+  deactivate
+}
+
+enum UserRole {
+  admin
+  employee
 }
