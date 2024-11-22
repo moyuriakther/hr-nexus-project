@@ -31,16 +31,16 @@ const stats = [
 
 const Stats = () => {
   return (
-    <div className="space-y-2 h-[92%]">
+    <div className="lg:space-y-4 h-[92%] lg:block md:grid md:grid-cols-2 justify-center items-center gap-5">
       {stats.map((stat, index) => {
         return (
           <div
-            className="p-5 py-8 bg-white rounded-2xl min-w-full shadow-md flex justify-between text-md font-semibold"
+            className="p-4 py-8 bg-white rounded-2xl min-w-full  shadow-md flex justify-between text-md font-semibold"
             key={stat.label || index}
           >
             <div>
-              <h4 className="text-gray-700 text-xl"> {stat.label}</h4>
-              <p className="text-3xl font-bold text-gray-800">{stat.value}</p>
+              <h4 className="text-gray-700 text-md"> {stat.label}</h4>
+              <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
             </div>
             <span className={`p-3 h-[50px] bg-[#D9F3EA] rounded-[4px] mt-2`}>
               <svg
