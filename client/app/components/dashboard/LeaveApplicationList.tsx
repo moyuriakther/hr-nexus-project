@@ -30,7 +30,7 @@ const leaveRequest=[
 
 const LeaveApplicationList = () => {
     return (
-        <div className="h-[92%] py-5   bg-white shadow-md rounded-2xl ">
+        <div className="lg:h-[92%] h-full py-5   bg-white shadow-md rounded-2xl ">
         <h2 className="text-xl px-4 border-b font-semibold pb-2 text-gray-700">Leave Application</h2>
         <ul className="space-y-4 pt-2">
             {
