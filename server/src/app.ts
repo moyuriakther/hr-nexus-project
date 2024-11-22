@@ -12,7 +12,7 @@ app.use(cookieParser());
 // origin: "http://localhost:3000",
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://use-here own deployed url"],
+  origin: ["http://localhost:3000", "https://use-hereowndeployedurl.com"],
   credentials: true,
 };
 

@@ -11,15 +11,42 @@ import {
   loginValidationSchema,
 } from "@/app/Validations/loginValidation";
 import { Button } from "@nextui-org/react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const LoginForm = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false); // State for loading
+
   const handleLogin: SubmitHandler<FieldValues> = async (data) => {
+    setLoading(true); // Set loading to true when login starts
     try {
-      console.log(data);
+      // Sending the login data to the server
+      const response = await axios.post(
+        "https://hr-nexus.vercel.app/api/auth/login",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Server Response:", response.data);
+      toast.success("Login successful");
+      router.push("/dashboard");
     } catch (error: any) {
-      toast.error(error.message);
+      // Handle error and show an error toast
+      console.error("Login Error:", error);
+      toast.error(
+        error.response?.data?.message || "An error occurred during login"
+      );
+    } finally {
+      setLoading(false); // Reset loading state when login completes
     }
   };
+
   return (
     <HRForm
       onSubmit={handleLogin}
@@ -49,8 +76,9 @@ const LoginForm = () => {
         type="submit"
         fullWidth
         className="font-semibold text-white rounded-none w-full bg-primary"
+        isDisabled={loading} // Disable button when loading
       >
-        Sign in
+        {loading ? "logging in.." : "Sign in"}
       </Button>
     </HRForm>
   );

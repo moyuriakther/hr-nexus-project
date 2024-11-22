@@ -1,3 +1,4 @@
+import Header from "../components/Sidebar/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
 
 export default function AuthLayout({
@@ -13,7 +14,10 @@ export default function AuthLayout({
         </div>
 
         <div className="h-full w-full  flex-1">
-          <div className="py-10 px-4">{children}</div>
+          <div className="">
+            <Header />
+            <div className="bg-secondary p-4">{children}</div>
+          </div>
         </div>
       </div>
     </div>

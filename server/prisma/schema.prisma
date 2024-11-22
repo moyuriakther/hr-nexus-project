@@ -8,30 +8,126 @@ datasource db {
 }
 
 // models will be here 
+
 model User {
-  id                 String             @id @default(uuid())
-  email              String             @unique
-  name               String?
-  username           String             @unique
-  role               UserRole?          @default(employee)
-  password           String
-  phoneNumber        String?
-  address            String?
+  id          String    @id @default(uuid())
+  email       String    @unique
+  name        String
+  role        UserRole? @default(EMPLOYEE)
+  password    String
+  phoneNumber String
+
   photo              String?
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  needPasswordChange Boolean            @default(true)
-  status             UserAccountStatus? @default(Activate)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  needPasswordChange Boolean  @default(true)
+  status             Status?  @default(INACTIVE)
 
   @@map("users")
 }
 
-enum UserAccountStatus {
-  Activate
-  deactivate
+model Employee {
+  id          String    @id @default(uuid())
+  address     String?
+  designation String?
+  dateOfBirth DateTime?
+  joiningDate DateTime?
+  status      Status    @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("employees")
+}
+
+model Department {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model SubDepartment {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model Salary {
+  id                 String @id @default(uuid())
+  employeeId         Int
+  basicSalary        Int
+  totalBenifits      Int
+  transportAllowance Int
+  grossSalary        Int
+  stateIncomeTax     Int
+  socialSecurity     Int
+  contribution       Int
+  loanDeduction      Int
+  selaryAdvance      Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("salaries")
+}
+
+model Leave {
+  id                String      @id @default(uuid())
+  applyDate         DateTime
+  leaveType         String
+  startDate         DateTime
+  endDate           DateTime
+  days              Int
+  reason            String
+  approvedDate      DateTime
+  approvedStartDate DateTime
+  approvedEndDate   DateTime
+  approvedDays      Int
+  managerComment    String
+  status            LeaveStatus
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @default(now())
+
+  @@map("leaves")
+}
+
+model Holidays {
+  id          String   @id @default(uuid())
+  holidayName String
+  fromDate    DateTime
+  toDate      DateTime
+  totalDays   Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  @@map("holidays")
+}
+
+model WeeklyHolidays {
+  id        String   @id @default(uuid())
+  dayName   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("weekly_holidays")
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 enum UserRole {
-  admin
-  employee
+  ADMIN
+  EMPLOYEE
 }
