@@ -12,7 +12,7 @@ const SubMenu: React.FC<TSubMenuProps> = ({ item }) => {
 
   return (
     <Link
-      href={item.path}
+      href={`${item.path}`}
       className={`${
         pathname === item.path && "text-primary"
       } cursor-pointer hover:bg-primary hover:bg-opacity-20 hover:text-primary flex items-center rounded mx-4 pl-6`}

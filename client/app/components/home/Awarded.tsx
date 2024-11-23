@@ -109,8 +109,8 @@ export default function Awarded() {
   };
 
   return (
-    <div className="bg-gray-100 p-3">
-      <div className="grid grid-cols-12 gap-4">
+    <div className="bg-gray-100 py-3">
+      <div className="grid grid-cols-12 gap-6">
         {/* Awarded Chart */}
         <Card className="col-span-12 md:col-span-8 lg:col-span-8">
           <h2 className="text-md font-semibold mb-4 pt-4 pl-4">Awarded</h2>

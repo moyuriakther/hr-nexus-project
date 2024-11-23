@@ -11,3 +11,8 @@ export type TSidebarMenus = {
   path?: string;
   children?: TSidebarItem[];
 };
+
+export type TPageHeader = {
+  path: string;
+  name: string;
+};
