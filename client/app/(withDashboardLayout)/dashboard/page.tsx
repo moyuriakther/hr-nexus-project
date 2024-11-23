@@ -27,6 +27,7 @@ const DashboardPage = () => {
         <RecruitmentData />
       </div>
       <Awarded />
+      <RecruitmentData />
       <DynamicNoticeAndAwardList />
     </div>
   );
