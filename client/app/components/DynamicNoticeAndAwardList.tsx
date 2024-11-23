@@ -50,7 +50,7 @@ const DynamicNoticeAndAwardList: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 p-3 bg-gray-100">
+    <div className="flex flex-col lg:flex-row gap-6 py-3 bg-gray-100">
       {/* Notice Section */}
       <div className="w-full lg:w-1/3 bg-white shadow-sm rounded-2xl p-4">
         <h2 className="text-lg font-semibold mb-4 flex items-center text-[#198754]">
@@ -79,7 +79,7 @@ const DynamicNoticeAndAwardList: React.FC = () => {
       </div>
 
       {/* Employee Award List Section */}
-      <div className="w-full lg:w-2/3 bg-white shadow-sm rounded-lg p-4">
+      <div className="w-full lg:w-2/3 bg-white shadow-sm rounded-2xl p-4">
         <div className="flex flex-wrap justify-between items-center mb-4">
           <h2 className="text-lg font-semibold flex items-center text-[#198754]">
             <span className="mr-2">🎖️</span> Employee award list

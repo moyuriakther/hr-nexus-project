@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import dynamic from "next/dynamic";
 import { Card } from "@nextui-org/react";
 import { useState } from "react";
@@ -34,32 +34,35 @@ export default function Awarded() {
         "#33FFBD", // Staff
         "#FFC300", // Internal Audit Control
         "#5DADE2", // Testing
-        "#8E44AD", // Marketing
-        "#16A085", // Software
-        "#E74C3C", // Accounts
-        "#2980B9", // Production
-        "#F39C12", // Electrical
       ],
       legend: {
-        position: "top",
+        position: "top" as const,
       },
     },
     series: [
-      { name: "Finance", data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120] },
-      { name: "Staff", data: [5, 15, 25, 35, 45, 55, 65, 75, 85, 95, 105, 115] },
-      { name: "Internal Audit Control", data: [8, 18, 28, 38, 48, 58, 68, 78, 88, 98, 108, 118] },
-      { name: "Testing", data: [12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122] },
-    //   { name: "Marketing", data: [12, 22, 32, 42,  58, 68, 78, 88, 92, 98, 102, 112, 122] },
-    //   { name: "Software", data: [12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122] },
-    //   { name: "Accounts", data: [12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122] },
-    //   { name: "Production", data: [12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122] },
-    //   { name: "Electrical", data: [12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122] },
+      {
+        name: "Finance",
+        data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120],
+      },
+      {
+        name: "Staff",
+        data: [5, 15, 25, 35, 45, 55, 65, 75, 85, 95, 105, 115],
+      },
+      {
+        name: "Internal Audit Control",
+        data: [8, 18, 28, 38, 48, 58, 68, 78, 88, 98, 108, 118],
+      },
+      {
+        name: "Testing",
+        data: [12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122],
+      },
     ],
   });
-const chartData2 = {
+
+  const chartData2 = {
     options: {
       chart: {
-        type: "radialBar",
+        type: "radialBar" as const, // Explicitly set the chart type
         height: 300,
       },
       plotOptions: {
@@ -76,8 +79,8 @@ const chartData2 = {
               show: false, // Hide "series name" label
             },
             value: {
-              show: false, // Show value inside the circle
-              formatter: () => "12509", // Custom amount
+              show: true, // Show value inside the circle
+              formatter: () => "", // Custom amount
               fontSize: "24px",
               fontWeight: "semibold",
               color: "#424a94", // Text color
@@ -96,20 +99,22 @@ const chartData2 = {
         },
       },
       stroke: {
-        lineCap: "round", // Make ends of the stroke rounded
+        // eslint-disable-next-line @typescript-eslint/prefer-as-const
+        lineCap: "round" as "round", // Explicitly cast to the correct union type
         width: 12, // Wider progress bar
       },
       colors: ["#4ADE80"], // Start color of the gradient
     },
     series: [100], // Progress percentage
   };
+
   return (
-    <div className="bg-gray-100 p-3">
-      <div className="grid grid-cols-12 gap-4">
+    <div className="bg-gray-100 py-3">
+      <div className="grid grid-cols-12 gap-6">
         {/* Awarded Chart */}
         <Card className="col-span-12 md:col-span-8 lg:col-span-8">
           <h2 className="text-md font-semibold mb-4 pt-4 pl-4">Awarded</h2>
-            {/* Horizontal Line */}
+          {/* Horizontal Line */}
           <div className="w-full h-[1px] bg-gray-100 mb-6"></div>
           <div className="h-64 pb-4">
             <Chart
@@ -123,21 +128,26 @@ const chartData2 = {
         {/* Loan Payment */}
         <Card className="col-span-12 md:col-span-4 lg:col-span-4 flex flex-col items-center">
           {/* Title */}
-          <h2 className="text-md text-left my-4 text-[#333d78] font-semibold">Loan payment received</h2>
+          <h2 className="text-md text-left my-4 text-[#333d78] font-semibold">
+            Loan payment received
+          </h2>
 
           {/* Horizontal Line */}
           <div className="w-full h-[1px] bg-gray-100 mb-6"></div>
 
           {/* Radial Bar Chart */}
           <div className="relative w-64 h-64">
-            <Chart options={chartData2.options} series={chartData2.series} type="radialBar" height="100%" />
+            <Chart
+              options={chartData2.options}
+              series={chartData2.series}
+              type="radialBar"
+              height="100%"
+            />
           </div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center pt-20">
-                <p className="text-gray-500 text-sm">Total Loan Amount</p>
-                <p className="text-2xl font-semibold text-[#424a94]">12509</p>
-            </div>
-          {/* Description */}
-          {/* <p className="text-gray-500 mt-2">Total Loan Amount</p> */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center pt-20">
+            <p className="text-gray-500 text-sm">Total Loan Amount</p>
+            <p className="text-2xl font-semibold text-[#424a94]">12509</p>
+          </div>
         </Card>
       </div>
     </div>

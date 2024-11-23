@@ -4,20 +4,22 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoChevronDown } from "react-icons/io5";
 import { Menus } from "./menu";
 import SubMenu from "./SubMenu";
+import { useAppDispatch, useAppSelector } from "@/app/Redux/hook";
+import { setOpen } from "@/app/Redux/sidebar/sidebarSlice";
+import Link from "next/link";
 
 type TSidebarMenusProps = {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   dropdownText: string;
   setDropdownText: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const SidebarMenus: React.FC<TSidebarMenusProps> = ({
-  open,
-  setOpen,
   dropdownText,
   setDropdownText,
 }) => {
+  const { open } = useAppSelector((state) => state.sidebar);
+  const dispatch = useAppDispatch();
+
   const setDropdownTextHandler = (value: string) => {
     if (value === dropdownText) {
       setDropdownText("");
@@ -38,43 +40,67 @@ const SidebarMenus: React.FC<TSidebarMenusProps> = ({
               }  `}
               onClick={() => {
                 setDropdownTextHandler(menu.name);
+                dispatch(setOpen(true));
               }}
-                onMouseEnter={() => setOpen(true)}
             >
               <div
                 className={`${
                   dropdownText === menu.name && "bg-[#00b07426] text-primary"
-                } cursor-pointer group flex items-center justify-between hover:bg-[#00b07426] hover:text-primary  px-2 rounded ${
+                } cursor-pointer group flex items-center justify-between hover:bg-[#00b07426] hover:text-primary py-[2px] px-2 rounded ${
                   open ? "mx-4" : "mx-2"
                 }`}
               >
-                <div className="group font-medium flex items-center lg:gap-3.5 p-2 rounded-md transition">
-                  <div className="">{menu.icon}</div>
-                  <h2
-                    className={`whitespace-pre hover:text-primary transition duration-100 ${
-                      !open && "opacity-0 translate-x-28 overflow-hidden"
-                    }`}
-                  >
-                    {menu?.name}
-                  </h2>
-                  <h2
-                    className={`${
-                      open && "hidden"
-                    } absolute left-48 bg-white font-semibold whitespace-pre text-gray-900 hover:text-white rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
-                  >
-                    {menu?.name}
-                  </h2>
-                </div>
+                {menu?.path ? (
+                  <>
+                    <Link
+                      href={menu?.path}
+                      className="group font-medium flex items-center gap-3.5 p-2 rounded-md transition"
+                    >
+                      <p
+                        className={`${
+                          dropdownText === menu.name && "text-primary"
+                        } `}
+                      >
+                        {menu.icon}
+                      </p>
+                      <h2
+                        className={`whitespace-pre hover:text-primary transition duration-100 text-sm ${
+                          !open && "opacity-0 translate-x-28 overflow-hidden "
+                        }`}
+                      >
+                        {menu?.name}
+                      </h2>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <div className="group font-medium flex items-center gap-3.5 p-2 rounded-md transition">
+                      <div className="">{menu.icon}</div>
+                      <h2
+                        className={`whitespace-pre hover:text-primary transition duration-100 text-sm ${
+                          !open && "opacity-0 translate-x-28 overflow-hidden "
+                        }`}
+                      >
+                        {menu?.name}
+                      </h2>
+                    </div>
+                  </>
+                )}
 
-                <div className={`${!open && "hidden"}`}>
-                  {dropdownText === menu.name ? (
-                    <IoChevronDown />
-                  ) : (
-                    <IoIosArrowBack />
-                  )}
-                </div>
+                {menu?.children?.length ? (
+                  <>
+                    <div className={`${!open && "hidden"}`}>
+                      {dropdownText === menu.name ? (
+                        <IoChevronDown />
+                      ) : (
+                        <IoIosArrowBack />
+                      )}
+                    </div>
+                  </>
+                ) : null}
               </div>
             </li>
+
             <div
               style={{
                 maxHeight: dropdownText === menu.name ? "500px" : "0",
@@ -84,7 +110,7 @@ const SidebarMenus: React.FC<TSidebarMenusProps> = ({
               className={open ? "block" : "hidden"}
             >
               <ul className="pl-6">
-                {menu.children.map((item: any, i: number) => {
+                {menu?.children?.map((item: any, i: number) => {
                   return <SubMenu key={i} item={item} />;
                 })}
               </ul>
