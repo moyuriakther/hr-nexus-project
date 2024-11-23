@@ -74,15 +74,15 @@ export const Menus: TSidebarMenus[] = [
     children: [
       {
         title: "Position",
-        path: "/position",
+        path: "employees/position",
       },
       {
         title: "Employee",
-        path: "/employee",
+        path: "employees/employee",
       },
       {
         title: "Employee performance",
-        path: "/employee_performance",
+        path: "employees/employee_performance",
       },
     ],
   },
