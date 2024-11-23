@@ -114,8 +114,9 @@ model Employee {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now())
   attendance Attendance[]
-  Salary     Salary[]
-  Leave      Leave[]
+  salary     Salary[]
+  leave      Leave[]
+  payment    Payment[]
 
   @@map("employees")
 }
@@ -209,6 +210,19 @@ model Leave {
   @@map("leaves")
 }
 
+model Payment {
+  id            String         @id @default(uuid())
+  employeeId    String
+  employee      Employee       @relation(fields: [employeeId], references: [id])
+  salaryMonth   String
+  totalSalary   Float
+  releaseAmount Float?
+  status        PaymentStatus?
+  date          DateTime
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now())
+}
+
 // Holidays model
 model Holidays {
   id          String    @id @default(uuid())
@@ -281,4 +295,10 @@ enum AttendanceType {
   DAILY
   WEEKLY
   MONTHLY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REJECTED
 }
