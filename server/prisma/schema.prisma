@@ -7,24 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// models will be here 
-
+// User model
 model User {
-  id          String    @id @default(uuid())
-  email       String    @unique
-  name        String
-  role        UserRole? @default(EMPLOYEE)
-  password    String
-  phoneNumber String
-
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  needPasswordChange Boolean  @default(true)
-  status             Status?  @default(ACTIVE)
+  id                 String    @id @default(uuid())
+  email              String    @unique
+  name               String
+  role               UserRole? @default(EMPLOYEE)
+  password           String
+  phoneNumber        String
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  needPasswordChange Boolean   @default(true)
+  status             Status?   @default(ACTIVE)
 
   @@map("users")
 }
 
+// Employee model
 model Employee {
   id              String    @id @default(uuid())
   firstName       String
@@ -44,7 +43,7 @@ model Employee {
   dateOfBirth     DateTime?
   joiningDate     DateTime?
 
-  // Bank info  
+  // Bank info
   accountNumber         String?
   tinNumber             String?
   branchAddress         String?
@@ -57,13 +56,16 @@ model Employee {
   familyBenefit         Float?
   otherBenefit          Float?
 
-  // Dept Info 
-  department    String
-  subDepartment String?
-  position      String
-  dutyType      String?
+  // Department info
+  departmentId    String
+  subDepartmentId String
+  department      Department    @relation(fields: [departmentId], references: [id])
+  subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id])
 
-  // Employee info
+  position String
+  dutyType String?
+
+  // Employment info
   hireDate          DateTime?
   rehireDate        DateTime?
   terminationDate   DateTime?
@@ -88,6 +90,7 @@ model Employee {
   profileImage  String?
   passportPhoto String?
 
+  // Emergency contact info
   emergencyContactPerson       String?
   emergencyContactRelationship String?
   emergencyContactNumber       String?
@@ -97,6 +100,7 @@ model Employee {
   alternateEmergencyHomePhone  String?
   alternateEmergencyWorkPhone  String?
 
+  // Health info
   bloodGroup              String?
   healthCondition         String?
   isDisabled              Boolean @default(false)
@@ -107,12 +111,16 @@ model Employee {
 
   status Status @default(ACTIVE)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  attendance Attendance[]
+  Salary     Salary[]
+  Leave      Leave[]
 
   @@map("employees")
 }
 
+// Department model
 model Department {
   id            String          @id @default(uuid())
   name          String
@@ -120,33 +128,55 @@ model Department {
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @default(now())
   subDepartment SubDepartment[]
+  employee      Employee[]
 
   @@map("departments")
 }
 
+// SubDepartment model
 model SubDepartment {
   id           String     @id @default(uuid())
   departmentId String
   department   Department @relation(fields: [departmentId], references: [id])
+  name         String
+  description  String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())
+  employee     Employee[]
 
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  @@map("sub_departments")
 }
 
+// Attendance model
+model Attendance {
+  id             String          @id @default(uuid())
+  employeeId     String
+  employee       Employee        @relation(fields: [employeeId], references: [id])
+  date           DateTime?
+  checkIn        DateTime?
+  checkOut       DateTime?
+  monthName      String?
+  attendanceType AttendanceType?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now())
+
+  @@map("attendances")
+}
+
+// Salary model
 model Salary {
-  id                 String @id @default(uuid())
-  employeeId         Int
-  basicSalary        Int
-  totalBenefits      Int
-  transportAllowance Int
-  grossSalary        Int
-  stateIncomeTax     Int
-  socialSecurity     Int
-  contribution       Int
-  loanDeduction      Int
-  salaryAdvance      Int
+  id                 String   @id @default(uuid())
+  employeeId         String
+  employee           Employee @relation(fields: [employeeId], references: [id])
+  basicSalary        Float
+  totalBenefits      Float
+  transportAllowance Float
+  grossSalary        Float
+  stateIncomeTax     Float
+  socialSecurity     Float
+  contribution       Float
+  loanDeduction      Float
+  salaryAdvance      Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -154,38 +184,45 @@ model Salary {
   @@map("salaries")
 }
 
+// Leave model
 model Leave {
   id                String      @id @default(uuid())
   applyDate         DateTime
   leaveType         String
   startDate         DateTime
   endDate           DateTime
-  days              Int
+  days              Int?
   reason            String
-  approvedDate      DateTime
-  approvedStartDate DateTime
-  approvedEndDate   DateTime
-  approvedDays      Int
-  managerComment    String
+  approvedDate      DateTime?
+  approvedStartDate DateTime?
+  approvedEndDate   DateTime?
+  approvedDays      Int?
+  managerComment    String?
   status            LeaveStatus
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @default(now())
+
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   @@map("leaves")
 }
 
+// Holidays model
 model Holidays {
-  id          String   @id @default(uuid())
-  holidayName String
-  fromDate    DateTime
-  toDate      DateTime
-  totalDays   Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id          String    @id @default(uuid())
+  holidayName String?
+  fromDate    DateTime?
+  toDate      DateTime?
+  totalDays   Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
 
   @@map("holidays")
 }
 
+// WeeklyHolidays model
 model WeeklyHolidays {
   id        String   @id @default(uuid())
   dayName   String
@@ -195,6 +232,7 @@ model WeeklyHolidays {
   @@map("weekly_holidays")
 }
 
+// Enums
 enum EmployeeType {
   FULL_TIME
   PART_TIME
@@ -237,4 +275,10 @@ enum MaritalStatus {
   MARRIED
   DIVORCED
   WIDOWED
+}
+
+enum AttendanceType {
+  DAILY
+  WEEKLY
+  MONTHLY
 }

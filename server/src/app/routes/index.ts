@@ -4,6 +4,7 @@ import { UserRoutes } from "../modules/user/user.router";
 import { EmployeeRoutes } from "../modules/Employee/employee.route";
 import { DepartmentRoutes } from "../modules/Department/department.routes";
 import { SubDepartmentRoutes } from "../modules/SubDepartment/sub-department.routes";
+import { AttendanceRoutes } from "../modules/Attendance/attendance.route";
 
 const router = express.Router();
 
@@ -27,6 +28,10 @@ const moduleRoutes = [
   {
     path: "/sub-department",
     route: SubDepartmentRoutes,
+  },
+  {
+    path: "/attendance",
+    route: AttendanceRoutes,
   },
 ];
 

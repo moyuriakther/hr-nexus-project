@@ -31,7 +31,7 @@ const createEmployee = async (payload: any) => {
         joiningDate: payload.joiningDate,
         status: payload.status,
         designation: payload.designation,
-        department: payload.department,
+        departmentId: payload.departmentId,
         employeeType: payload.employeeType,
         accountNumber: payload.accountNumber,
         alternateNumber: payload.alternateNumber,
@@ -90,7 +90,7 @@ const createEmployee = async (payload: any) => {
         payFrequencyText: payload.payFrequencyText,
         routingNumber: payload.routingNumber,
         rehireDate: payload.rehireDate,
-        subDepartment: payload.subDepartment,
+        subDepartmentId: payload.subDepartmentId,
         password: payload.password,
 
         updatedAt: payload.updatedAt,

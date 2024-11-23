@@ -3,7 +3,7 @@ import { subDepartmentController } from "./sub-department.controller";
 
 const router = express.Router();
 router.post(
-  "/create-Sub-department",
+  "/create-sub-department",
   subDepartmentController.createSubDepartment
 );
 router.get("/", subDepartmentController.getAllSubDepartments);
