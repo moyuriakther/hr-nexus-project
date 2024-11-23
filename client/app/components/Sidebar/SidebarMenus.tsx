@@ -54,20 +54,19 @@ const SidebarMenus: React.FC<TSidebarMenusProps> = ({
                   <>
                     <Link
                       href={menu?.path}
-                      className="group font-medium flex items-center lg:gap-3.5 p-2 rounded-md transition"
+                      className="group font-medium flex items-center gap-3.5 p-2 rounded-md transition"
                     >
-                      <div className="">{menu.icon}</div>
+                      <p
+                        className={`${
+                          dropdownText === menu.name && "text-primary"
+                        } `}
+                      >
+                        {menu.icon}
+                      </p>
                       <h2
                         className={`whitespace-pre hover:text-primary transition duration-100 text-sm ${
                           !open && "opacity-0 translate-x-28 overflow-hidden "
                         }`}
-                      >
-                        {menu?.name}
-                      </h2>
-                      <h2
-                        className={`${
-                          open && "hidden"
-                        } absolute left-48 bg-white font-semibold whitespace-pre text-gray-700 hover:text-white rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
                       >
                         {menu?.name}
                       </h2>
@@ -75,19 +74,12 @@ const SidebarMenus: React.FC<TSidebarMenusProps> = ({
                   </>
                 ) : (
                   <>
-                    <div className="group font-medium flex items-center lg:gap-3.5 p-2 rounded-md transition">
+                    <div className="group font-medium flex items-center gap-3.5 p-2 rounded-md transition">
                       <div className="">{menu.icon}</div>
                       <h2
                         className={`whitespace-pre hover:text-primary transition duration-100 text-sm ${
                           !open && "opacity-0 translate-x-28 overflow-hidden "
                         }`}
-                      >
-                        {menu?.name}
-                      </h2>
-                      <h2
-                        className={`${
-                          open && "hidden"
-                        } absolute left-48 bg-white font-semibold whitespace-pre text-gray-700 hover:text-white rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
                       >
                         {menu?.name}
                       </h2>

@@ -7,7 +7,7 @@ import Recruitment from "../Recruitment";
 
 const RecruitmentData = () => {
   return (
-    <div className="grid grid-cols-1 md:lg:grid-cols-12 gap-4 p-3 ">
+    <div className="grid grid-cols-1 md:lg:grid-cols-12 gap-6 py-3 ">
       <div className="lg:col-span-7 xl:col-span-8 h-[415px] bg-[#fff] rounded-2xl">
         <BarCharts />
       </div>
