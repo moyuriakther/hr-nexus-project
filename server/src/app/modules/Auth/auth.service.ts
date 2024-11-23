@@ -26,7 +26,6 @@ const loginUser = async (payload: { email: string; password: string }) => {
       name: userData.name,
       email: userData.email,
       role: userData.role,
-      plan: userData.plan,
     },
     config.jwt.jwt_secret as Secret,
     config.jwt.expires_in as string
@@ -38,7 +37,6 @@ const loginUser = async (payload: { email: string; password: string }) => {
       name: userData.name,
       email: userData.email,
       role: userData.role,
-      plan: userData.plan,
     },
     config.jwt.refresh_token_secret as Secret,
     config.jwt.refresh_token_expires_in as string
@@ -50,7 +48,6 @@ const loginUser = async (payload: { email: string; password: string }) => {
     name: userData?.name,
     email: userData?.email,
     role: userData?.role,
-    plan: userData.plan,
     accessToken,
   };
 };
@@ -77,7 +74,6 @@ const refreshToken = async (token: string) => {
       email: userData.email,
       role: userData.role,
       id: userData.id,
-      plan: userData.plan,
     },
     config.jwt.jwt_secret as Secret,
     config.jwt.expires_in as string

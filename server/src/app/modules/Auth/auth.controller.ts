@@ -5,7 +5,6 @@ import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { IRefreshTokenResponse } from "./auth.interface";
 
-
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.loginUser(req.body);
 
@@ -25,7 +24,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
       name: result.name,
       email: result.email,
       role: result.role,
-      plan: result.plan,
+
       accessToken: result.accessToken,
     },
   });
@@ -34,7 +33,6 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
 
   const result = await AuthServices.refreshToken(refreshToken);
-
 
   sendResponse<IRefreshTokenResponse>(res, {
     statusCode: 200,

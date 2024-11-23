@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const recruiters = [
   {
     image: "https://i.ibb.co.com/BZyGzbB/download-2.jpg",
@@ -41,8 +43,10 @@ const Recruitment = () => {
         >
           <div className="flex gap-3 items-start ">
             <div>
-              <img
-                className="w-12 h-12 object-contain rounded-xl"
+              <Image
+                className="w-16 h-16 object-contain rounded-2xl"
+                width={50}
+                height={50}
                 src={item.image}
                 alt="image"
               />

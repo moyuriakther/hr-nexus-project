@@ -8,5 +8,6 @@ export type TSidebarItem = {
 export type TSidebarMenus = {
   name: string;
   icon: ReactNode;
-  children: TSidebarItem[];
+  path?: string;
+  children?: TSidebarItem[];
 };
