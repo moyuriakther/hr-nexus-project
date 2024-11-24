@@ -5,12 +5,19 @@ const getSingleLeave = async (id: string) => {
     where: {
       id,
     },
+    include: {
+      employee: true,
+    },
   });
   return result;
 };
 
 const getAllLeaves = async () => {
-  const result = await prisma.leave.findMany();
+  const result = await prisma.leave.findMany({
+    include: {
+      employee: true,
+    },
+  });
   return result;
 };
 
@@ -18,6 +25,9 @@ const createLeave = async (data: any) => {
   const result = await prisma.leave.create({
     data: {
       ...data,
+    },
+    include: {
+      employee: true,
     },
   });
   console.log(result);
@@ -30,6 +40,9 @@ const updateLeave = async (id: string, data: any) => {
       id,
     },
     data,
+    include: {
+      employee: true,
+    },
   });
   return result;
 };

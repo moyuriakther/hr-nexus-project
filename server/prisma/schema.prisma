@@ -201,7 +201,7 @@ model Leave {
   approvedEndDate   DateTime?
   approvedDays      Int?
   managerComment    String?
-  status            LeaveStatus
+  status            LeaveStatus @default(PENDING)
 
   employeeId String
   employee   Employee @relation(fields: [employeeId], references: [id])
@@ -272,9 +272,9 @@ model Award {
 }
 
 model Loan {
-  id                 String    @id @default(uuid())
+  id                 String      @id @default(uuid())
   employeeId         String
-  employee           Employee  @relation(fields: [employeeId], references: [id])
+  employee           Employee    @relation(fields: [employeeId], references: [id])
   permittedBy        String?
   loanNo             String?
   amount             Float?
@@ -284,7 +284,7 @@ model Loan {
   repaymentAmount    Float?
   approvedDate       DateTime?
   repaymentFrom      DateTime?
-  status             Status
+  status             LeaveStatus
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())

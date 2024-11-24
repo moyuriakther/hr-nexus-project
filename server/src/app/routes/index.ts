@@ -8,6 +8,8 @@ import { AttendanceRoutes } from "../modules/Attendance/attendance.route";
 import { LeaveRoutes } from "../modules/Leave/leave.route";
 import { AwardRoutes } from "../modules/Award/award.route";
 import { ClientRoutes } from "../modules/Client/client.route";
+import { LoanRoutes } from "../modules/Loan/loan.route";
+import { ProjectRoutes } from "../modules/Projects/projects.route";
 
 const router = express.Router();
 
@@ -41,12 +43,20 @@ const moduleRoutes = [
     route: LeaveRoutes,
   },
   {
-    path: "/award",
+    path: "/awards",
     route: AwardRoutes,
   },
   {
-    path: "/client",
+    path: "/clients",
     route: ClientRoutes,
+  },
+  {
+    path: "/loan",
+    route: LoanRoutes,
+  },
+  {
+    path: "/projects",
+    route: ProjectRoutes,
   },
 ];
 
