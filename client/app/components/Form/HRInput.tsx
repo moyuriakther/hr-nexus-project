@@ -33,7 +33,7 @@ const HRInput = ({
               type={type}
               placeholder={placeholder}
               className={cn(
-                "h-11 rounded-none border w-full px-4 outline-[#198754]  transition duration-200 outline-[1px]",
+                "h-10 rounded-none border w-full px-4 outline-[#198754]  transition duration-200 outline-[1px]",
                 className
               )}
             />
