@@ -16,3 +16,8 @@ export type TPageHeader = {
   path: string;
   name: string;
 };
+
+export type TSelect = {
+  key: string;
+  value: string;
+};
