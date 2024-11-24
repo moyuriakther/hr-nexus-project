@@ -5,6 +5,8 @@ import { EmployeeRoutes } from "../modules/Employee/employee.route";
 import { DepartmentRoutes } from "../modules/Department/department.routes";
 import { SubDepartmentRoutes } from "../modules/SubDepartment/sub-department.routes";
 import { AttendanceRoutes } from "../modules/Attendance/attendance.route";
+import { LeaveRoutes } from "../modules/Leave/leave.route";
+import { AwardRoutes } from "../modules/Award/award.route";
 
 const router = express.Router();
 
@@ -32,6 +34,14 @@ const moduleRoutes = [
   {
     path: "/attendance",
     route: AttendanceRoutes,
+  },
+  {
+    path: "/leave",
+    route: LeaveRoutes,
+  },
+  {
+    path: "/award",
+    route: AwardRoutes,
   },
 ];
 
