@@ -7,6 +7,7 @@ import { SubDepartmentRoutes } from "../modules/SubDepartment/sub-department.rou
 import { AttendanceRoutes } from "../modules/Attendance/attendance.route";
 import { LeaveRoutes } from "../modules/Leave/leave.route";
 import { AwardRoutes } from "../modules/Award/award.route";
+import { ClientRoutes } from "../modules/Client/client.route";
 
 const router = express.Router();
 
@@ -42,6 +43,10 @@ const moduleRoutes = [
   {
     path: "/award",
     route: AwardRoutes,
+  },
+  {
+    path: "/client",
+    route: ClientRoutes,
   },
 ];
 
