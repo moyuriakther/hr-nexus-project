@@ -3,6 +3,8 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { DepartmentService } from "./department.service";
+import pick from "../../../shared/pick";
+import { departmentFilterableFields } from "./department.utils";
 
 const getSingleDepartment = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -18,7 +20,9 @@ const getSingleDepartment = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllDepartments = catchAsync(async (req: Request, res: Response) => {
-  const result = await DepartmentService.getAllDepartments();
+  const filters = pick(req.query, departmentFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await DepartmentService.getAllDepartments(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

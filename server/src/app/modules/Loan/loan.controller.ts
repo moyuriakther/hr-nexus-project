@@ -3,6 +3,8 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { loanService } from "./loan.service";
+import pick from "../../../shared/pick";
+import { loanFilterableFields } from "./loan.utils";
 
 // Create a new loan
 const createLoan = catchAsync(async (req: Request, res: Response) => {
@@ -18,7 +20,9 @@ const createLoan = catchAsync(async (req: Request, res: Response) => {
 
 // Get all loans
 const getAllLoans = catchAsync(async (req: Request, res: Response) => {
-  const result = await loanService.getAllLoans();
+  const filters = pick(req.query, loanFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await loanService.getAllLoans(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

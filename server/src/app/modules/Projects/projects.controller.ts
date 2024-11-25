@@ -3,6 +3,8 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { projectService } from "./projects.service";
+import { projectFilterableFields } from "./project.utils";
+import pick from "../../../shared/pick";
 
 // Create a new project
 const createProject = catchAsync(async (req: Request, res: Response) => {
@@ -18,7 +20,9 @@ const createProject = catchAsync(async (req: Request, res: Response) => {
 
 // Get all projects
 const getAllProjects = catchAsync(async (req: Request, res: Response) => {
-  const result = await projectService.getAllProjects();
+  const filters = pick(req.query, projectFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await projectService.getAllProjects(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

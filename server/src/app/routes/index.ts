@@ -10,6 +10,8 @@ import { AwardRoutes } from "../modules/Award/award.route";
 import { ClientRoutes } from "../modules/Client/client.route";
 import { LoanRoutes } from "../modules/Loan/loan.route";
 import { ProjectRoutes } from "../modules/Projects/projects.route";
+import { PaymentRoutes } from "../modules/Payment/payment.route";
+import { SalaryRoutes } from "../modules/Salary/salary.route";
 
 const router = express.Router();
 
@@ -37,6 +39,14 @@ const moduleRoutes = [
   {
     path: "/attendance",
     route: AttendanceRoutes,
+  },
+  {
+    path: "/payment",
+    route: PaymentRoutes,
+  },
+  {
+    path: "/salary",
+    route: SalaryRoutes,
   },
   {
     path: "/leave",

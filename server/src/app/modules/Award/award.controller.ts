@@ -3,6 +3,8 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { awardService } from "./award.service";
+import pick from "../../../shared/pick";
+import { awardFilterableFields } from "./award.utils";
 
 // Create a new award
 const createAward = catchAsync(async (req: Request, res: Response) => {
@@ -18,7 +20,9 @@ const createAward = catchAsync(async (req: Request, res: Response) => {
 
 // Get all awards
 const getAllAwards = catchAsync(async (req: Request, res: Response) => {
-  const result = await awardService.getAllAwards();
+  const filters = pick(req.query, awardFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await awardService.getAllAwards(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

@@ -3,6 +3,8 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { AttendanceService } from "./attendance.service";
+import pick from "../../../shared/pick";
+import { attendanceFilterableFields } from "./attendance.utils";
 
 const getSingleAttendance = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -18,7 +20,9 @@ const getSingleAttendance = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllAttendances = catchAsync(async (req: Request, res: Response) => {
-  const result = await AttendanceService.getAllAttendances();
+  const filters = pick(req.query, attendanceFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await AttendanceService.getAllAttendances(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

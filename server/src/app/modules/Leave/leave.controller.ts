@@ -3,6 +3,8 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { leaveService } from "./leave.service";
+import pick from "../../../shared/pick";
+import { leaveFilterableFields } from "./leave.utils";
 
 const getSingleLeave = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -18,7 +20,9 @@ const getSingleLeave = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllLeaves = catchAsync(async (req: Request, res: Response) => {
-  const result = await leaveService.getAllLeaves();
+  const filters = pick(req.query, leaveFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await leaveService.getAllLeaves(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

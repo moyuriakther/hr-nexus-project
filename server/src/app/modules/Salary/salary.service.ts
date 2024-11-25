@@ -1,27 +1,29 @@
 import { Prisma } from "@prisma/client";
 import prisma from "../../../shared/prisma";
-import { attendanceSearchableFields } from "./attendance.utils";
 import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
-const getSingleAttendance = async (id: string) => {
-  // console.log(data);
+import { salarySearchableFields } from "./salary.utils";
 
-  const result = await prisma.attendance.findUniqueOrThrow({
-    where: {
-      id,
+// Create a new Salary
+const createSalary = async (data: any) => {
+  const result = await prisma.salary.create({
+    data: {
+      ...data,
     },
   });
   return result;
 };
-const getAllAttendances = async (params: any, options: IPaginationOptions) => {
+
+// Get all Salarys
+const getAllSalary = async (params: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
-  const andConditions: Prisma.AttendanceWhereInput[] = [];
+  const andConditions: Prisma.SalaryWhereInput[] = [];
 
   if (params.searchTerm) {
     andConditions.push({
-      OR: attendanceSearchableFields.map((field) => ({
+      OR: salarySearchableFields.map((field) => ({
         [field]: {
           contains: params.searchTerm,
           mode: "insensitive",
@@ -40,10 +42,10 @@ const getAllAttendances = async (params: any, options: IPaginationOptions) => {
     });
   }
 
-  const whereConditions: Prisma.AttendanceWhereInput =
+  const whereConditions: Prisma.SalaryWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  const result = await prisma.attendance.findMany({
+  const result = await prisma.salary.findMany({
     where: whereConditions,
     skip,
     take: limit,
@@ -56,17 +58,11 @@ const getAllAttendances = async (params: any, options: IPaginationOptions) => {
             createdAt: "desc",
           },
     include: {
-      employee: {
-        include: {
-          department: true,
-          subDepartment: true,
-          attendance: true,
-        },
-      },
+      employee: true,
     },
   });
 
-  const total = await prisma.attendance.count({
+  const total = await prisma.salary.count({
     where: whereConditions,
   });
 
@@ -80,15 +76,44 @@ const getAllAttendances = async (params: any, options: IPaginationOptions) => {
   };
 };
 
-const createAttendance = async (data: any) => {
-  const result = await prisma.attendance.create({
+// Get a single Salary by ID
+const getSingleSalary = async (id: string) => {
+  const result = await prisma.salary.findUniqueOrThrow({
+    where: {
+      id,
+    },
+    include: {
+      employee: true,
+    },
+  });
+  return result;
+};
+
+// Update a Salary by ID
+const updateSalary = async (id: string, data: any) => {
+  const result = await prisma.salary.update({
+    where: {
+      id,
+    },
     data,
   });
   return result;
 };
 
-export const AttendanceService = {
-  getAllAttendances,
-  getSingleAttendance,
-  createAttendance,
+// Delete a Salary by ID
+const deleteSalary = async (id: string) => {
+  const result = await prisma.salary.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
+export const SalaryService = {
+  createSalary,
+  getAllSalary,
+  getSingleSalary,
+  updateSalary,
+  deleteSalary,
 };

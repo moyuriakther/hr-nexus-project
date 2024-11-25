@@ -3,5 +3,8 @@ export const employeeFilterableFields = [
   "id",
   "email",
   "phoneNumber",
+  "department",
+  "subDepartment",
+  "name",
 ];
-export const employeeSearchableFields = ["email", "phoneNumber"];
+export const employeeSearchableFields = ["email", "name", "phoneNumber"];
