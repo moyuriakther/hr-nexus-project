@@ -7,67 +7,179 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// models will be here 
-
+// User model
 model User {
-  id          String    @id @default(uuid())
-  email       String    @unique
-  name        String
-  role        UserRole? @default(EMPLOYEE)
-  password    String
-  phoneNumber String
-
-  photo              String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  needPasswordChange Boolean  @default(true)
-  status             Status?  @default(INACTIVE)
+  id                 String    @id @default(uuid())
+  email              String    @unique
+  name               String
+  role               UserRole? @default(EMPLOYEE)
+  password           String
+  phoneNumber        String
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  needPasswordChange Boolean   @default(true)
+  status             Status?   @default(ACTIVE)
 
   @@map("users")
 }
 
+// Employee model
 model Employee {
-  id          String    @id @default(uuid())
-  address     String?
-  designation String?
-  dateOfBirth DateTime?
-  joiningDate DateTime?
-  status      Status    @default(ACTIVE)
+  id              String    @id @default(uuid())
+  firstName       String
+  lastName        String
+  middleName      String?
+  email           String    @unique
+  password        String
+  phoneNumber     String
+  country         String?
+  passport        String?
+  nidNumber       String
+  alternateNumber String?
+  city            String?
+  attendanceShift Shift?
+  address         String?
+  designation     String?
+  dateOfBirth     DateTime?
+  joiningDate     DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  // Bank info
+  accountNumber         String?
+  tinNumber             String?
+  branchAddress         String?
+  routingNumber         String?
+  basicSalary           Float?
+  transportAllowance    Float?
+  grossSalary           Float?
+  medicalBenefit        Float?
+  transportationBenefit Float?
+  familyBenefit         Float?
+  otherBenefit          Float?
+
+  // Department info
+  departmentId    String
+  subDepartmentId String
+  department      Department    @relation(fields: [departmentId], references: [id])
+  subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id])
+
+  position String
+  dutyType String?
+
+  // Employment info
+  hireDate          DateTime?
+  rehireDate        DateTime?
+  terminationDate   DateTime?
+  cardNumber        String?
+  monthlyWorkHours  Float?
+  workPermit        Boolean?
+  payFrequency      String?
+  payFrequencyText  String?
+  hourlyRate        Float?
+  hourlyRate2       Float?
+  employeeGrade     String?
+  terminationReason String?
+  workInCity        String?
+  employeeType      String
+
+  gender        Gender
+  maritalStatus MaritalStatus
+  numberOfKids  Int?          @default(0)
+  sosNumber     String?
+  religion      String?
+  ethnicGroup   String?
+  profileImage  String?
+  passportPhoto String?
+
+  // Emergency contact info
+  emergencyContactPerson       String?
+  emergencyContactRelationship String?
+  emergencyContactNumber       String?
+  emergencyHomePhone           String?
+  emergencyWorkPhone           String?
+  alternateEmergencyContact    String?
+  alternateEmergencyHomePhone  String?
+  alternateEmergencyWorkPhone  String?
+
+  // Health info
+  bloodGroup              String?
+  healthCondition         String?
+  isDisabled              Boolean @default(false)
+  disabilitiesDescription String?
+
+  homeEmail String?
+  homePhone String?
+
+  status Status @default(ACTIVE)
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  attendance Attendance[]
+  salary     Salary[]
+  leave      Leave[]
+  payment    Payment[]
+  award      Award[]
+  loan       Loan[]
 
   @@map("employees")
 }
 
+// Department model
 model Department {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id            String          @id @default(uuid())
+  name          String
+  description   String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now())
+  subDepartment SubDepartment[]
+  employee      Employee[]
+
+  @@map("departments")
 }
 
+// SubDepartment model
 model SubDepartment {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id           String     @id @default(uuid())
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+  name         String
+  description  String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())
+  employee     Employee[]
+
+  @@map("sub_departments")
 }
 
+// Attendance model
+model Attendance {
+  id             String          @id @default(uuid())
+  employeeId     String
+  employee       Employee        @relation(fields: [employeeId], references: [id])
+  date           DateTime?
+  checkIn        DateTime?
+  checkOut       DateTime?
+  monthName      String?
+  attendanceType AttendanceType?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now())
+
+  @@map("attendances")
+}
+
+// Salary model
 model Salary {
-  id                 String @id @default(uuid())
-  employeeId         Int
-  basicSalary        Int
-  totalBenifits      Int
-  transportAllowance Int
-  grossSalary        Int
-  stateIncomeTax     Int
-  socialSecurity     Int
-  contribution       Int
-  loanDeduction      Int
-  selaryAdvance      Int
+  id                 String   @id @default(uuid())
+  employeeId         String
+  employee           Employee @relation(fields: [employeeId], references: [id])
+  basicSalary        Float
+  totalBenefits      Float
+  transportAllowance Float
+  grossSalary        Float
+  stateIncomeTax     Float
+  socialSecurity     Float
+  contribution       Float
+  loanDeduction      Float
+  salaryAdvance      Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -75,38 +187,125 @@ model Salary {
   @@map("salaries")
 }
 
+// Leave model
 model Leave {
   id                String      @id @default(uuid())
   applyDate         DateTime
   leaveType         String
   startDate         DateTime
   endDate           DateTime
-  days              Int
+  days              Int?
   reason            String
-  approvedDate      DateTime
-  approvedStartDate DateTime
-  approvedEndDate   DateTime
-  approvedDays      Int
-  managerComment    String
-  status            LeaveStatus
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @default(now())
+  approvedDate      DateTime?
+  approvedStartDate DateTime?
+  approvedEndDate   DateTime?
+  approvedDays      Int?
+  managerComment    String?
+  status            LeaveStatus @default(PENDING)
+
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   @@map("leaves")
 }
 
+model Payment {
+  id            String         @id @default(uuid())
+  employeeId    String
+  employee      Employee       @relation(fields: [employeeId], references: [id])
+  salaryMonth   String
+  totalSalary   Float
+  releaseAmount Float?
+  status        PaymentStatus?
+  date          DateTime
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now())
+}
+
+model Client {
+  id          String    @id @default(uuid())
+  clientName  String
+  country     String?
+  email       String?
+  companyName String?
+  address     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  project     Project[]
+
+  @@map("clients")
+}
+
+model Project {
+  id                 String    @id @default(uuid())
+  clientId           String
+  client             Client    @relation(fields: [clientId], references: [id])
+  projectName        String?
+  projectDescription String?
+  approximateTasks   Int?
+  projectDuration    String?
+  startDate          DateTime?
+  endDate            DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now())
+
+  @@map("projects")
+}
+
+model Award {
+  id               String    @id @default(uuid())
+  employeeId       String
+  employee         Employee  @relation(fields: [employeeId], references: [id])
+  awardName        String
+  awardDescription String?
+  giftItem         String?
+  date             DateTime?
+
+  awardBy   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("awards")
+}
+
+model Loan {
+  id                 String      @id @default(uuid())
+  employeeId         String
+  employee           Employee    @relation(fields: [employeeId], references: [id])
+  permittedBy        String?
+  loanNo             String?
+  amount             Float?
+  interestRate       Float?
+  installmentPeriod  Int?
+  installmentCleared Int?
+  repaymentAmount    Float?
+  approvedDate       DateTime?
+  repaymentFrom      DateTime?
+  status             LeaveStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("loans")
+}
+
+// Holidays model
 model Holidays {
-  id          String   @id @default(uuid())
-  holidayName String
-  fromDate    DateTime
-  toDate      DateTime
-  totalDays   Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id          String    @id @default(uuid())
+  holidayName String?
+  fromDate    DateTime?
+  toDate      DateTime?
+  totalDays   Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
 
   @@map("holidays")
 }
 
+// WeeklyHolidays model
 model WeeklyHolidays {
   id        String   @id @default(uuid())
   dayName   String
@@ -114,6 +313,22 @@ model WeeklyHolidays {
   updatedAt DateTime @default(now())
 
   @@map("weekly_holidays")
+}
+
+// Enums
+enum EmployeeType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERN
+  TEMPORARY
+  REMOTE
+}
+
+enum Shift {
+  GENERAL
+  OVERTIME
+  NIGHT
 }
 
 enum Status {
@@ -130,4 +345,29 @@ enum LeaveStatus {
 enum UserRole {
   ADMIN
   EMPLOYEE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
+enum AttendanceType {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REJECTED
 }
