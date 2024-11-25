@@ -1,15 +1,15 @@
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import { pageHeaderData } from "../components/pageHeaderData";
+import CreateEmployee from "../employee/components/CreateEmployee";
 import HRTable from "@/app/components/Table/HRTable";
-import { Button } from "@nextui-org/react";
-import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import HRTableRow from "@/app/components/Table/HRTableRow";
-import { TfiReload } from "react-icons/tfi";
+import { Button } from "@nextui-org/react";
 import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
-import CreateEmployee from "./components/CreateEmployee";
-import { fakeData } from "./components/employeFakeData";
+import { fakeData } from "../employee/components/employeFakeData";
+import { TfiReload } from "react-icons/tfi";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 
-const EmployeePage = () => {
+const InactiveEmployeesList = () => {
   const tableHeader = [
     "Sl",
     "Employee id",
@@ -73,4 +73,4 @@ const EmployeePage = () => {
   );
 };
 
-export default EmployeePage;
+export default InactiveEmployeesList;
