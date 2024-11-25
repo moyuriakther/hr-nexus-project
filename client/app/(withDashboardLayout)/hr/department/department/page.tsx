@@ -1,6 +1,13 @@
+import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
+import HRTableRow from "@/app/components/Table/HRTableRow";
+import { Button } from "@nextui-org/react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import CreateDepartment from "./component/CreateDepartment";
+import HRTable from "@/app/components/Table/HRTable";
 
 
 const DepartmentPage = () => {
+   const tableHeader = ["SL", "Department Name", "Status", "Action"];
    const departments = [
     { id: 1, name: "Finance", status: "Inactive" },
     { id: 2, name: "Staff", status: "Active" },
@@ -13,78 +20,40 @@ const DepartmentPage = () => {
     { id: 9, name: "Electrical", status: "Active" },
   ];
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
-      <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
-        {/* Header Section */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h2 className="text-lg sm:text-xl font-bold">Department List</h2>
-          <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full sm:w-auto text-center">
-            + Add Department
-          </button>
-        </div>
+     <div className="min-h-[89vh]">
+      {/* <PageHeader item={pageHeaderData} /> */}
 
-        {/* Table Section */}
-        <div className="mt-4 overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-200 text-sm sm:text-base">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2 border border-gray-200 text-left">SI</th>
-                <th className="p-2 border border-gray-200 text-left">
-                  Department Name
-                </th>
-                <th className="p-2 border border-gray-200 text-left">Status</th>
-                <th className="p-2 border border-gray-200 text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {departments.map((dept, index) => (
-                <tr
-                  key={dept.id}
-                  className="even:bg-gray-50 text-gray-700 whitespace-nowrap"
+      <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
+        <CreateDepartment />
+        <HRTable tableHeader={tableHeader}>
+          {departments?.map((department, i) => (
+            <tr
+              className={`${i % 2 === 0 ? "bg-gray-100" : ""} hover:bg-gray-50`}
+              key={department.id}
+            >
+              <HRTableRow>{department.id}</HRTableRow>
+              <HRTableRow>{department.name}</HRTableRow>
+              <HRTableRow>
+                <Button
+                  size="sm"
+                  className="h-6 text-sm text-white bg-primary rounded-[4px]"
                 >
-                  <td className="p-2 border border-gray-200">{index + 1}</td>
-                  <td className="p-2 border border-gray-200">{dept.name}</td>
-                  <td className="p-2 border border-gray-200">
-                    <span
-                      className={`px-3 py-1 rounded-full text-white ${
-                        dept.status === "Active"
-                          ? "bg-green-500"
-                          : "bg-red-500"
-                      }`}
-                    >
-                      {dept.status}
-                    </span>
-                  </td>
-                  <td className="p-2 border border-gray-200">
-                    <div className="flex gap-2">
-                      <button className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">
-                        Edit
-                      </button>
-                      <button className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Pagination Section */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4 text-sm sm:text-base">
-          <span>
-            Showing 1 to {departments.length} of {departments.length} entries
-          </span>
-          <div className="flex gap-2">
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-              Previous
-            </button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-              Next
-            </button>
-          </div>
-        </div>
+                  {department.status}
+                </Button>
+              </HRTableRow>
+              <HRTableRow>
+                <div className="flex items-center gap-2">
+                  <HRIconsButton className="bg-blue-100 text-blue-500 border border-blue-500">
+                    <FaEdit className="text-base" />
+                  </HRIconsButton>
+                  <HRIconsButton className="bg-red-100 border border-red-500 text-red-500">
+                    <FaTrash className="text-base" />
+                  </HRIconsButton>
+                </div>
+              </HRTableRow>
+            </tr>
+          ))}
+        </HRTable>
       </div>
     </div>
   );
