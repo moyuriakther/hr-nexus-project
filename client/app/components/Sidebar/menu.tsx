@@ -29,15 +29,15 @@ export const Menus: TSidebarMenus[] = [
     children: [
       {
         title: "Attendance form",
-        path: "/hr/attendance/attendance_form",
+        path: "/hr/attendances/create",
       },
       {
         title: "Monthly attendance",
-        path: "/hr/attendance/monthly_attendance",
+        path: "/hr/attendances/create/monthly",
       },
       {
         title: "Missing attendance",
-        path: "/hr/attendance/missing_attendance",
+        path: "/hr/attendances/missing-attendance",
       },
     ],
   },
@@ -112,7 +112,7 @@ export const Menus: TSidebarMenus[] = [
     children: [
       {
         title: "Loan list",
-        path: "/hr/loan/Loan_list",
+        path: "/hr/loan",
       },
     ],
   },
