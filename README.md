@@ -168,4 +168,3 @@ To deliver a cutting-edge HR management solution within the project timeline usi
 ## Conclusion
 
 **HR Nexus** bridges the gap between HR operations and technology, offering HR Managers an efficient and scalable solution. It reflects our team's dedication and technical expertise in addressing the unique challenges of modern HR management.
-

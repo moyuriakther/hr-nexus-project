@@ -30,7 +30,7 @@ const leaveRequest = [
 
 const LeaveApplicationList = () => {
   return (
-    <div className="px-8 py-4 bg-white shadow-md rounded-xl h-[525px]">
+    <div className="px-8 py-4 bg-white shadow-md rounded-2xl h-[525px]">
       <h2 className="text-lg font-semibold text-gray-700">Leave Application</h2>
       <ul className="space-y-4 pt-5">
         {leaveRequest.map((request, index) => (

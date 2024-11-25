@@ -5,7 +5,7 @@ type TSidebarState = {
 };
 
 const initialState: TSidebarState = {
-  open: false,
+  open: true,
 };
 
 const sidebarSlice = createSlice({

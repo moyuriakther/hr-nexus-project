@@ -15,8 +15,6 @@ export type TSidebarMenus = {
   children?: TSidebarItem[];
 };
 
-// -----------------
-
 export type IMeta = {
   page: number;
   limit: number;
@@ -42,3 +40,12 @@ export type IGenericErrorMessage = {
 };
 
 export const Gender = ["MALE", "FEMALE"];
+export type TPageHeader = {
+  path: string;
+  name: string;
+};
+
+export type TSelect = {
+  key: string;
+  value: string;
+};
