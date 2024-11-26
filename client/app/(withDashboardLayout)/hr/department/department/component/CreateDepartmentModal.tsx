@@ -44,7 +44,7 @@ const CreateDepartmentModal = () => {
         modalTitle="New position"
       >
         <HRForm onSubmit={onSubmit}>
-          <div className="flex items-center gap-x-10">
+          <div className="flex items-center gap-x-4">
             <p className="font-medium">Department name</p>
             <HRInput
               name="position_name"

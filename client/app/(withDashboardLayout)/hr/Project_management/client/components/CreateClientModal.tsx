@@ -1,30 +1,18 @@
 "use client";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
-import HRRadioInput from "@/app/components/Form/HRRadioInput";
 import HRModal from "@/app/components/Modal/HRModal";
 import { Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
 
-const CreateSubDepartmentModal = () => {
+const CreateClientModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
   };
-
-  const radioOptions = [
-    {
-      value: "Active",
-      label: "Active",
-    },
-    {
-      value: "Inactive",
-      label: "Inactive",
-    },
-  ];
 
   return (
     <div>
@@ -33,7 +21,7 @@ const CreateSubDepartmentModal = () => {
         size="sm"
         className="bg-primary rounded-[4px] text-sm text-white"
       >
-        <FaPlusCircle />Add Sub department
+        <FaPlusCircle />New client
       </Button>
 
       
@@ -43,27 +31,50 @@ const CreateSubDepartmentModal = () => {
         modalTitle="New position"
       >
         <HRForm onSubmit={onSubmit}>
-          <div className="flex items-center gap-x-3">
-            <p className="font-medium">Sub department name</p>
+          <div className="flex items-center gap-x-14">
+            <p className="font-medium">Client name</p>
             <HRInput
               name="position_name"
               type="text"
               className="lg:w-[560px]"
-              placeholder="Sub Department name"
+              placeholder="Client name"
             />
           </div>
           <div className="flex items-center gap-x-20">
-            <p className="font-medium">Department</p>
+            <p className="font-medium mr-1">Country</p>
             <HRInput
-              name="position_details"
+              name="position_name"
               type="text"
               className="lg:w-[560px]"
-              placeholder="Select Department"
+              placeholder="Country"
             />
           </div>
           <div className="flex items-center gap-x-20">
-            <p className="font-medium mr-6">Is Active</p>
-            <HRRadioInput name="isActive" options={radioOptions} />
+            <p className="font-medium mr-5">Email</p>
+            <HRInput
+              name="position_name"
+              type="text"
+              className="lg:w-[560px]"
+              placeholder="Email"
+            />
+          </div>
+          <div className="flex items-center gap-x-7">
+            <p className="font-medium">Company Name</p>
+            <HRInput
+              name="position_name"
+              type="text"
+              className="lg:w-[560px]"
+              placeholder="Company Name"
+            />
+          </div>
+          <div className="flex items-center gap-x-20">
+            <p className="font-medium">Address</p>
+            <HRInput
+              name="position_name"
+              type="text"
+              className="lg:w-[560px]"
+              placeholder="Address"
+            />
           </div>
 
           <div>
@@ -92,4 +103,4 @@ const CreateSubDepartmentModal = () => {
   );
 };
 
-export default CreateSubDepartmentModal;
+export default CreateClientModal;
