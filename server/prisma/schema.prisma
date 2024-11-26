@@ -130,6 +130,8 @@ model Department {
   description    String
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @default(now())
+  isActive       Boolean         @default(true)
+  isDeleted      Boolean         @default(false)
   subDepartment  SubDepartment[]
   employee       Employee[]
 
@@ -143,6 +145,8 @@ model SubDepartment {
   department        Department @relation(fields: [departmentId], references: [id])
   subDepartmentName String
   description       String
+  isActive          Boolean    @default(true)
+  isDeleted         Boolean    @default(false)
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @default(now())
   employee          Employee[]

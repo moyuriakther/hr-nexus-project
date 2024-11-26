@@ -20,7 +20,11 @@ const getAllSubDepartments = async (
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
-  const andConditions: Prisma.SubDepartmentWhereInput[] = [];
+  const andConditions: Prisma.SubDepartmentWhereInput[] = [
+    {
+      isDeleted: false,
+    },
+  ];
 
   if (params.searchTerm) {
     andConditions.push({
@@ -95,8 +99,29 @@ const createSubDepartment = async (data: any) => {
   return result;
 };
 
+const updateSubDepartment = async (id: string, data: any) => {
+  // console.log(data);
+  const result = await prisma.subDepartment.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return result;
+};
+
+const deleteSubDepartment = async (id: string) => {
+  const result = await prisma.department.update({
+    where: { id },
+    data: { isDeleted: true },
+  });
+  return result;
+};
+
 export const subDepartmentService = {
   getAllSubDepartments,
   getSingleSubDepartment,
   createSubDepartment,
+  updateSubDepartment,
+  deleteSubDepartment,
 };

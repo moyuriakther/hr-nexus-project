@@ -8,6 +8,7 @@ export const employeeFilterableFields = [
   "gender",
   "maritalStatus",
   "name",
+  "city",
 ];
 export const employeeSearchableFields = [
   "email",
