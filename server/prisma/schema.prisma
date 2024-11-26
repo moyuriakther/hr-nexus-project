@@ -125,27 +125,27 @@ model Employee {
 
 // Department model
 model Department {
-  id            String          @id @default(uuid())
-  name          String
-  description   String
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @default(now())
-  subDepartment SubDepartment[]
-  employee      Employee[]
+  id             String          @id @default(uuid())
+  departmentName String
+  description    String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now())
+  subDepartment  SubDepartment[]
+  employee       Employee[]
 
   @@map("departments")
 }
 
 // SubDepartment model
 model SubDepartment {
-  id           String     @id @default(uuid())
-  departmentId String
-  department   Department @relation(fields: [departmentId], references: [id])
-  name         String
-  description  String
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @default(now())
-  employee     Employee[]
+  id                String     @id @default(uuid())
+  departmentId      String
+  department        Department @relation(fields: [departmentId], references: [id])
+  subDepartmentName String
+  description       String
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @default(now())
+  employee          Employee[]
 
   @@map("sub_departments")
 }
@@ -313,6 +313,24 @@ model WeeklyHolidays {
   updatedAt DateTime @default(now())
 
   @@map("weekly_holidays")
+}
+
+model NoticeBoard {
+  id String @id @default(uuid())
+
+  @@map("notice_boards")
+}
+
+model Recruitment {
+  id String @id @default(uuid())
+
+  @@map("recruitment")
+}
+
+model ProjectManagement {
+  id String @id @default(uuid())
+
+  @@map("project_managements")
 }
 
 // Enums
