@@ -7,4 +7,12 @@ export const awardFilterableFields = [
   "subDepartment",
   "name",
 ];
-export const awardSearchableFields = ["email", "name", "phoneNumber"];
+export const awardSearchableFields = [
+  "email",
+  "awardName",
+  "giftItem",
+  "awardedBy",
+  "date",
+  "name",
+  "phoneNumber",
+];

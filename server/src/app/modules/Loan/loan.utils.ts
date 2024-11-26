@@ -1,10 +1,28 @@
 export const loanFilterableFields = [
   "searchTerm",
   "id",
-  "email",
-  "phoneNumber",
-  "department",
+  "permittedBy",
+  "loanNo",
+  "amount",
+  "interestRate",
+  "installmentPeriod",
+  "installmentCleared",
+  "repaymentAmount",
+  "approvedDate",
+  "repaymentFrom",
   "subDepartment",
   "name",
 ];
-export const loanSearchableFields = ["email", "name", "phoneNumber"];
+export const loanSearchableFields = [
+  "loanNo",
+  "amount",
+  "interestRate",
+  "installmentPeriod",
+  "installmentCleared",
+  "repaymentAmount",
+  "approvedDate",
+  "repaymentFrom",
+  "subDepartment",
+  "name",
+  "phoneNumber",
+];
