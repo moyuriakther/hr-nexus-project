@@ -42,3 +42,12 @@ export type IGenericErrorMessage = {
 };
 
 export const Gender = ["MALE", "FEMALE"];
+export type TPageHeader = {
+  path: string;
+  name: string;
+};
+
+export type TSelect = {
+  key: string;
+  value: string;
+};
