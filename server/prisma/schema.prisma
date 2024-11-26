@@ -269,6 +269,7 @@ model Award {
   date             DateTime?
 
   awardBy   String?
+  isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
