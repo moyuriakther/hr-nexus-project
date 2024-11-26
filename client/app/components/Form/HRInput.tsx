@@ -8,6 +8,7 @@ type TInputProps = {
   placeholder?: string;
   label?: string;
   className?: string;
+  defaultValue?:string|number;
 };
 
 const HRInput = ({
@@ -16,6 +17,7 @@ const HRInput = ({
   placeholder,
   label,
   className,
+  defaultValue,
 }: TInputProps) => {
   const { control } = useFormContext();
 
@@ -32,6 +34,7 @@ const HRInput = ({
               value={value}
               type={type}
               placeholder={placeholder}
+              defaultValue={defaultValue}
               className={cn(
                 "h-10 rounded-none border w-full px-4 outline-[#198754]  transition duration-200 outline-[1px]",
                 className
