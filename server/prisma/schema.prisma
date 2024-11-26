@@ -304,6 +304,7 @@ model Holidays {
   fromDate    DateTime?
   toDate      DateTime?
   totalDays   Int?
+  isDeleted   Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
 
@@ -314,6 +315,7 @@ model Holidays {
 model WeeklyHolidays {
   id        String   @id @default(uuid())
   dayName   String
+  isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
