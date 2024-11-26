@@ -15,8 +15,6 @@ export type TSidebarMenus = {
   children?: TSidebarItem[];
 };
 
-// -----------------
-
 export type IMeta = {
   page: number;
   limit: number;
