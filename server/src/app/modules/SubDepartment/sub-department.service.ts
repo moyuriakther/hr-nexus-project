@@ -59,15 +59,7 @@ const getAllSubDepartments = async (
             createdAt: "desc",
           },
     include: {
-      department: {
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      },
+      department: true,
     },
   });
 
@@ -86,11 +78,19 @@ const getAllSubDepartments = async (
 };
 
 const createSubDepartment = async (data: any) => {
+  console.log(data);
+
+  // Adjusting the data structure
+  const { departmentId, subDepartmentName, description } = data;
+
   const result = await prisma.subDepartment.create({
     data: {
-      ...data,
+      departmentId,
+      subDepartmentName,
+      description,
     },
   });
+
   console.log(result);
   return result;
 };

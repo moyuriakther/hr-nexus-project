@@ -59,7 +59,7 @@ const getAllDepartments = async (params: any, options: IPaginationOptions) => {
       subDepartment: {
         select: {
           id: true,
-          name: true,
+          department: true,
           description: true,
           createdAt: true,
           updatedAt: true,
