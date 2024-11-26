@@ -19,34 +19,32 @@ const HRModal = ({
 }: TProps) => {
   return (
     <div>
-      <div>
-        {modalIsOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div
-              className={cn(
-                className,
-                "bg-white rounded-xl shadow-lg lg:w-fit w-[95%] p-6 relative"
-              )}
+      {modalIsOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div
+            className={cn(
+              className,
+              "bg-white rounded-xl shadow-lg lg:w-fit w-[95%] p-6 relative"
+            )}
+          >
+            {/* Modal content */}
+            <h2 className="text-2xl text-black font-semibold mt-3 mb-4">
+              {modalTitle}
+            </h2>
+            <Divider className="mb-3" />
+            <div className="text-black">{children}</div>
+            <Button
+              onClick={() => setIsOpen(false)}
+              isIconOnly
+              size="sm"
+              color="danger"
+              className="absolute bg-opacity-80 top-2 right-2 rounded-full"
             >
-              {/* Modal content */}
-              <h2 className="text-2xl text-black font-semibold mt-3 mb-4">
-                {modalTitle}
-              </h2>
-              <Divider className="mb-3" />
-              <div className="text-black">{children}</div>
-              <Button
-                onClick={() => setIsOpen(false)}
-                isIconOnly
-                size="sm"
-                color="danger"
-                className="absolute bg-opacity-80 top-2 right-2 rounded-full"
-              >
-                <HiX className="size-5 cursor-pointer" />
-              </Button>
-            </div>
+              <HiX className="size-5 cursor-pointer" />
+            </Button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
