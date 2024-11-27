@@ -48,8 +48,37 @@ const getSingleEmployee = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const updateEmployee = catchAsync(async (req: Request, res: Response) => {
+  const result = await EmployeeServices.updateEmployee(req.params.id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: " employee updated successfully!",
+
+    data: result,
+  });
+});
+
+// Delete a sub department
+const deleteEmployee = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const result = await EmployeeServices.deleteEmployee(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "employee deleted successfully!",
+    data: result,
+  });
+});
+
 export const EmployeeController = {
   createEmployee,
   getEmployees,
   getSingleEmployee,
+  updateEmployee,
+  deleteEmployee,
 };

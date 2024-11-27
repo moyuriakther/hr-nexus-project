@@ -1,10 +1,2 @@
-export const holidaysFilterableFields = [
-  "searchTerm",
-  "id",
-  "email",
-  "phoneNumber",
-  "department",
-  "subDepartment",
-  "name",
-];
-export const holidaysSearchableFields = ["email", "name", "phoneNumber"];
+export const holidaysFilterableFields = ["searchTerm"];
+export const holidaysSearchableFields = ["holidayName", "totalDays"];

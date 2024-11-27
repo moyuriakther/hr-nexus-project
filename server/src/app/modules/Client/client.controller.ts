@@ -3,6 +3,8 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { clientService } from "./client.service";
+import { clientFilterableFields } from "./client.utils";
+import pick from "../../../shared/pick";
 
 // Create a new client
 const createClient = catchAsync(async (req: Request, res: Response) => {
@@ -18,7 +20,9 @@ const createClient = catchAsync(async (req: Request, res: Response) => {
 
 // Get all clients
 const getAllClients = catchAsync(async (req: Request, res: Response) => {
-  const result = await clientService.getAllClients();
+  const filters = pick(req.query, clientFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await clientService.getAllClients(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

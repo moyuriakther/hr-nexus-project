@@ -1,10 +1,7 @@
-export const loanFilterableFields = [
-  "searchTerm",
-  "id",
+export const clientFilterableFields = ["searchTerm"];
+export const clientSearchableFields = [
+  "clientName",
+  "companyName",
   "email",
-  "phoneNumber",
-  "department",
-  "subDepartment",
-  "name",
+  "country",
 ];
-export const loanSearchableFields = ["email", "name", "phoneNumber"];

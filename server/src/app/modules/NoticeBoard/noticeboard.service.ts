@@ -1,12 +1,13 @@
-import { Prisma } from "@prisma/client";
 import prisma from "../../../shared/prisma";
-import { clientSearchableFields } from "./client.utils";
+
 import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
+import { Prisma } from "@prisma/client";
+import { NoticeboardSearchableFields } from "./noticeboard.utils";
 
-// Create a new client
-const createClient = async (data: any) => {
-  const result = await prisma.client.create({
+// Create a new Noticeboard
+const createNoticeboard = async (data: any) => {
+  const result = await prisma.noticeBoard.create({
     data: {
       ...data,
     },
@@ -14,22 +15,21 @@ const createClient = async (data: any) => {
   return result;
 };
 
-// Get all clients
-const getAllClients = async (params: any, options: IPaginationOptions) => {
+// Get all Noticeboards
+const getAllNoticeboards = async (params: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
-  console.log(searchTerm); // Debug log for searchTerm
 
-  const andConditions: Prisma.ClientWhereInput[] = [
+  const andConditions: Prisma.NoticeBoardWhereInput[] = [
     {
-      isDeleted: false, // Ensure only non-deleted records are fetched
+      isDeleted: false,
     },
   ];
 
   // Handle search term
   if (searchTerm) {
     andConditions.push({
-      OR: clientSearchableFields.map((field) => ({
+      OR: NoticeboardSearchableFields.map((field) => ({
         [field]: {
           contains: searchTerm,
           mode: "insensitive",
@@ -50,11 +50,11 @@ const getAllClients = async (params: any, options: IPaginationOptions) => {
   }
 
   // Combine conditions
-  const whereConditions: Prisma.ClientWhereInput =
+  const whereConditions: Prisma.NoticeBoardWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
   // Fetch data with pagination and sorting
-  const result = await prisma.client.findMany({
+  const result = await prisma.noticeBoard.findMany({
     where: whereConditions,
     skip,
     take: limit,
@@ -62,13 +62,10 @@ const getAllClients = async (params: any, options: IPaginationOptions) => {
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
         : { createdAt: "desc" },
-    include: {
-      project: true,
-    },
   });
 
   // Get total count
-  const total = await prisma.client.count({ where: whereConditions });
+  const total = await prisma.noticeBoard.count({ where: whereConditions });
 
   return {
     meta: {
@@ -80,22 +77,19 @@ const getAllClients = async (params: any, options: IPaginationOptions) => {
   };
 };
 
-// Get a single client by ID
-const getSingleClient = async (id: string) => {
-  const result = await prisma.client.findUniqueOrThrow({
+// Get a single Noticeboard by ID
+const getSingleNoticeboard = async (id: string) => {
+  const result = await prisma.noticeBoard.findUniqueOrThrow({
     where: {
       id,
-    },
-    include: {
-      project: true, // If you want to include associated projects
     },
   });
   return result;
 };
 
-// Update a client by ID
-const updateClient = async (id: string, data: any) => {
-  const result = await prisma.client.update({
+// Update a Noticeboard by ID
+const updateNoticeboard = async (id: string, data: any) => {
+  const result = await prisma.noticeBoard.update({
     where: {
       id,
     },
@@ -104,9 +98,9 @@ const updateClient = async (id: string, data: any) => {
   return result;
 };
 
-// Delete a client by ID
-const deleteClient = async (id: string) => {
-  const result = await prisma.client.delete({
+// Delete a Noticeboard by ID
+const deleteNoticeboard = async (id: string) => {
+  const result = await prisma.noticeBoard.delete({
     where: {
       id,
     },
@@ -114,10 +108,10 @@ const deleteClient = async (id: string) => {
   return result;
 };
 
-export const clientService = {
-  createClient,
-  getAllClients,
-  getSingleClient,
-  updateClient,
-  deleteClient,
+export const NoticeboardService = {
+  createNoticeboard,
+  getAllNoticeboards,
+  getSingleNoticeboard,
+  updateNoticeboard,
+  deleteNoticeboard,
 };

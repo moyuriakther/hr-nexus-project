@@ -8,4 +8,7 @@ router.post(
 );
 router.get("/", subDepartmentController.getAllSubDepartments);
 router.get("/:id", subDepartmentController.getSingleSubDepartment);
+
+router.patch("/:id", subDepartmentController.updateSubDepartment);
+// router.patch("/:id", subDepartmentController.deleteSubDepartment);
 export const SubDepartmentRoutes = router;
