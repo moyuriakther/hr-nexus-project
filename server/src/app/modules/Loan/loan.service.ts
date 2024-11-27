@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import prisma from "../../../shared/prisma";
 import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
-import { loanSearchableFields } from "./loan.utils";
+import { numericSearchableFields, stringSearchableFields } from "./loan.utils";
 
 // Create a new loan
 const createLoan = async (data: any) => {
@@ -19,19 +19,44 @@ const getAllLoans = async (params: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
-  const andConditions: Prisma.LoanWhereInput[] = [];
+  const andConditions: Prisma.LoanWhereInput[] = [
+    {
+      isDeleted: false,
+    },
+  ];
 
-  if (params.searchTerm) {
-    andConditions.push({
-      OR: loanSearchableFields.map((field) => ({
+  // List of fields that can be searched
+
+  // Add search term filters
+  if (searchTerm) {
+    const orConditions: Prisma.LoanWhereInput[] = [];
+
+    // Add string-based search conditions
+    stringSearchableFields.forEach((field) => {
+      orConditions.push({
         [field]: {
-          contains: params.searchTerm,
+          contains: searchTerm,
           mode: "insensitive",
         },
-      })),
+      });
     });
+
+    // Add numeric-based search conditions if searchTerm is a number
+    const numericSearchValue = parseFloat(searchTerm);
+    if (!isNaN(numericSearchValue)) {
+      numericSearchableFields.forEach((field) => {
+        orConditions.push({
+          [field]: {
+            equals: numericSearchValue,
+          },
+        });
+      });
+    }
+
+    andConditions.push({ OR: orConditions });
   }
 
+  // Add additional filters
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
       AND: Object.keys(filterData).map((key) => ({
@@ -42,9 +67,11 @@ const getAllLoans = async (params: any, options: IPaginationOptions) => {
     });
   }
 
+  // Construct where conditions
   const whereConditions: Prisma.LoanWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
+  // Fetch data with pagination
   const result = await prisma.loan.findMany({
     where: whereConditions,
     skip,
@@ -58,22 +85,11 @@ const getAllLoans = async (params: any, options: IPaginationOptions) => {
             createdAt: "desc",
           },
     include: {
-      employee: {
-        include: {
-          loan: true,
-        },
-        // select: {
-        //   id: true,
-        //   firstName: true,
-        //   lastName: true,
-        //   email: true,
-        //   phoneNumber: true,
-
-        // },
-      },
+      employee: true,
     },
   });
 
+  // Count total matching records
   const total = await prisma.loan.count({
     where: whereConditions,
   });
