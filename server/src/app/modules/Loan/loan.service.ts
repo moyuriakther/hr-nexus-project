@@ -2,7 +2,11 @@ import { Prisma } from "@prisma/client";
 import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import prisma from "../../../shared/prisma";
 import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
-import { numericSearchableFields, stringSearchableFields } from "./loan.utils";
+import {
+  employeeSearchableFieldsForLoan,
+  numericSearchableFields,
+  stringSearchableFields,
+} from "./loan.utils";
 
 // Create a new loan
 const createLoan = async (data: any) => {
@@ -21,17 +25,15 @@ const getAllLoans = async (params: any, options: IPaginationOptions) => {
 
   const andConditions: Prisma.LoanWhereInput[] = [
     {
-      isDeleted: false,
+      isDeleted: false, // Exclude deleted records
     },
   ];
-
-  // List of fields that can be searched
 
   // Add search term filters
   if (searchTerm) {
     const orConditions: Prisma.LoanWhereInput[] = [];
 
-    // Add string-based search conditions
+    // Add string-based search conditions for Loan
     stringSearchableFields.forEach((field) => {
       orConditions.push({
         [field]: {
@@ -41,7 +43,7 @@ const getAllLoans = async (params: any, options: IPaginationOptions) => {
       });
     });
 
-    // Add numeric-based search conditions if searchTerm is a number
+    // Add numeric-based search conditions for Loan if searchTerm is a number
     const numericSearchValue = parseFloat(searchTerm);
     if (!isNaN(numericSearchValue)) {
       numericSearchableFields.forEach((field) => {
@@ -52,6 +54,21 @@ const getAllLoans = async (params: any, options: IPaginationOptions) => {
         });
       });
     }
+
+    // Add string-based search conditions for Employee
+    const employeeSearchConditions: Prisma.EmployeeWhereInput = {
+      OR: employeeSearchableFieldsForLoan.map((field) => ({
+        [field]: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      })),
+    };
+
+    // Include Employee search conditions in OR
+    orConditions.push({
+      employee: { is: employeeSearchConditions }, // Nested search for employee fields
+    });
 
     andConditions.push({ OR: orConditions });
   }
@@ -85,7 +102,7 @@ const getAllLoans = async (params: any, options: IPaginationOptions) => {
             createdAt: "desc",
           },
     include: {
-      employee: true,
+      employee: true, // Include related employee data
     },
   });
 

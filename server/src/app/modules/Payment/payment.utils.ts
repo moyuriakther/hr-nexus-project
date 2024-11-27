@@ -14,3 +14,11 @@ export const stringSearchableFieldsEmployee = [
   "designation",
 ];
 export const numericSearchableFieldsEmployee = ["phoneNumber", "nidNumber"];
+export const employeeSearchableFields = [
+  "firstName",
+  "lastName",
+  "email",
+  "phoneNumber",
+  "nidNumber",
+  "country",
+];

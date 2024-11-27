@@ -3,6 +3,7 @@ import prisma from "../../../shared/prisma";
 import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
 import {
+  employeeSearchableFields,
   numericSearchableFieldsPayment,
   // paymentSearchableFields,
   stringSearchableFieldsPayment,
@@ -29,7 +30,7 @@ const getAllPayments = async (params: any, options: IPaginationOptions) => {
   if (searchTerm) {
     const orConditions: Prisma.PaymentWhereInput[] = [];
 
-    // Add string-based search conditions
+    // Add string-based search conditions for Payment
     stringSearchableFieldsPayment.forEach((field) => {
       orConditions.push({
         [field]: {
@@ -39,7 +40,7 @@ const getAllPayments = async (params: any, options: IPaginationOptions) => {
       });
     });
 
-    // Add numeric-based search conditions if searchTerm is a number
+    // Add numeric-based search conditions for Payment if searchTerm is a number
     const numericSearchValue = parseFloat(searchTerm);
     if (!isNaN(numericSearchValue)) {
       numericSearchableFieldsPayment.forEach((field) => {
@@ -50,6 +51,21 @@ const getAllPayments = async (params: any, options: IPaginationOptions) => {
         });
       });
     }
+
+    // Add string-based search conditions for Employee (nested)
+    const employeeSearchConditions: Prisma.EmployeeWhereInput = {
+      OR: employeeSearchableFields.map((field) => ({
+        [field]: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      })),
+    };
+
+    // Combine conditions
+    orConditions.push({
+      employee: { is: employeeSearchConditions }, // Nested search for employee
+    });
 
     // Add combined OR conditions to AND conditions
     andConditions.push({ OR: orConditions });

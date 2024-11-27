@@ -15,3 +15,12 @@ export const numericSearchableFields = [
   "installmentPeriod",
   "installmentCleared",
 ];
+
+export const employeeSearchableFieldsForLoan = [
+  "firstName",
+  "lastName",
+  "email",
+  "phoneNumber",
+  "nidNumber",
+  "country",
+];
