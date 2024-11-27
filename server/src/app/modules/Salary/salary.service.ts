@@ -2,7 +2,12 @@ import { Prisma } from "@prisma/client";
 import prisma from "../../../shared/prisma";
 import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
-import { salarySearchableFields } from "./salary.utils";
+import {
+  employeeSearchableFieldsForLoanForSalary,
+  numericSearchableFieldsForSalary,
+  // salarySearchableFields,
+  stringSearchableFieldsForSalary,
+} from "./salary.utils";
 
 // Create a new Salary
 const createSalary = async (data: any) => {
@@ -21,17 +26,50 @@ const getAllSalary = async (params: any, options: IPaginationOptions) => {
 
   const andConditions: Prisma.SalaryWhereInput[] = [];
 
-  if (params.searchTerm) {
-    andConditions.push({
-      OR: salarySearchableFields.map((field) => ({
+  if (searchTerm) {
+    const orConditions: Prisma.SalaryWhereInput[] = [];
+
+    // Add string-based search conditions for Salary
+    stringSearchableFieldsForSalary.forEach((field) => {
+      orConditions.push({
         [field]: {
-          contains: params.searchTerm,
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      });
+    });
+
+    // Add numeric-based search conditions for Salary if searchTerm is a number
+    const numericSearchValue = parseFloat(searchTerm);
+    if (!isNaN(numericSearchValue)) {
+      numericSearchableFieldsForSalary.forEach((field) => {
+        orConditions.push({
+          [field]: {
+            equals: numericSearchValue,
+          },
+        });
+      });
+    }
+
+    // Add string-based search conditions for Employee
+    const employeeSearchConditions: Prisma.EmployeeWhereInput = {
+      OR: employeeSearchableFieldsForLoanForSalary.map((field) => ({
+        [field]: {
+          contains: searchTerm,
           mode: "insensitive",
         },
       })),
+    };
+
+    // Include Employee search conditions in OR
+    orConditions.push({
+      employee: { OR: employeeSearchConditions.OR }, // Nested search for employee fields
     });
+
+    andConditions.push({ OR: orConditions });
   }
 
+  // Add additional filters
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
       AND: Object.keys(filterData).map((key) => ({
@@ -42,9 +80,11 @@ const getAllSalary = async (params: any, options: IPaginationOptions) => {
     });
   }
 
+  // Construct where conditions
   const whereConditions: Prisma.SalaryWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
+  // Fetch data with pagination
   const result = await prisma.salary.findMany({
     where: whereConditions,
     skip,
@@ -58,10 +98,11 @@ const getAllSalary = async (params: any, options: IPaginationOptions) => {
             createdAt: "desc",
           },
     include: {
-      employee: true,
+      employee: true, // Include related employee data
     },
   });
 
+  // Count total matching records
   const total = await prisma.salary.count({
     where: whereConditions,
   });
