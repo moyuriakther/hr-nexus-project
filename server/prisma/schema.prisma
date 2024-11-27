@@ -326,7 +326,16 @@ model WeeklyHolidays {
 }
 
 model NoticeBoard {
-  id String @id @default(uuid())
+  id               String    @id @default(uuid())
+  noticeType       String
+  description      String
+  noticeDate       DateTime?
+  noticeBy         String?
+  noticeAttachment String?
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   @@map("notice_boards")
 }
@@ -339,6 +348,8 @@ model Recruitment {
 
 model ProjectManagement {
   id String @id @default(uuid())
+
+  isDeleted Boolean @default(false)
 
   @@map("project_managements")
 }
