@@ -1,21 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
 import { Button } from "@nextui-org/react";
 import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import CreateSubDepartment from "./component/CreateSubDepartment";
+import { useGetAllSubDepartmentsQuery } from "@/app/Redux/api/subDepartmentApi";
 
 
 
 const SubDepartmentPage = () => {
   const tableHeader = ["SL", "Sub department Name", "Department Name", "Status", "Action"];
-  const positions = [
-    { id: 1, name: "HR", dep: "Electrical", status: "Active" },
-    { id: 2, name: "Accounts", dep: "Electrical", status: "Active" },
-    { id: 3, name: "Finance", dep: "Production", status: "Active" },
-    { id: 4, name: "Sales", dep: "Production", status: "Active" },
-    { id: 5, name: "Angelica Goff", dep: "Electrical", status: "Active" },
-  ];
+  const {data} = useGetAllSubDepartmentsQuery({});
+  // console.log(data)
+  const positions = data?.data;
+  // const positions = [
+  //   { id: 1, name: "HR", dep: "Electrical", status: "Active" },
+  //   { id: 2, name: "Accounts", dep: "Electrical", status: "Active" },
+  //   { id: 3, name: "Finance", dep: "Production", status: "Active" },
+  //   { id: 4, name: "Sales", dep: "Production", status: "Active" },
+  //   { id: 5, name: "Angelica Goff", dep: "Electrical", status: "Active" },
+  // ];
   return (
     <div className="min-h-[89vh]">
       {/* <PageHeader item={pageHeaderData} /> */}
@@ -23,20 +29,20 @@ const SubDepartmentPage = () => {
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
         <CreateSubDepartment />
         <HRTable tableHeader={tableHeader}>
-          {positions.map((position, i) => (
+          {positions?.map((position:any, i:number) => (
             <tr
               className={`${i % 2 === 0 ? "bg-gray-100" : ""} hover:bg-gray-50`}
-              key={position.id}
+              key={position?.id}
             >
-              <HRTableRow>{position.id}</HRTableRow>
-              <HRTableRow>{position.name}</HRTableRow>
-              <HRTableRow>{position.dep}</HRTableRow>
+              <HRTableRow>{i+1}</HRTableRow>
+              <HRTableRow>{position?.subDepartmentName}</HRTableRow>
+              <HRTableRow>{position?.department?.departmentName}</HRTableRow>
               <HRTableRow>
                 <Button
                   size="sm"
                   className="h-6 text-sm text-white bg-primary rounded-[4px]"
                 >
-                  {position.status}
+                  {position?.status}
                 </Button>
               </HRTableRow>
               <HRTableRow>

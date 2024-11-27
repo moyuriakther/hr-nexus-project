@@ -4,18 +4,33 @@ import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRRadioInput from "@/app/components/Form/HRRadioInput";
 import HRModal from "@/app/components/Modal/HRModal";
+import { useCreateDepartmentMutation } from "@/app/Redux/api/departmentApi";
 import { Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
+import { toast } from "sonner";
 
 const CreateDepartmentModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [createDepartment] = useCreateDepartmentMutation();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+      const depData = {
+        ...values,
+        description: "Responsible for recruitment"
+
+      }
+   try {
+      const res = await createDepartment(depData).unwrap();
+      if (res?.id) {
+        toast.success("Department Created Successfully");
+        setModalIsOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-
   const radioOptions = [
     {
       value: "Active",
@@ -47,7 +62,7 @@ const CreateDepartmentModal = () => {
           <div className="flex items-center gap-x-4">
             <p className="font-medium">Department name</p>
             <HRInput
-              name="position_name"
+              name="departmentName"
               type="text"
               className="lg:w-[560px]"
               placeholder="Department name"
@@ -55,7 +70,7 @@ const CreateDepartmentModal = () => {
           </div>
           <div className="flex items-center gap-x-20">
             <p className="font-medium">Is Active</p>
-            <HRRadioInput name="isActive" options={radioOptions} />
+            <HRRadioInput name="status" options={radioOptions} />
           </div>
 
           <div>
