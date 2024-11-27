@@ -2,7 +2,11 @@ import { Prisma } from "@prisma/client";
 import prisma from "../../../shared/prisma";
 import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
-import { paymentSearchableFields } from "./payment.utils";
+import {
+  numericSearchableFieldsPayment,
+  // paymentSearchableFields,
+  stringSearchableFieldsPayment,
+} from "./payment.utils";
 
 // Create a new Payment
 const createPayment = async (data: any) => {
@@ -21,51 +25,71 @@ const getAllPayments = async (params: any, options: IPaginationOptions) => {
 
   const andConditions: Prisma.PaymentWhereInput[] = [];
 
-  if (params.searchTerm) {
-    andConditions.push({
-      OR: paymentSearchableFields.map((field) => ({
+  // Handle search term
+  if (searchTerm) {
+    const orConditions: Prisma.PaymentWhereInput[] = [];
+
+    // Add string-based search conditions
+    stringSearchableFieldsPayment.forEach((field) => {
+      orConditions.push({
         [field]: {
-          contains: params.searchTerm,
+          contains: searchTerm,
           mode: "insensitive",
         },
-      })),
+      });
     });
+
+    // Add numeric-based search conditions if searchTerm is a number
+    const numericSearchValue = parseFloat(searchTerm);
+    if (!isNaN(numericSearchValue)) {
+      numericSearchableFieldsPayment.forEach((field) => {
+        orConditions.push({
+          [field]: {
+            equals: numericSearchValue,
+          },
+        });
+      });
+    }
+
+    // Add combined OR conditions to AND conditions
+    andConditions.push({ OR: orConditions });
   }
 
+  // Add filter conditions
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
-      AND: Object.keys(filterData).map((key) => ({
+      AND: Object.entries(filterData).map(([key, value]) => ({
         [key]: {
-          equals: (filterData as any)[key],
+          equals: value,
         },
-      })),
+      })) as Prisma.PaymentWhereInput[],
     });
   }
 
+  // Combine conditions
   const whereConditions: Prisma.PaymentWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
+  // Fetch paginated results
   const result = await prisma.payment.findMany({
     where: whereConditions,
     skip,
     take: limit,
     orderBy:
       options.sortBy && options.sortOrder
-        ? {
-            [options.sortBy]: options.sortOrder,
-          }
-        : {
-            createdAt: "desc",
-          },
+        ? { [options.sortBy]: options.sortOrder }
+        : { createdAt: "desc" },
     include: {
-      employee: true,
+      employee: true, // Include related employee data
     },
   });
 
+  // Count total results
   const total = await prisma.payment.count({
     where: whereConditions,
   });
 
+  // Return paginated data
   return {
     meta: {
       page,
