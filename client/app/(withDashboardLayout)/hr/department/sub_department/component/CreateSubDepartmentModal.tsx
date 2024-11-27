@@ -1,18 +1,38 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRRadioInput from "@/app/components/Form/HRRadioInput";
 import HRModal from "@/app/components/Modal/HRModal";
+import { useGetAllDepartmentsQuery } from "@/app/Redux/api/departmentApi";
+import { useCreateSubDepartmentMutation } from "@/app/Redux/api/subDepartmentApi";
 import { Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
+import { toast } from "sonner";
 
 const CreateSubDepartmentModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [createSubDepartment] = useCreateSubDepartmentMutation();
+  const {data} = useGetAllDepartmentsQuery({})
+  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+      const departmentId =await data?.data?.find((dep:any) =>dep.departmentName === values.department);
+      const subDepData = {
+        ...values,
+        departmentId: departmentId?.id,
+        description: "Responsible for recruitment"
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+      }
+   try {
+      const res = await createSubDepartment(subDepData).unwrap();
+      if (res?.id) {
+        toast.success("Sub Department Created Successfully");
+        setModalIsOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const radioOptions = [
@@ -46,7 +66,7 @@ const CreateSubDepartmentModal = () => {
           <div className="flex items-center gap-x-3">
             <p className="font-medium">Sub department name</p>
             <HRInput
-              name="position_name"
+              name="subDepartmentName"
               type="text"
               className="lg:w-[560px]"
               placeholder="Sub Department name"
@@ -55,7 +75,7 @@ const CreateSubDepartmentModal = () => {
           <div className="flex items-center gap-x-20">
             <p className="font-medium">Department</p>
             <HRInput
-              name="position_details"
+              name="department"
               type="text"
               className="lg:w-[560px]"
               placeholder="Select Department"
@@ -63,7 +83,7 @@ const CreateSubDepartmentModal = () => {
           </div>
           <div className="flex items-center gap-x-20">
             <p className="font-medium mr-6">Is Active</p>
-            <HRRadioInput name="isActive" options={radioOptions} />
+            <HRRadioInput name="status" options={radioOptions} />
           </div>
 
           <div>
