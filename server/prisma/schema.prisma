@@ -163,6 +163,7 @@ model Attendance {
   checkOut       DateTime?
   monthName      String?
   attendanceType AttendanceType?
+  isDeleted      Boolean         @default(false)
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @default(now())
 
@@ -183,9 +184,9 @@ model Salary {
   contribution       Float
   loanDeduction      Float
   salaryAdvance      Float
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  isDeleted          Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
 
   @@map("salaries")
 }
@@ -208,9 +209,9 @@ model Leave {
 
   employeeId String
   employee   Employee @relation(fields: [employeeId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  isDeleted  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
 
   @@map("leaves")
 }
@@ -224,6 +225,7 @@ model Payment {
   releaseAmount Float?
   status        PaymentStatus?
   date          DateTime
+  isDeleted     Boolean        @default(false)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now())
 }
@@ -290,6 +292,7 @@ model Loan {
   approvedDate       DateTime?
   repaymentFrom      DateTime?
   status             LeaveStatus
+  isDeleted          Boolean     @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
