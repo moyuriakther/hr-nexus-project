@@ -106,11 +106,10 @@ model Employee {
   isDisabled              Boolean @default(false)
   disabilitiesDescription String?
 
-  homeEmail String?
-  homePhone String?
-
-  status Status @default(ACTIVE)
-
+  homeEmail  String?
+  homePhone  String?
+  status     Status       @default(ACTIVE)
+  isDeleted  Boolean      @default(false)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now())
   attendance Attendance[]
@@ -130,6 +129,8 @@ model Department {
   description    String
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @default(now())
+  isActive       Boolean         @default(true)
+  isDeleted      Boolean         @default(false)
   subDepartment  SubDepartment[]
   employee       Employee[]
 
@@ -143,6 +144,8 @@ model SubDepartment {
   department        Department @relation(fields: [departmentId], references: [id])
   subDepartmentName String
   description       String
+  isActive          Boolean    @default(true)
+  isDeleted         Boolean    @default(false)
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @default(now())
   employee          Employee[]
@@ -160,6 +163,7 @@ model Attendance {
   checkOut       DateTime?
   monthName      String?
   attendanceType AttendanceType?
+  isDeleted      Boolean         @default(false)
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @default(now())
 
@@ -180,9 +184,9 @@ model Salary {
   contribution       Float
   loanDeduction      Float
   salaryAdvance      Float
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  isDeleted          Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
 
   @@map("salaries")
 }
@@ -205,9 +209,9 @@ model Leave {
 
   employeeId String
   employee   Employee @relation(fields: [employeeId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  isDeleted  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
 
   @@map("leaves")
 }
@@ -221,6 +225,7 @@ model Payment {
   releaseAmount Float?
   status        PaymentStatus?
   date          DateTime
+  isDeleted     Boolean        @default(false)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now())
 }
@@ -232,6 +237,7 @@ model Client {
   email       String?
   companyName String?
   address     String?
+  isDeleted   Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
   project     Project[]
@@ -265,6 +271,7 @@ model Award {
   date             DateTime?
 
   awardBy   String?
+  isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
@@ -285,6 +292,7 @@ model Loan {
   approvedDate       DateTime?
   repaymentFrom      DateTime?
   status             LeaveStatus
+  isDeleted          Boolean     @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -299,6 +307,7 @@ model Holidays {
   fromDate    DateTime?
   toDate      DateTime?
   totalDays   Int?
+  isDeleted   Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
 
@@ -309,6 +318,7 @@ model Holidays {
 model WeeklyHolidays {
   id        String   @id @default(uuid())
   dayName   String
+  isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
@@ -316,7 +326,16 @@ model WeeklyHolidays {
 }
 
 model NoticeBoard {
-  id String @id @default(uuid())
+  id               String    @id @default(uuid())
+  noticeType       String
+  description      String
+  noticeDate       DateTime?
+  noticeBy         String?
+  noticeAttachment String?
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   @@map("notice_boards")
 }
@@ -329,6 +348,8 @@ model Recruitment {
 
 model ProjectManagement {
   id String @id @default(uuid())
+
+  isDeleted Boolean @default(false)
 
   @@map("project_managements")
 }

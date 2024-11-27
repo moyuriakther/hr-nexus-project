@@ -21,14 +21,32 @@ const getAllProjects = async (params: any, options: IPaginationOptions) => {
 
   const andConditions: Prisma.ProjectWhereInput[] = [];
 
-  if (params.searchTerm) {
+  if (searchTerm) {
+    // Create a search condition for the Project model itself
+    const projectSearchConditions = projectSearchableFields.map((field) => ({
+      [field]: {
+        contains: searchTerm,
+        mode: "insensitive",
+      },
+    }));
+
+    // Create a search condition for the Client model (nested)
+    const clientSearchConditions: Prisma.ClientWhereInput = {
+      OR: [
+        { clientName: { contains: searchTerm, mode: "insensitive" } },
+        { companyName: { contains: searchTerm, mode: "insensitive" } },
+        { country: { contains: searchTerm, mode: "insensitive" } },
+        { email: { contains: searchTerm, mode: "insensitive" } },
+        { address: { contains: searchTerm, mode: "insensitive" } },
+      ],
+    };
+
+    // Combine both project and client search conditions using OR
     andConditions.push({
-      OR: projectSearchableFields.map((field) => ({
-        [field]: {
-          contains: params.searchTerm,
-          mode: "insensitive",
-        },
-      })),
+      OR: [
+        ...projectSearchConditions,
+        { client: { is: clientSearchConditions } },
+      ],
     });
   }
 

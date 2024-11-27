@@ -111,7 +111,11 @@ const getEmployees = async (params: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
-  const andConditions: Prisma.EmployeeWhereInput[] = [];
+  const andConditions: Prisma.EmployeeWhereInput[] = [
+    {
+      isDeleted: false,
+    },
+  ];
 
   //console.log(filterData);
   if (params.searchTerm) {
@@ -185,8 +189,28 @@ const getSingleEmployee = async (id: string) => {
   });
   return result;
 };
+const updateEmployee = async (id: string, data: any) => {
+  // console.log(data);
+  const result = await prisma.employee.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return result;
+};
+
+const deleteEmployee = async (id: string) => {
+  const result = await prisma.employee.update({
+    where: { id },
+    data: { isDeleted: true },
+  });
+  return result;
+};
 export const EmployeeServices = {
   createEmployee,
   getEmployees,
   getSingleEmployee,
+  updateEmployee,
+  deleteEmployee,
 };

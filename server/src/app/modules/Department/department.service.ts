@@ -17,7 +17,11 @@ const getAllDepartments = async (params: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
-  const andConditions: Prisma.DepartmentWhereInput[] = [];
+  const andConditions: Prisma.DepartmentWhereInput[] = [
+    {
+      isDeleted: false,
+    },
+  ];
 
   if (params.searchTerm) {
     andConditions.push({
@@ -56,15 +60,7 @@ const getAllDepartments = async (params: any, options: IPaginationOptions) => {
             createdAt: "desc",
           },
     include: {
-      subDepartment: {
-        select: {
-          id: true,
-          department: true,
-          description: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      },
+      subDepartment: true,
     },
   });
 
@@ -92,8 +88,30 @@ const createDepartment = async (data: any) => {
   return result;
 };
 
+const updateDepartment = async (id: string, data: any) => {
+  // console.log(data);
+  const result = await prisma.department.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return result;
+};
+
+// Delete a client by ID
+const deleteDepartment = async (id: string) => {
+  const result = await prisma.department.update({
+    where: { id },
+    data: { isDeleted: true },
+  });
+  return result;
+};
+
 export const DepartmentService = {
   getAllDepartments,
   getSingleDepartment,
   createDepartment,
+  updateDepartment,
+  deleteDepartment,
 };
