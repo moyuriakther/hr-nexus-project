@@ -246,19 +246,42 @@ model Client {
 }
 
 model Project {
-  id                 String    @id @default(uuid())
+  id                 String        @id @default(uuid())
   clientId           String
-  client             Client    @relation(fields: [clientId], references: [id])
+  client             Client        @relation(fields: [clientId], references: [id])
   projectName        String?
   projectDescription String?
   approximateTasks   Int?
   projectDuration    String?
   startDate          DateTime?
   endDate            DateTime?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @default(now())
+  isDeleted          Boolean       @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @default(now())
+  ProjectTask        ProjectTask[]
 
   @@map("projects")
+}
+
+model ProjectTask {
+  id        String  @id @default(uuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  employeeIds String[]
+
+  taskName        String?
+  taskDescription String?
+  taskType        String?
+  taskStatus      TaskStatus?
+  taskStartDate   DateTime?
+  taskEndDate     DateTime?
+  taskPriority    String?
+  priority        PriorityStatus?
+  createdBy       String?
+  isDeleted       Boolean         @default(false)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @default(now())
 }
 
 model Award {
@@ -409,4 +432,17 @@ enum PaymentStatus {
   PENDING
   PAID
   REJECTED
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  TODO
+}
+
+enum PriorityStatus {
+  HIGH
+  MEDIUM
+  LOW
 }
