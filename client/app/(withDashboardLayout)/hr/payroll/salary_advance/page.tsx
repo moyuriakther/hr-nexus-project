@@ -11,9 +11,14 @@ import { fakeData } from "./components/fakeData";
 import { Button } from "@nextui-org/react";
 import AddSalaryAdvancePage from "./components/AddSalaryAdvance";
 import UpdateSalaryAdvanceModal from "./components/UpdateSalaryAdvanceModal";
+import { useGetAllPaymentQuery } from "@/app/Redux/api/paymentApi";
 
 const SalaryAdvancePage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const { data: payments, isLoading } = useGetAllPaymentQuery("");
+
+  console.log(payments?.data);
 
   const tableHeader = [
     "Sl",
