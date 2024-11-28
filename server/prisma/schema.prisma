@@ -220,7 +220,7 @@ model Payment {
   totalSalary   Float
   releaseAmount Float?
   status        PaymentStatus?
-  date          DateTime
+  date          DateTime?      @default(now())
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now())
 }

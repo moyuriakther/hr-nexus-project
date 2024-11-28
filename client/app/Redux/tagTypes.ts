@@ -5,4 +5,9 @@ export enum tagTypes {
   payment = "payment",
 }
 
-export const tagTypesList = [tagTypes.admin, tagTypes.employee];
+export const tagTypesList = [
+  tagTypes.admin,
+  tagTypes.employee,
+  tagTypes.leave,
+  tagTypes.payment,
+];

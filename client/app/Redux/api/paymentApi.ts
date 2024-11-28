@@ -27,10 +27,10 @@ export const paymentApi = baseApi.injectEndpoints({
     }),
 
     deletePayment: build.mutation({
-      query: (data) => ({
-        url: `/payment/${data.id}`,
+      query: (id) => ({
+        url: `/payment/${id}`,
         method: "DELETE",
-        data: data.body,
+        // data: data.body,
       }),
       invalidatesTags: [tagTypes.payment],
     }),
