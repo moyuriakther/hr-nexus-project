@@ -11,39 +11,34 @@ import {
   loginValidationSchema,
 } from "@/app/Validations/loginValidation";
 import { Button } from "@nextui-org/react";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { signInUser } from "@/app/services/actions/userLogin";
+import { storeUserInfo } from "@/app/services/actions/auth.services";
 
 const LoginForm = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false); // State for loading
 
   const handleLogin: SubmitHandler<FieldValues> = async (data) => {
-    setLoading(true); // Set loading to true when login starts
+    setLoading(true); // Set loading to true
     try {
-      // Sending the login data to the server
-      const response = await axios.post(
-        "https://hr-nexus.vercel.app/api/auth/login",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log("Server Response:", response.data);
-      toast.success("Login successful");
-      router.push("/dashboard");
-    } catch (error: any) {
-      // Handle error and show an error toast
-      console.error("Login Error:", error);
-      toast.error(
-        error.response?.data?.message || "An error occurred during login"
-      );
+      const res = await signInUser(data);
+      if (res?.data?.accessToken) {
+        toast.success(res?.message || "Login successful!");
+        storeUserInfo({ accessToken: res?.data?.accessToken });
+        router.refresh();
+      } else {
+        toast.error("Invalid response from the server");
+      }
+    } catch (err: any) {
+      const errorMessage =
+        err?.response?.data?.message ||
+        "Account does not exist. Please register first!";
+      toast.error(errorMessage);
     } finally {
-      setLoading(false); // Reset loading state when login completes
+      setLoading(false); // Reset loading state
     }
   };
 
@@ -70,15 +65,22 @@ const LoginForm = () => {
         />
       </div>
       <div className="flex justify-end pb-3">
-        <p className="cursor-pointer font-medium">Forgot Password</p>
+        <p
+          className="cursor-pointer font-medium text-primary hover:underline"
+          onClick={() => router.push("/forgot-password")}
+        >
+          Forgot Password?
+        </p>
       </div>
       <Button
         type="submit"
         fullWidth
-        className="font-semibold text-white rounded-none w-full bg-primary"
+        className={`font-semibold text-white rounded-none w-full ${
+          loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary"
+        }`}
         isDisabled={loading} // Disable button when loading
       >
-        {loading ? "logging in.." : "Sign in"}
+        {loading ? "Logging in..." : "Sign In"}
       </Button>
     </HRForm>
   );

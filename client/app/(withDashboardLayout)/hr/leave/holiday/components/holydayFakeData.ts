@@ -1,0 +1,58 @@
+export const fakeData = [
+  {
+    sl: 1,
+    holidayName: "New Year's Day",
+    fromDate: "2024-01-01",
+    toDate: "2024-01-01",
+    totalDays: 1,
+  },
+  {
+    sl: 2,
+    holidayName: "Republic Day",
+    fromDate: "2024-01-26",
+    toDate: "2024-01-26",
+    totalDays: 1,
+  },
+  {
+    sl: 3,
+    holidayName: "Holi",
+    fromDate: "2024-03-08",
+    toDate: "2024-03-09",
+    totalDays: 2,
+  },
+  {
+    sl: 4,
+    holidayName: "Good Friday",
+    fromDate: "2024-03-29",
+    toDate: "2024-03-29",
+    totalDays: 1,
+  },
+  {
+    sl: 5,
+    holidayName: "Eid-ul-Fitr",
+    fromDate: "2024-04-10",
+    toDate: "2024-04-11",
+    totalDays: 2,
+  },
+  {
+    sl: 6,
+    holidayName: "Independence Day",
+    fromDate: "2024-08-15",
+    toDate: "2024-08-15",
+    totalDays: 1,
+  },
+  {
+    sl: 7,
+    holidayName: "Diwali",
+    fromDate: "2024-11-01",
+    toDate: "2024-11-02",
+    totalDays: 2,
+  },
+  {
+    sl: 8,
+    holidayName: "Christmas",
+    fromDate: "2024-12-25",
+    toDate: "2024-12-25",
+    totalDays: 1,
+  },
+];

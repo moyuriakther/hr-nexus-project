@@ -1,12 +1,14 @@
 // import { axiosBaseQuery } from "@/helpers/axios/axiosBaseQuery";
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import { tagTypesList } from "../tag-types";
+import { createApi } from "@reduxjs/toolkit/query/react";
 
-// export const baseApi = createApi({
-//   reducerPath: "api",
-//   baseQuery: axiosBaseQuery({
-//     baseUrl: "https:/p/api",
-//   }),
-//   endpoints: () => ({}),
-//   tagTypes: tagTypesList,
-// });
+import { axiosBaseQuery } from "@/app/helpers/axios/axiosBaseQuery";
+import { tagTypesList } from "../tagTypes";
+
+export const baseApi = createApi({
+  reducerPath: "api",
+  baseQuery: axiosBaseQuery({
+    baseUrl: "http://localhost:5000/api",
+  }),
+  endpoints: () => ({}),
+  tagTypes: tagTypesList,
+});
