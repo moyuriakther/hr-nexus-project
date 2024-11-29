@@ -84,7 +84,7 @@ const createDepartment = async (data: any) => {
       ...data,
     },
   });
-  console.log(result);
+
   return result;
 };
 
