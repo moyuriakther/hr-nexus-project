@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import HRForm from "@/app/components/Form/HRForm";
@@ -9,35 +11,60 @@ import { Button } from "@nextui-org/react";
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-import {AllNoticeData, noticeModalInputFiled} from './fakeData'
-type TNoticeData = {
-  id: string | number;
-  noticeType: string;
-  description: string;
-  noticeDate: string;
-  noticeBy: string;
+import {
+  candidateModalInputFiled,
+  candidateSelectionTableData,
+} from "../fakeData";
+import { FaFileCsv, FaFileExcel } from "react-icons/fa";
+
+export type TCandidateSelectionTableData = {
+  sl: number,
+  name: string,
+  candidateId: string,
+  employeeId: string,
+  position: string,
+  selectionTerms: string,
+
 };
+
 // type TNoticeModalInputField = {
-//     name: keyof TNoticeData 
+//     name: keyof TNoticeData
 //     label: string;
 //     type: string;
 //     placeholder: string;
 //     required: boolean;
 //   };
 
-const NoticePage = () => {
-  const [noticeData, setNoticeData] = useState<TNoticeData[]>(AllNoticeData);
-  const [editNoticeData, setEditNoticeData]=useState<Partial<TNoticeData>>({id:"",description:"",noticeBy:"",noticeDate:"",noticeType:""})
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const tableHeader = [
-    "SI",
-    "Notice type",
-    "Description",
-    "Notice date",
-    "Notice by",
+  export const tableHeaders = [
+    "SL",
+    "Name",
+    "Candidate ID",
+    "Employee ID",
+    "Position",
+    "Selection Terms",
     "Action",
   ];
-  const handleSearchNotice: SubmitHandler<FieldValues> = async (data) => {
+
+const CandidateSelectionPage = () => {
+  const [tableAllData, setTableData] =useState<TCandidateSelectionTableData[]>(candidateSelectionTableData);
+  const [editTableData, setEditTableData] = useState<Partial<TCandidateSelectionTableData>>({
+    sl: 1,
+    name: "",
+    candidateId: "",
+    employeeId: "",
+    position: "",
+    selectionTerms: ""
+  })
+  const [modalIsOpen, setIsOpen] = useState(false);
+const handleNewData:SubmitHandler<FieldValues>=async()=>{
+  try{
+    console.log("Add New Data")
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }catch(error:any){
+    toast.error(error?.message)
+  }
+}
+  const handleSearchData: SubmitHandler<FieldValues> = async (data) => {
     try {
       console.log(data);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,17 +75,20 @@ const NoticePage = () => {
   const HandleEditNotice = (id: number | string) => {
     setIsOpen(!modalIsOpen);
     console.log(id);
-    const editNotice=noticeData.find(notice=>notice.id===id)
-    if(editNotice){
-        setEditNoticeData(editNotice)
-    }else{
-        console.log("notice not found")
+    const editTableData = tableAllData.find((data) => data.sl === id);
+    if (editTableData) {
+      setEditTableData(editTableData);
+    } else {
+      console.log("not found");
     }
-
   };
   const HandleNoticeDelete = (id: number | string) => {
-    const updateNoticeData = noticeData.filter((notice) => notice.id !== id);
-    setNoticeData(updateNoticeData);
+    const updateTableData: TCandidateSelectionTableData[] = tableAllData.filter(
+      (data) => data.sl !== id
+    );
+    if (updateTableData) {
+      setTableData(updateTableData);
+    }
   };
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
@@ -69,30 +99,34 @@ const NoticePage = () => {
           className="bg-primary text-md font-semibold text-secondary"
           onClick={() => setIsOpen(!modalIsOpen)}
         >
-          Add Notice
+          Add Candidate
         </Button>
       </div>
-      {/* Add New Notice Modal */}
+      {/*  Modal */}
       <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
-        modalTitle="New notice"
+        modalTitle="New Candidate"
       >
-        <HRForm onSubmit={handleSearchNotice}>
-          {noticeModalInputFiled.map((inputField, index) => {
+        <HRForm onSubmit={handleNewData}>
+          {candidateModalInputFiled.map((inputField, index) => {
             return (
               <div
                 key={index}
                 className="mb-5 text-md font-semibold flex  gap-1 items-center"
               >
-                <label className="col-span-1 w-[200px]">{inputField?.label}</label>
+                <label className="col-span-1 w-[200px]">
+                  {inputField?.label}
+                </label>
                 <HRInput
                   type={inputField?.type}
                   className="border-primary h-10 rounded-[5px]  min-w-[340px]"
                   placeholder={inputField?.placeholder}
-                  name={`${inputField?.name}`}
-                  required={inputField?.required}
-                  defaultValue={editNoticeData[inputField?.name as keyof TNoticeData]||""}
+                  name={`${inputField?.key}`}
+                  // required="required"
+                  defaultValue={
+                    editTableData[inputField?.key as keyof TCandidateSelectionTableData] || ""
+                  }
                 />
               </div>
             );
@@ -104,7 +138,10 @@ const NoticePage = () => {
             >
               Close
             </button>
-            <button type="submit" className="bg-primary p-2 px-3 text-white rounded">
+            <button
+              type="submit"
+              className="bg-primary p-2 px-3 text-white rounded"
+            >
               Save
             </button>
           </div>
@@ -112,7 +149,7 @@ const NoticePage = () => {
       </HRModal>
 
       <div className="flex justify-between items-center pt-2 pb-2 text-md">
-        <span>
+        <div>
           Show{" "}
           <input
             className=" border-2 text-center mx-1 p-1 w-[50px]"
@@ -120,39 +157,57 @@ const NoticePage = () => {
             defaultValue={10}
           />{" "}
           entries
-        </span>
-        <SearchBox handleSearchNotice={handleSearchNotice}></SearchBox>
+        </div>
+        <div className="flex items-center">
+          {/* CSV and Excel Button */}
+          <Button
+            size="sm"
+            className="bg-primary rounded-none text-sm text-white"
+          >
+            <FaFileCsv /> CSV
+          </Button>
+          <Button
+            size="sm"
+            className="bg-primary rounded-none text-sm text-white"
+          >
+            <FaFileExcel /> Excel
+          </Button>
+        </div>
+
+        {/* Search Input Box */}
+        <SearchBox  handleSearchNotice={handleSearchData}></SearchBox>
       </div>
 
       {/* All Notice */}
-      <HRTable tableHeader={tableHeader}>
-        {noticeData.slice(0, 10).map((notice, index) => {
+      <HRTable tableHeader={tableHeaders}>
+        {tableAllData?.slice(0, 10).map((data, index) => {
           return (
             <tr
               className={`${
                 Number(index) % 2 != 0 && "bg-[#F2F2F2]"
               } border-1 w-[100%] `}
-              key={notice?.id}
+              key={data?.sl}
             >
-              <td className="bg-[#FAFAFA]  border-r border-gray-200 px-3">
-                {index + 1}
-              </td>
-              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {notice?.noticeType}
+             <td className="py-2 w-1/6 border-r border-gray-200 px-3">
+                {data?.name}
               </td>
               <td className="py-2 w-2/6 border-r border-gray-200 px-3">
-                {notice?.description}
+                {data?.candidateId}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {notice?.noticeDate}
+                {data?.employeeId}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {notice?.noticeBy}
+                {data?.position}
               </td>
+              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
+                {data?.selectionTerms}
+              </td>
+            
               <td className="w-1/6 border-r border-gray-200 px-3">
                 <ul className="flex gap-2 items-center  p-2 ">
                   <li
-                    onClick={() => HandleEditNotice(notice?.id)}
+                    onClick={() => HandleEditNotice(data?.sl)}
                     className="cursor-pointer  bg-[#DAE4F3] border-2 border-[#0D6EFD] rounded-lg p-1"
                   >
                     <svg
@@ -167,7 +222,7 @@ const NoticePage = () => {
                   </li>
                   <li
                     className="cursor-pointer  p-1 bg-[#EFDEE0] border-2 border-[#DC3545] rounded-lg"
-                    onClick={() => HandleNoticeDelete(notice?.id)}
+                    onClick={() => HandleNoticeDelete(data?.sl)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -201,4 +256,28 @@ const NoticePage = () => {
   );
 };
 
-export default NoticePage;
+export default CandidateSelectionPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

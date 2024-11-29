@@ -1,42 +1,161 @@
 "use client";
 
-import HRForm from "@/app/components/Form/HRForm";
-import HRInput from "@/app/components/Form/HRInput";
-import HRModal from "@/app/components/Modal/HRModal";
-import SearchBox from "@/app/components/SearchBox";
-import HRTable from "@/app/components/Table/HRTable";
-import { Button } from "@nextui-org/react";
-import React, { useState } from "react";
-import { FieldValues, SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
-import {AllNoticeData, noticeModalInputFiled} from './fakeData'
-type TNoticeData = {
-  id: string | number;
-  noticeType: string;
-  description: string;
-  noticeDate: string;
-  noticeBy: string;
-};
-// type TNoticeModalInputField = {
-//     name: keyof TNoticeData 
-//     label: string;
-//     type: string;
-//     placeholder: string;
-//     required: boolean;
-//   };
+import HRForm from '@/app/components/Form/HRForm';
+import HRInput from '@/app/components/Form/HRInput';
+import HRModal from '@/app/components/Modal/HRModal';
+import SearchBox from '@/app/components/SearchBox';
+import HRTable from '@/app/components/Table/HRTable';
+import HRTableRow from '@/app/components/Table/HRTableRow';
+import { Button } from '@nextui-org/react';
+import React, { useState } from 'react';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
+import { FaFileCsv, FaFileExcel } from 'react-icons/fa';
+import { toast } from 'sonner';
 
-const NoticePage = () => {
-  const [noticeData, setNoticeData] = useState<TNoticeData[]>(AllNoticeData);
-  const [editNoticeData, setEditNoticeData]=useState<Partial<TNoticeData>>({id:"",description:"",noticeBy:"",noticeDate:"",noticeType:""})
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const tableHeader = [
-    "SI",
-    "Notice type",
-    "Description",
-    "Notice date",
-    "Notice by",
+type TTableData = {
+    sl: number; 
+    name: string; 
+    candidateId: string; 
+    jobPosition: string; 
+    interviewDate: string; 
+    vivaMarks: number;
+    writtenTotalMarks: number;
+    mcqTotalMarks: number; 
+    totalMarks: number; 
+    selection: string; 
+  
+  };
+ export const ModalInputFiled = [
+    { id: 1, label: "SL", key: "sl", type: "number", placeholder: "Enter SL" },
+    { id: 2, label: "Name", key: "name", type: "text", placeholder: "Enter name" },
+    {
+      id: 3,
+      label: "Candidate ID",
+      key: "candidateId",
+      type: "text",
+      placeholder: "Enter candidate ID",
+    },
+    {
+      id: 4,
+      label: "Job Position",
+      key: "jobPosition",
+      type: "text",
+      placeholder: "Enter job position",
+    },
+    {
+      id: 5,
+      label: "Interview Date",
+      key: "interviewDate",
+      type: "date",
+      placeholder: "Select interview date",
+    },
+    {
+      id: 6,
+      label: "Viva Marks",
+      key: "vivaMarks",
+      type: "number",
+      placeholder: "Enter viva marks",
+    },
+    {
+      id: 7,
+      label: "Written Total Marks",
+      key: "writtenTotalMarks",
+      type: "number",
+      placeholder: "Enter written total marks",
+    },
+    {
+      id: 8,
+      label: "MCQ Total Marks",
+      key: "mcqTotalMarks",
+      type: "number",
+      placeholder: "Enter MCQ total marks",
+    },
+    {
+      id: 9,
+      label: "Total Marks",
+      key: "totalMarks",
+      type: "number",
+      placeholder: "Enter total marks",
+    },
+    {
+      id: 10,
+      label: "Selection",
+      key: "selection",
+      type: "text",
+      placeholder: "Enter selection status",
+    }
+  ];
+  
+const tableData: TTableData[] = [
+    {
+      sl: 1,
+      name: "John Doe",
+      candidateId: "CND001",
+      jobPosition: "Software Engineer",
+      interviewDate: "2024-11-27",
+      vivaMarks: 45,
+      writtenTotalMarks: 85,
+      mcqTotalMarks: 70,
+      totalMarks: 200,
+      selection: "Selected",
+    },
+    {
+      sl: 2,
+      name: "Jane Smith",
+      candidateId: "CND002",
+      jobPosition: "Data Analyst",
+      interviewDate: "2024-11-28",
+      vivaMarks: 40,
+      writtenTotalMarks: 75,
+      mcqTotalMarks: 65,
+      totalMarks: 180,
+      selection: "Not Selected",
+    
+    },
+    {
+      sl: 3,
+      name: "Alice Johnson",
+      candidateId: "CND003",
+      jobPosition: "Project Manager",
+      interviewDate: "2024-11-30",
+      vivaMarks: 50,
+      writtenTotalMarks: 90,
+      mcqTotalMarks: 80,
+      totalMarks: 220,
+      selection: "Selected",
+  
+    },
+  ];
+export const tableHeaders: string[] = [
+    "Sl",
+    "Name",
+    "Candidate ID",
+    "Job Position",
+    "Interview Date",
+    "VivaMarks",
+    "WrittenTotalMarks",
+    "McqTotalMarks",
+    "Total Marks",
+    "Selection",
     "Action",
   ];
+
+const Interview = () => {
+  const [tableAllData, setTableData] = useState<TTableData[]>(tableData);
+  const [editTableData, setEditTableData]=useState<Partial<TTableData>>({
+    sl: 0,
+    name: "",
+    candidateId: "",
+    jobPosition: "",
+    interviewDate: "",
+    vivaMarks: 0,
+    writtenTotalMarks: 0,
+    mcqTotalMarks: 0,
+    totalMarks: 0,
+    selection: "Not Selected"
+  })
+  const [modalIsOpen, setIsOpen] = useState(false);
+
   const handleSearchNotice: SubmitHandler<FieldValues> = async (data) => {
     try {
       console.log(data);
@@ -48,17 +167,17 @@ const NoticePage = () => {
   const HandleEditNotice = (id: number | string) => {
     setIsOpen(!modalIsOpen);
     console.log(id);
-    const editNotice=noticeData.find(notice=>notice.id===id)
-    if(editNotice){
-        setEditNoticeData(editNotice)
+    const editData=tableAllData.find(notice=>notice.sl===id)
+    if(editData){
+        setEditTableData(editData) 
     }else{
-        console.log("notice not found")
+        console.log("Data not found")
     }
 
   };
   const HandleNoticeDelete = (id: number | string) => {
-    const updateNoticeData = noticeData.filter((notice) => notice.id !== id);
-    setNoticeData(updateNoticeData);
+    const updateTableData = tableAllData.filter((data) => data.sl !== id);
+    setTableData(updateTableData);
   };
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
@@ -79,7 +198,7 @@ const NoticePage = () => {
         modalTitle="New notice"
       >
         <HRForm onSubmit={handleSearchNotice}>
-          {noticeModalInputFiled.map((inputField, index) => {
+          {ModalInputFiled.map((inputField, index) => {
             return (
               <div
                 key={index}
@@ -90,9 +209,9 @@ const NoticePage = () => {
                   type={inputField?.type}
                   className="border-primary h-10 rounded-[5px]  min-w-[340px]"
                   placeholder={inputField?.placeholder}
-                  name={`${inputField?.name}`}
-                  required={inputField?.required}
-                  defaultValue={editNoticeData[inputField?.name as keyof TNoticeData]||""}
+                  name={`${inputField?.key}`}
+                
+                  defaultValue={editTableData[inputField?.key as keyof TTableData]||""}
                 />
               </div>
             );
@@ -121,38 +240,69 @@ const NoticePage = () => {
           />{" "}
           entries
         </span>
+       
+<div className="flex items-center">
+<Button
+size="sm"
+className="bg-primary rounded-[4px] text-sm text-white"
+>
+<FaFileCsv /> CSV
+</Button>
+<Button
+size="sm"
+className="bg-primary rounded-[4px] text-sm text-white"
+>
+<FaFileExcel /> Excel
+</Button>
+</div>
         <SearchBox handleSearchNotice={handleSearchNotice}></SearchBox>
       </div>
 
       {/* All Notice */}
-      <HRTable tableHeader={tableHeader}>
-        {noticeData.slice(0, 10).map((notice, index) => {
+      <HRTable tableHeader={tableHeaders}>
+        {tableData.slice(0, 10).map((data, index) => {
           return (
-            <tr
+            <HRTableRow
               className={`${
                 Number(index) % 2 != 0 && "bg-[#F2F2F2]"
               } border-1 w-[100%] `}
-              key={notice?.id}
+              key={data?.sl}
             >
               <td className="bg-[#FAFAFA]  border-r border-gray-200 px-3">
                 {index + 1}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {notice?.noticeType}
+                {data?.name}
               </td>
               <td className="py-2 w-2/6 border-r border-gray-200 px-3">
-                {notice?.description}
+                {data?.candidateId}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {notice?.noticeDate}
+                {data?.jobPosition}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {notice?.noticeBy}
+                {data?.interviewDate}
               </td>
+              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
+                {data?.vivaMarks}
+              </td>
+              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
+                {data?.writtenTotalMarks}
+              </td>
+              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
+                {data?.mcqTotalMarks}
+              </td>
+              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
+                {data?.totalMarks}
+              </td>
+              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
+                {data?.selection}
+              </td>
+             
               <td className="w-1/6 border-r border-gray-200 px-3">
                 <ul className="flex gap-2 items-center  p-2 ">
                   <li
-                    onClick={() => HandleEditNotice(notice?.id)}
+                    onClick={() => HandleEditNotice(data?.sl)}
                     className="cursor-pointer  bg-[#DAE4F3] border-2 border-[#0D6EFD] rounded-lg p-1"
                   >
                     <svg
@@ -167,7 +317,7 @@ const NoticePage = () => {
                   </li>
                   <li
                     className="cursor-pointer  p-1 bg-[#EFDEE0] border-2 border-[#DC3545] rounded-lg"
-                    onClick={() => HandleNoticeDelete(notice?.id)}
+                    onClick={() => HandleNoticeDelete(data?.sl)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +334,7 @@ const NoticePage = () => {
                   </li>
                 </ul>
               </td>
-            </tr>
+            </HRTableRow>
           );
         })}
       </HRTable>
@@ -201,4 +351,4 @@ const NoticePage = () => {
   );
 };
 
-export default NoticePage;
+export default Interview;
