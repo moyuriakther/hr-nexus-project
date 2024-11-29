@@ -3,7 +3,6 @@ import InputWithLabel from "@/app/components/Form/InputWithLabel";
 import SelectWithLabel from "@/app/components/Form/SelectWithLabel";
 import React from "react";
 import { othersInfo } from "./formData/others.data";
-import RadioWithLabel from "@/app/components/Form/RadioWithLabel";
 
 type TOthersProps = {
   onChange: (field: any, value: string) => void;
@@ -28,18 +27,6 @@ const Others: React.FC<TOthersProps> = ({ onChange }) => {
                       options={item.options || []}
                       label={item.label}
                       placeholder={item.placeholder}
-                    />
-                  </>
-                ) : item.isRadio ? (
-                  <>
-                    <RadioWithLabel
-                      required={item.required}
-                      name={item.name}
-                      label={item.label}
-                      options={item.radioOptions}
-                      onChange={(e: { target: { value: string } }) =>
-                        onChange(item.name, e.target.value)
-                      }
                     />
                   </>
                 ) : item.isTextArea ? (

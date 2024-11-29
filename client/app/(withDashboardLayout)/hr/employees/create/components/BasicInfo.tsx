@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import InputWithLabel from "@/app/components/Form/InputWithLabel";
-import { TBasicInfoState } from "@/app/types";
+import SelectWithLabel from "@/app/components/Form/SelectWithLabel";
 import React from "react";
 import { basicInfos } from "./formData/multiForm.data";
-import SelectWithLabel from "@/app/components/Form/SelectWithLabel";
 
 type TBasicInfoProps = {
-  data: TBasicInfoState;
   onChange: (field: any, value: string) => void;
 };
 

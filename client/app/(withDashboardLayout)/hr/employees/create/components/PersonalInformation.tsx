@@ -4,6 +4,8 @@ import { personalInfos } from "./formData/personalInfo.data";
 import InputWithLabel from "@/app/components/Form/InputWithLabel";
 import SelectWithLabel from "@/app/components/Form/SelectWithLabel";
 import RadioWithLabel from "@/app/components/Form/RadioWithLabel";
+import { useGetAllDepartmentsQuery } from "@/app/Redux/api/departmentApi";
+import { useGetAllSubDepartmentsQuery } from "@/app/Redux/api/subDepartmentApi";
 
 type TPersonalInformationProps = {
   onChange: (field: any, value: string) => void;
@@ -12,11 +14,50 @@ type TPersonalInformationProps = {
 const PersonalInformation: React.FC<TPersonalInformationProps> = ({
   onChange,
 }) => {
+  const { data: departments } = useGetAllDepartmentsQuery({});
+  const { data: subDepartments } = useGetAllSubDepartmentsQuery({});
+
+  const departmentOptions = departments?.data?.map(
+    (item: { departmentName: string; id: string }) => ({
+      key: item.departmentName,
+      value: item.id,
+    })
+  );
+
+  const subDepartmentOptions = subDepartments?.data?.map(
+    (item: { subDepartmentName: string; id: string }) => ({
+      key: item.subDepartmentName,
+      value: item.id,
+    })
+  );
+
   return (
     <div className="border p-3">
       <div>
         <h2 className="text-xl font-medium">Personal information: </h2>
         <div className="grid grid-cols-2 gap-x-10 gap-y-[14px]">
+          <>
+            <SelectWithLabel
+              name="departmentId"
+              onChange={(e: { target: { value: string } }) =>
+                onChange("departmentId", e.target.value)
+              }
+              options={departmentOptions}
+              label="Department"
+              placeholder="Select Department"
+            />
+          </>
+          <>
+            <SelectWithLabel
+              name="subDepartmentId"
+              onChange={(e: { target: { value: string } }) =>
+                onChange("subDepartmentId", e.target.value)
+              }
+              options={subDepartmentOptions}
+              label="Sub Department"
+              placeholder="Select Sub Department"
+            />
+          </>
           {personalInfos.map((item, i) => {
             return (
               <React.Fragment key={i}>

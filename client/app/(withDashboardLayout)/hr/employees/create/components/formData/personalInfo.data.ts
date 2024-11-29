@@ -143,11 +143,11 @@ export const voluntaryTermination: TSelect[] = [
 
 export const workPermit = [
   {
-    value: "Yes",
+    value: true,
     label: "Yes",
   },
   {
-    value: "No",
+    value: false,
     label: "No",
   },
 ];
@@ -189,7 +189,7 @@ export const personalInfos = [
   {
     name: "hourlyRate",
     placeholder: "Hourly rate",
-    type: "text",
+    type: "number",
     label: "Hourly rate",
     isSelect: false,
     required: false,
@@ -198,7 +198,7 @@ export const personalInfos = [
   {
     name: "hourlyRate2",
     placeholder: "Hourly rate2",
-    type: "text",
+    type: "number",
     label: "Hourly rate2",
     isSelect: false,
     required: false,
@@ -274,7 +274,7 @@ export const personalInfos = [
   },
 
   {
-    name: "cardNo",
+    name: "cardNumber",
     placeholder: "Card no",
     type: "text",
     label: "Card no",
@@ -283,29 +283,12 @@ export const personalInfos = [
   },
 
   {
-    name: "voluntaryTermination",
-    placeholder: "Select Voluntary termination",
-    label: "Voluntary termination",
-    isSelect: true,
-    options: voluntaryTermination,
-    required: true,
-  },
-
-  {
     name: "monthlyWorkHours",
     placeholder: "Monthly work hours",
-    type: "text",
+    type: "number",
     label: "Monthly work hours",
     isSelect: false,
     required: true,
-  },
-  {
-    name: "passportNo",
-    placeholder: "Passport No",
-    type: "text",
-    label: "Passport No",
-    isSelect: false,
-    required: false,
   },
 
   {

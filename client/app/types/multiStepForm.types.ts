@@ -2,38 +2,36 @@ export type TBasicInfoState = {
   firstName: string;
   middleName: string;
   lastName: string;
-  email: string;
-  phone: string;
+  phoneNumber: string;
   country: string;
   city: string;
-  zip: string;
-  alternatePhone: string;
-  nationalIdNo: string;
-  iqamaNo: string;
-  passportNo: string;
-  drivingLicenseNo: string;
-  attendanceTime: string;
+  alternateNumber: string;
+  nidNumber: string;
+  passport: string;
+  attendanceShift: string;
+  address: string;
+  designation: string;
 };
 
 export type TSalaryAndBankInfo = {
   accountNumber: string;
   branchAddress: string;
   bankName: string;
-  bbanNum: string;
-  tinNo: string;
-  basicSalary: string;
-  grossSalary: string;
-  transportAllowance: string;
-  medicalBenefit: string;
-  familyBenefit: string;
-  transportationBenefit: string;
-  otherBenefit: string;
+  routingNumber: string;
+  tinNumber: string;
+  basicSalary: number;
+  grossSalary: number;
+  transportAllowance: number;
+  medicalBenefit: number;
+  familyBenefit: number;
+  transportationBenefit: number;
+  otherBenefit: number;
 };
 
 export type TPersonalInformation = {
-  department: string;
+  departmentId: string;
   payFrequency: string;
-  subDepartment: string;
+  subDepartmentId: string;
   payFrequencyText: string;
   position: string;
   hourlyRate: string;
@@ -47,42 +45,37 @@ export type TPersonalInformation = {
   workInCity: string;
   terminationDate: string;
   employeeType: string;
-  cardNo: string;
-  voluntaryTermination: string;
-  monthlyWorkHours: string;
-  workPermit: string;
+  cardNumber: string;
+  monthlyWorkHours: number;
+  workPermit: boolean;
 };
 
 export type TBiologicalInfoContact = {
   dateOfBirth: string;
-  gander: string;
+  gender: string;
   maritalStatus: string;
-  noOfKids: string;
-  sos: string;
+  numberOfKids: number;
+  sosNumber: string;
   religion: string;
   ethnicGroup: string;
   profileImage: string;
   emergencyContactPerson: string;
   emergencyContactRelationship: string;
-  emergencyContact: string;
+  emergencyContactNumber: string;
   emergencyHomePhone: string;
   emergencyWorkPhone: string;
-  alterEmergencyContact: string;
-  alterEmergencyHomePhone: string;
-  alterEmergencyWorkPhone: string;
+  alternateEmergencyContact: string;
+  alternateEmergencyHomePhone: string;
+  alternateEmergencyWorkPhone: string;
 };
 
 export type TOthers = {
   bloodGroup: string;
   healthCondition: string;
-  isDisable: boolean;
+  isDisabled: boolean;
   disabilitiesDesc: string;
   homeEmail: string;
   homePhone: string;
-  cellPhone: string;
-  docTitle: string;
-  file: string;
-  expiryDate: string;
 };
 
 export type TSupervisor = {

@@ -20,6 +20,10 @@ import {
 } from "./formData/multiForm.data";
 import { stepperData } from "./stepperData";
 import { flattenData } from "@/app/components/utils/flattenData";
+import { useAppSelector } from "@/app/Redux/hook";
+import { imageUploadIntoImgbb } from "@/app/components/utils/uploadImageIntoImgbb";
+import { useCreateEmployeeMutation } from "@/app/Redux/api/employeeApi";
+import { toast } from "sonner";
 
 const MultiStepForm = () => {
   const [step, setStep] = useState<number>(1);
@@ -31,6 +35,8 @@ const MultiStepForm = () => {
     others: others,
     supervisor: supervisor,
   });
+  const { file } = useAppSelector((state) => state.multiStepper);
+  const [createEmployee] = useCreateEmployeeMutation();
 
   const nextStep = () =>
     setStep((prevStep) => Math.min(prevStep + 1, stepperData.length));
@@ -52,12 +58,46 @@ const MultiStepForm = () => {
 
   const flatData = flattenData(formData);
 
-  const handleSubmit = () => {
-    console.log(flatData.profileImage);
+  const handleSubmit = async () => {
+    let profileImage;
+
+    if (file) {
+      const formData = new FormData();
+      formData.append("image", file[0]);
+
+      profileImage = await imageUploadIntoImgbb(formData);
+    }
+    const workPermit = flatData.workPermit === "Yes" ? true : false;
+
+    const userCreatedData = {
+      ...flatData,
+      workPermit,
+      basicSalary: Number(flatData.basicSalary),
+      transportAllowance: Number(flatData.transportAllowance),
+      grossSalary: Number(flatData.grossSalary),
+      medicalBenefit: Number(flatData.medicalBenefit),
+      transportationBenefit: Number(flatData.transportationBenefit),
+      familyBenefit: Number(flatData.familyBenefit),
+      otherBenefit: Number(flatData.otherBenefit),
+      monthlyWorkHours: Number(flatData.monthlyWorkHours),
+      hourlyRate: Number(flatData.hourlyRate),
+      hourlyRate2: Number(flatData.hourlyRate2),
+      numberOfKids: Number(flatData.numberOfKids),
+      profileImage,
+    };
+
+    const res = await createEmployee(userCreatedData);
+
+    if (res?.data) {
+      setStep((prevStep) => Math.max(prevStep - 5, 1));
+      toast.success("successfully created the employee");
+    } else {
+      toast.error("Employee didn't created");
+    }
   };
 
   return (
-    <div className="">
+    <div className="relative z-0">
       {/* Step Indicators with Horizontal Active Line */}
       <div className="relative mb-8 flex items-center justify-between">
         {/* Inactive Line */}
@@ -104,7 +144,6 @@ const MultiStepForm = () => {
             onChange={(field, value) =>
               handleInputChange("basicInfo", field, value)
             }
-            data={formData.basicInfo}
           />
         )}
         {step === 2 && (
@@ -158,7 +197,7 @@ const MultiStepForm = () => {
 
         {step === 6 && (
           <Button
-            onClick={handleSubmit}
+            onClick={() => handleSubmit()}
             size="md"
             className="bg-primary text-sm text-white rounded"
           >
@@ -169,6 +208,7 @@ const MultiStepForm = () => {
         {step < stepperData.length && (
           <Button
             size="md"
+            type="submit"
             className="bg-primary text-sm text-white rounded"
             onClick={nextStep}
           >

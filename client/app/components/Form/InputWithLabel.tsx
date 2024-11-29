@@ -21,7 +21,7 @@ const InputWithLabel: React.FC<TInputProps> = ({
   onChange,
 }) => {
   return (
-    <div className="grid grid-cols-12 items-center">
+    <div className="grid grid-cols-12 items-center gap-2">
       <div className="flex items-center gap-1 lg:col-span-3">
         <p className="font-medium">{label}</p>
         {required && <p className="text-red-500 font-bold">*</p>}

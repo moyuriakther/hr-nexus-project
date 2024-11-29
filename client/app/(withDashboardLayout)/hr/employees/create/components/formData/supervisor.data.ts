@@ -1,10 +1,10 @@
 export const workPermit = [
   {
-    value: "Yes",
+    value: true,
     label: "Yes",
   },
   {
-    value: "No",
+    value: false,
     label: "No",
   },
 ];

@@ -35,17 +35,6 @@ export const bloodGroupOptions: TSelect[] = [
   },
 ];
 
-export const workPermit = [
-  {
-    value: "Yes",
-    label: "Yes",
-  },
-  {
-    value: "No",
-    label: "No",
-  },
-];
-
 export const othersInfo = [
   {
     name: "bloodGroup",
@@ -63,14 +52,7 @@ export const othersInfo = [
     isSelect: false,
     required: false,
   },
-  {
-    name: "isDisabled",
-    label: "Is Disabled",
-    isSelect: false,
-    isRadio: true,
-    radioOptions: workPermit,
-    required: false,
-  },
+
   {
     name: "disabilitiesDesc",
     placeholder: "Disabilities Description",
@@ -94,37 +76,5 @@ export const othersInfo = [
     label: "Home Phone",
     isSelect: false,
     required: true,
-  },
-  {
-    name: "cellPhone",
-    placeholder: "Cell Phone",
-    type: "text",
-    label: "Cell Phone",
-    isSelect: false,
-    required: true,
-  },
-  {
-    name: "docTitle",
-    placeholder: "Document Title",
-    type: "text",
-    label: "Document Title",
-    isSelect: false,
-    required: true,
-  },
-  {
-    name: "file",
-    placeholder: "File Upload",
-    type: "file",
-    label: "File Upload",
-    isSelect: false,
-    required: true,
-  },
-  {
-    name: "expiryDate",
-    placeholder: "Expiry Date",
-    type: "date",
-    label: "Expiry Date",
-    isSelect: false,
-    required: false,
   },
 ];

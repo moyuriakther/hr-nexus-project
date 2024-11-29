@@ -3,7 +3,7 @@ import React from "react";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type TRadioOption = {
-  value: string | number;
+  value: boolean;
   label: string;
 };
 
@@ -30,17 +30,18 @@ const RadioWithLabel: React.FC<TRadioWithLabel> = ({
       </div>
       <div className="lg:col-span-9">
         <>
-          <div className="space-y-2">
+          <div className="space-y-2 inline-block">
             {options.map((option) => (
               <label
-                key={option.value}
+                key={option.label}
                 className="flex items-center gap-2 cursor-pointer"
               >
                 <input
                   name={name}
                   type="radio"
-                  value={option.value}
-                  checked={option.label === option.value}
+                  value={option.label}
+                  // checked={option.value}
+                  defaultChecked={false}
                   onChange={onChange}
                   className={cn(
                     "h-4 w-4 border border-gray-300 rounded-full focus:ring-2 focus:ring-[#198754]"

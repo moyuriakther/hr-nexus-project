@@ -1,3 +1,39 @@
+import { TSelect } from "@/app/types";
+
+export const maritalStatus: TSelect[] = [
+  {
+    key: "SINGLE",
+    value: "SINGLE",
+  },
+  {
+    key: "MARRIED",
+    value: "MARRIED",
+  },
+  {
+    key: "DIVORCED",
+    value: "DIVORCED",
+  },
+  {
+    key: "WIDOWED",
+    value: "WIDOWED",
+  },
+];
+
+export const gender: TSelect[] = [
+  {
+    key: "MALE",
+    value: "MALE",
+  },
+  {
+    key: "FEMALE",
+    value: "FEMALE",
+  },
+  {
+    key: "OTHER",
+    value: "OTHER",
+  },
+];
+
 export const biologicalInfos = [
   {
     name: "dateOfBirth",
@@ -8,31 +44,33 @@ export const biologicalInfos = [
     required: true,
   },
   {
-    name: "gander",
+    name: "gender",
     placeholder: "Gender",
-    type: "text",
     label: "Gender",
-    isSelect: false,
-    required: true,
+    isSelect: true,
+    options: gender,
+    required: false,
   },
+
   {
     name: "maritalStatus",
     placeholder: "Marital Status",
-    type: "text",
     label: "Marital Status",
-    isSelect: false,
+    isSelect: true,
+    options: maritalStatus,
     required: false,
   },
+
   {
-    name: "noOfKids",
+    name: "numberOfKids",
     placeholder: "Number of Kids",
-    type: "text",
+    type: "number",
     label: "Number of Kids",
     isSelect: false,
     required: false,
   },
   {
-    name: "sos",
+    name: "sosNumber",
     placeholder: "SOS",
     type: "text",
     label: "SOS",
@@ -55,14 +93,17 @@ export const biologicalInfos = [
     isSelect: false,
     required: false,
   },
+
   {
     name: "profileImage",
     placeholder: "Profile Image",
     type: "file",
     label: "Profile Image",
     isSelect: false,
+    isFile: true,
     required: false,
   },
+
   {
     name: "emergencyContactPerson",
     placeholder: "Emergency Contact Person",
@@ -80,7 +121,7 @@ export const biologicalInfos = [
     required: false,
   },
   {
-    name: "emergencyContact",
+    name: "emergencyContactNumber",
     placeholder: "Emergency Contact",
     type: "text",
     label: "Emergency Contact",
@@ -104,7 +145,7 @@ export const biologicalInfos = [
     required: false,
   },
   {
-    name: "alterEmergencyContact",
+    name: "alternateEmergencyContact",
     placeholder: "Alternate Emergency Contact",
     type: "text",
     label: "Alternate Emergency Contact",
@@ -112,7 +153,7 @@ export const biologicalInfos = [
     required: false,
   },
   {
-    name: "alterEmergencyHomePhone",
+    name: "alternateEmergencyHomePhone",
     placeholder: "Alternate Emergency Home Phone",
     type: "text",
     label: "Alternate Emergency Home Phone",
@@ -120,7 +161,7 @@ export const biologicalInfos = [
     required: false,
   },
   {
-    name: "alterEmergencyWorkPhone",
+    name: "alternateEmergencyWorkPhone",
     placeholder: "Alternate Emergency Work Phone",
     type: "text",
     label: "Alternate Emergency Work Phone",

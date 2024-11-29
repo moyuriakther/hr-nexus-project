@@ -1,3 +1,12 @@
+import {
+  TBasicInfoState,
+  TBiologicalInfoContact,
+  TOthers,
+  TPersonalInformation,
+  TSalaryAndBankInfo,
+  TSupervisor,
+} from "@/app/types";
+
 const country = [
   { key: "Bangladesh", value: "Bangladesh" },
   { key: "United States", value: "United States" },
@@ -55,10 +64,9 @@ const country = [
 ];
 
 const attendanceTime = [
-  { key: "Normal Shift", value: "Normal Shift" },
-  { key: "Generale Shift", value: "Generale Shift" },
-  { key: "Test", value: "Test" },
-  { key: "Regular Working days ", value: "Regular Working daysTest" },
+  { key: "GENERAL", value: "GENERAL" },
+  { key: "OVERTIME", value: "OVERTIME" },
+  { key: "NIGHT", value: "NIGHT" },
 ];
 
 export const basicInfos = [
@@ -87,15 +95,7 @@ export const basicInfos = [
     required: true,
   },
   {
-    name: "email",
-    placeholder: "Email",
-    type: "email",
-    label: "Email",
-    isSelect: false,
-    required: true,
-  },
-  {
-    name: "phone",
+    name: "phoneNumber",
     placeholder: "Phone",
     type: "number",
     label: "Phone",
@@ -118,40 +118,26 @@ export const basicInfos = [
     isSelect: false,
     required: false,
   },
+
   {
-    name: "zip",
-    placeholder: "Zip",
+    name: "alternateNumber",
+    placeholder: "Alternate Number",
     type: "text",
     required: false,
-    label: "Zip",
+    label: "Alternate Number",
     isSelect: false,
   },
   {
-    name: "alternatePhone",
-    placeholder: "Alternate Phone",
-    type: "text",
-    required: false,
-    label: "Alternate Phone",
-    isSelect: false,
-  },
-  {
-    name: "nationalIdNo",
+    name: "nidNumber",
     placeholder: "National id no",
     type: "text",
     label: "National id no",
     isSelect: false,
     required: false,
   },
+
   {
-    name: "iqamaNo",
-    placeholder: "Iqama no",
-    type: "text",
-    label: "Iqama no",
-    isSelect: false,
-    required: false,
-  },
-  {
-    name: "passportNo",
+    name: "passport",
     placeholder: "Passport No",
     type: "text",
     label: "Passport No",
@@ -159,59 +145,66 @@ export const basicInfos = [
     required: false,
   },
   {
-    name: "drivingLicenseNo",
-    placeholder: "Driving license no",
-    type: "text",
-    label: "Driving license no",
-    isSelect: false,
-    required: false,
-  },
-  {
-    name: "attendanceTime",
+    name: "attendanceShift",
     label: "Attendance time",
     isSelect: true,
     options: attendanceTime,
     placeholder: "Select attendance time",
     required: false,
   },
+
+  {
+    name: "address",
+    placeholder: "Address",
+    type: "text",
+    label: "Address",
+    isSelect: false,
+    required: false,
+  },
+  {
+    name: "designation",
+    placeholder: "Designation",
+    type: "text",
+    label: "Designation",
+    isSelect: false,
+    required: false,
+  },
 ];
 
-export const basicInfoState = {
+export const basicInfoState: TBasicInfoState = {
   firstName: "",
   middleName: "",
   lastName: "",
-  email: "",
-  phone: "",
+  phoneNumber: "",
   country: "",
   city: "",
-  zip: "",
-  alternatePhone: "",
-  nationalIdNo: "",
-  iqamaNo: "",
-  passportNo: "",
-  drivingLicenseNo: "",
-  attendanceTime: "",
+  alternateNumber: "",
+  nidNumber: "",
+  passport: "",
+  attendanceShift: "",
+  address: "",
+  designation: "",
 };
 
-export const salaryAndBankInfo = {
+export const salaryAndBankInfo: TSalaryAndBankInfo = {
   accountNumber: "",
   branchAddress: "",
   bankName: "",
-  bbanNum: "",
-  tinNo: "",
-  basicSalary: "",
-  grossSalary: "",
-  transportAllowance: "",
-  medicalBenefit: "",
-  familyBenefit: "",
-  transportationBenefit: "",
-  otherBenefit: "",
+  routingNumber: "",
+  tinNumber: "",
+  basicSalary: 0,
+  grossSalary: 0,
+  transportAllowance: 0,
+  medicalBenefit: 0,
+  familyBenefit: 0,
+  transportationBenefit: 0,
+  otherBenefit: 0,
 };
 
-export const personalInformation = {
-  department: "",
+export const personalInformation: TPersonalInformation = {
+  departmentId: "",
   payFrequency: "",
-  subDepartment: "",
+  subDepartmentId: "",
   payFrequencyText: "",
   position: "",
   hourlyRate: "",
@@ -225,45 +218,40 @@ export const personalInformation = {
   workInCity: "",
   terminationDate: "",
   employeeType: "",
-  cardNo: "",
-  voluntaryTermination: "",
-  monthlyWorkHours: "",
-  workPermit: "",
+  cardNumber: "",
+  monthlyWorkHours: 0,
+  workPermit: false,
 };
 
-export const biologicalInfoContact = {
+export const biologicalInfoContact: TBiologicalInfoContact = {
   dateOfBirth: "",
-  gander: "",
+  gender: "",
   maritalStatus: "",
-  noOfKids: "",
-  sos: "",
+  numberOfKids: 0,
+  sosNumber: "",
   religion: "",
   ethnicGroup: "",
   profileImage: "",
   emergencyContactPerson: "",
   emergencyContactRelationship: "",
-  emergencyContact: "",
+  emergencyContactNumber: "",
   emergencyHomePhone: "",
   emergencyWorkPhone: "",
-  alterEmergencyContact: "",
-  alterEmergencyHomePhone: "",
-  alterEmergencyWorkPhone: "",
+  alternateEmergencyContact: "",
+  alternateEmergencyHomePhone: "",
+  alternateEmergencyWorkPhone: "",
 };
 
-export const others = {
+export const others: TOthers = {
   bloodGroup: "",
   healthCondition: "",
-  isDisable: false,
+  isDisabled: false,
   disabilitiesDesc: "",
   homeEmail: "",
   homePhone: "",
-  cellPhone: "",
-  docTitle: "",
-  file: "",
-  expiryDate: "",
 };
 
-export const supervisor = {
+export const supervisor: TSupervisor = {
   isSupervisor: false,
   email: "",
   password: "",
