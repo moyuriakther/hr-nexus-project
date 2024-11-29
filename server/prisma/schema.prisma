@@ -25,11 +25,11 @@ model User {
 
 // Employee model
 model Employee {
-  id              String    @id @default(uuid())
+  id              String  @id @default(uuid())
   firstName       String
   lastName        String
   middleName      String?
-  email           String    @unique
+  email           String  @unique
   password        String
   phoneNumber     String
   country         String?
@@ -40,11 +40,12 @@ model Employee {
   attendanceShift Shift?
   address         String?
   designation     String?
-  dateOfBirth     DateTime?
-  joiningDate     DateTime?
+  dateOfBirth     String?
+  joiningDate     String?
 
   // Bank info
   accountNumber         String?
+  bankName              String?
   tinNumber             String?
   branchAddress         String?
   routingNumber         String?
@@ -66,9 +67,9 @@ model Employee {
   dutyType String?
 
   // Employment info
-  hireDate          DateTime?
-  rehireDate        DateTime?
-  terminationDate   DateTime?
+  hireDate          String?
+  rehireDate        String?
+  terminationDate   String?
   cardNumber        String?
   monthlyWorkHours  Float?
   workPermit        Boolean?
@@ -88,7 +89,6 @@ model Employee {
   religion      String?
   ethnicGroup   String?
   profileImage  String?
-  passportPhoto String?
 
   // Emergency contact info
   emergencyContactPerson       String?

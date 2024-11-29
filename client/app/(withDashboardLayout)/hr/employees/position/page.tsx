@@ -18,7 +18,7 @@ const PositionPage = () => {
   ];
 
   return (
-    <div className="min-h-[89vh]">
+    <div className="">
       <PageHeader item={pageHeaderData} />
 
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
