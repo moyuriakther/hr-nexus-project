@@ -194,12 +194,13 @@ model Salary {
 // Leave model
 model Leave {
   id                String      @id @default(uuid())
-  applyDate         DateTime
+  applyDate         DateTime?   @default(now())
   leaveType         String
-  startDate         DateTime
-  endDate           DateTime
+  startDate         DateTime?
+  endDate           DateTime?
   days              Int?
-  reason            String
+  leaveCode         String?     @default("")
+  reason            String?
   approvedDate      DateTime?
   approvedStartDate DateTime?
   approvedEndDate   DateTime?
@@ -207,11 +208,12 @@ model Leave {
   managerComment    String?
   status            LeaveStatus @default(PENDING)
 
-  employeeId String
-  employee   Employee @relation(fields: [employeeId], references: [id])
-  isDeleted  Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
+  employeeId String?
+  employee   Employee? @relation(fields: [employeeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
 
   @@map("leaves")
 }
@@ -224,7 +226,7 @@ model Payment {
   totalSalary   Float
   releaseAmount Float?
   status        PaymentStatus?
-  date          DateTime
+  date          DateTime?      @default(now())
   isDeleted     Boolean        @default(false)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now())
@@ -317,7 +319,7 @@ model Holidays {
 // WeeklyHolidays model
 model WeeklyHolidays {
   id        String   @id @default(uuid())
-  dayName   String
+  dayName   String[]
   isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())

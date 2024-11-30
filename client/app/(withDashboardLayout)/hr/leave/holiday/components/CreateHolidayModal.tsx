@@ -1,11 +1,13 @@
 "use client";
 
+import { useCreateHolidayMutation } from "@/app/Redux/api/holidayApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRModal from "@/app/components/Modal/HRModal";
 import { Button, Divider } from "@nextui-org/react";
 import React from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 type TProps = {
   modalIsOpen: boolean;
@@ -13,9 +15,21 @@ type TProps = {
 };
 
 const CreateHolidayModal = ({ modalIsOpen, setIsOpen }: TProps) => {
-  //TODO: Add Holiday
-  const handleSubmit = (values: FieldValues) => {
-    console.log(values);
+  const [createHoliday, { isLoading }] = useCreateHolidayMutation();
+
+  const handleSubmit = async (values: FieldValues) => {
+    const resData = {
+      holidayName: values?.holidayName,
+      fromDate: new Date(values?.fromDate).toISOString(),
+      toDate: new Date(values?.toDate).toISOString(),
+      totalDays: Number(values?.totalDays),
+    };
+
+    const res = await createHoliday(resData).unwrap();
+    if (res?.id) {
+      toast.success("Create holiday successful!");
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -40,12 +54,12 @@ const CreateHolidayModal = ({ modalIsOpen, setIsOpen }: TProps) => {
         </div>
 
         <div className="mt-4">
-          <HRInput name="holidayName" required type="date" label="End date" />
+          <HRInput name="toDate" required type="date" label="End date" />
         </div>
 
         <div className="mt-4 mb-5">
           <HRInput
-            name="days"
+            name="totalDays"
             type="text"
             required
             placeholder="Total days"
@@ -53,13 +67,23 @@ const CreateHolidayModal = ({ modalIsOpen, setIsOpen }: TProps) => {
           />
         </div>
         <Divider />
-        <Button
-          size="sm"
-          type="submit"
-          className="bg-primary text-white rounded-[3px] text-base mt-4 flex justify-end"
-        >
-          Create
-        </Button>
+        <div className="flex gap-4 justify-end">
+          <Button
+            onClick={() => setIsOpen(false)}
+            size="sm"
+            className="bg-red-500 text-white rounded-[3px] text-base mt-4 flex justify-end"
+          >
+            Close
+          </Button>
+          <Button
+            isDisabled={isLoading}
+            size="sm"
+            type="submit"
+            className="bg-primary text-white rounded-[3px] text-base mt-4 flex justify-end"
+          >
+            {isLoading ? "Creating..." : "Create"}
+          </Button>
+        </div>
       </HRForm>
     </HRModal>
   );

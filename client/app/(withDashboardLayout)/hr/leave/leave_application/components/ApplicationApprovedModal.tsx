@@ -43,13 +43,23 @@ const ApplicationApprovedModal = ({ modalIsOpen, setIsOpen }: TProps) => {
         </div>
 
         <Divider />
-        <Button
-          size="sm"
-          type="submit"
-          className="bg-primary text-white rounded-[3px] text-base mt-4 flex justify-end"
-        >
-          Approved Leave
-        </Button>
+        <div className="flex gap-4 justify-end">
+          <Button
+            onClick={() => setIsOpen(false)}
+            size="sm"
+            className="bg-red-500 text-white rounded-[3px] text-base mt-4 flex justify-end"
+          >
+            Close
+          </Button>
+          <Button
+            // isDisabled={isLoading}
+            size="sm"
+            type="submit"
+            className="bg-primary text-white rounded-[3px] text-base mt-4 flex justify-end"
+          >
+            {/* {isLoading ? "Approving..." : "Approved Application"} */}
+          </Button>
+        </div>
       </HRForm>
     </HRModal>
   );

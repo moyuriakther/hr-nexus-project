@@ -8,6 +8,7 @@ type TSelectProps = {
   required?: boolean;
   label?: string;
   className?: string;
+  defaultValue?: [string];
 };
 
 const HRMultipleSelect = ({
@@ -15,6 +16,7 @@ const HRMultipleSelect = ({
   options,
   label,
   className,
+  defaultValue,
 }: TSelectProps) => {
   const { control } = useFormContext();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -23,6 +25,7 @@ const HRMultipleSelect = ({
     <div className="relative">
       <Controller
         name={name}
+        defaultValue={defaultValue}
         control={control}
         render={({
           field: { value = [], onChange },

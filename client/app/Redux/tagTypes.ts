@@ -4,7 +4,23 @@ export enum tagTypes {
   department = "department",
   subDepartment = "subDepartment",
   client="client",
-  project="project"
+  project="project",
+  leave = "leave",
+  payment = "payment",
+  weekdaysHoliday = "weekdaysHoliday",
+  holiday = "holiday",
 }
 
-export const tagTypesList = [tagTypes.admin, tagTypes.employee, tagTypes.department, tagTypes.subDepartment, tagTypes.client, tagTypes.project];
+
+export const tagTypesList = [
+  tagTypes.admin,
+  tagTypes.employee,
+  tagTypes.leave,
+  tagTypes.payment,
+  tagTypes.weekdaysHoliday,
+  tagTypes.holiday,
+ tagTypes.department, 
+tagTypes.subDepartment,
+  tagTypes.client, 
+     tagTypes.project];
+

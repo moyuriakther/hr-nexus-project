@@ -16,6 +16,7 @@ import { HolidaysRoutes } from "../modules/Holidays/holidays.route";
 import { weeklyHolidayRoutes } from "../modules/WeeklyHolidays/weekly.holidays.route";
 import { NoticeboardRoutes } from "../modules/NoticeBoard/noticeboard.route";
 
+
 const router = express.Router();
 
 const moduleRoutes = [

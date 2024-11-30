@@ -1,35 +1,37 @@
 "use client";
 
-import {
-  useCreateLeaveMutation,
-  useUpdateLeaveMutation,
-} from "@/app/Redux/api/leaveApi";
+import { useGetAllEmployeeQuery } from "@/app/Redux/api/employeeApi";
+import { useCreatePaymentMutation } from "@/app/Redux/api/paymentApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
+import HRMultipleSelect from "@/app/components/Form/HRMultipleSelect";
+import HRRadioInput from "@/app/components/Form/HRRadioInput";
+import HRSelectDropdown from "@/app/components/Form/HRSelectDropdown";
 import HRModal from "@/app/components/Modal/HRModal";
-import { TLeave } from "@/app/types";
+import { Employee } from "@/app/types";
 import { Button, Divider } from "@nextui-org/react";
 import React from "react";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
+import { inputOption } from "./inputOption";
+import { useCreateWeekDaysMutation } from "@/app/Redux/api/weekDaysHolidayApi";
 
 type TProps = {
   modalIsOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CreateLeaveTypeModal = ({ modalIsOpen, setIsOpen }: TProps) => {
-  const [createLeaveType, { isLoading }] = useCreateLeaveMutation();
+const AddWeekDaysHolidayModal = ({ modalIsOpen, setIsOpen }: TProps) => {
+  const [createWeekHoliday, { isLoading }] = useCreateWeekDaysMutation();
 
   const handleSubmit = async (values: FieldValues) => {
     const resData = {
-      days: Number(values?.days),
-      leaveType: values?.leaveType,
+      dayName: values?.dayName,
     };
-    console.log(resData);
-    const res = await createLeaveType(resData).unwrap();
+
+    const res = await createWeekHoliday(resData).unwrap();
     if (res?.id) {
-      toast.success("Create leave type successful!");
+      toast.success("Create weekday holiday successful!");
       setIsOpen(false);
     }
   };
@@ -37,37 +39,15 @@ const CreateLeaveTypeModal = ({ modalIsOpen, setIsOpen }: TProps) => {
   return (
     <HRModal
       modalIsOpen={modalIsOpen}
-      modalTitle="Leave type create"
+      modalTitle="Add week days holiday"
       setIsOpen={setIsOpen}
     >
       <HRForm onSubmit={handleSubmit}>
         <div className="mt-4 w-[790px]">
-          <HRInput
-            name="leaveType"
-            type="text"
-            placeholder="Leave type"
-            label="Leave type"
-            required
-          />
-        </div>
-
-        <div className="mt-4">
-          <HRInput
-            name="leaveCode"
-            required
-            type="text"
-            label="Leave code"
-            placeholder="Leave code"
-          />
-        </div>
-
-        <div className="mt-4 mb-5">
-          <HRInput
-            name="days"
-            required
-            type="text"
-            label="Leave Days"
-            placeholder="Leave Days"
+          <HRMultipleSelect
+            name="dayName"
+            options={inputOption}
+            label="Weekly Leave Day"
           />
         </div>
 
@@ -94,4 +74,4 @@ const CreateLeaveTypeModal = ({ modalIsOpen, setIsOpen }: TProps) => {
   );
 };
 
-export default CreateLeaveTypeModal;
+export default AddWeekDaysHolidayModal;
