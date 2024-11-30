@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
@@ -12,9 +13,10 @@ export const departmentApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.department],
     }),
     getAllDepartments: build.query({
-       query: () => ({
+       query: (args: Record<string, any>) => ({
         url: "/department",
         method: "GET",
+        params: args,
         }),
         providesTags: [tagTypes.department]
     }),

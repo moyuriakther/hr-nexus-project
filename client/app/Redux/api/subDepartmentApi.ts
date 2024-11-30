@@ -4,10 +4,10 @@ import { baseApi } from "./baseApi";
 export const subDepartmentApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createSubDepartment: build.mutation({
-      query: (loginData) => ({
+      query: (data) => ({
         url: "/sub-department/create-sub-department",
         method: "POST",
-        data: loginData,
+        data: data,
       }),
       invalidatesTags: [tagTypes.subDepartment],
     }),
