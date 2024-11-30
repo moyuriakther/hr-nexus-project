@@ -27,10 +27,9 @@ export const leaveApi = baseApi.injectEndpoints({
     }),
 
     deleteLeave: build.mutation({
-      query: (data) => ({
-        url: `/leave/${data.id}`,
+      query: (id) => ({
+        url: `/leave/${id}`,
         method: "DELETE",
-        data: data.body,
       }),
       invalidatesTags: [tagTypes.leave],
     }),

@@ -3,6 +3,8 @@ export enum tagTypes {
   employee = "employee",
   leave = "leave",
   payment = "payment",
+  weekdaysHoliday = "weekdaysHoliday",
+  holiday = "holiday",
 }
 
 export const tagTypesList = [
@@ -10,4 +12,5 @@ export const tagTypesList = [
   tagTypes.employee,
   tagTypes.leave,
   tagTypes.payment,
+  tagTypes.holiday,
 ];

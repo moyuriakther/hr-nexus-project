@@ -74,8 +74,12 @@ const SalaryAdvancePage = () => {
                       size="sm"
                       className={`${
                         payroll?.status === "PAID"
-                          ? "text-[#28a745] bg-green-100 h-6 text-sm rounded-[4px]"
-                          : "text-[#dc3545] bg-red-100 h-6 text-sm rounded-[4px]"
+                          ? "text-green-500 bg-green-200 h-6 text-sm rounded-[4px]"
+                          : payroll?.status === "REJECTED"
+                          ? "text-[#dc3545] bg-red-100 h-6 text-sm rounded-[4px]"
+                          : payroll?.status === "PENDING"
+                          ? "bg-blue-100 text-blue-500 h-6 text-sm rounded-[4px]"
+                          : ""
                       }`}
                     >
                       {payroll?.status}

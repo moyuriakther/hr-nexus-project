@@ -124,7 +124,7 @@ const CreateSalaryAdvanceModal = ({ modalIsOpen, setIsOpen }: TProps) => {
               type="submit"
               className="bg-primary text-white rounded-[3px] text-base mt-4 flex justify-end"
             >
-              {isLoading ? "Updating..." : "Create"}
+              {isLoading ? "Creating..." : "Create"}
             </Button>
           </div>
         </HRForm>
