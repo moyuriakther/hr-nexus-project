@@ -32,7 +32,7 @@ const SidebarMenus: React.FC<TSidebarMenusProps> = ({
     <>
       {Menus?.map((menu, i) => {
         return (
-          <>
+          <React.Fragment key={i}>
             <li
               key={i}
               className={` ${
@@ -115,7 +115,7 @@ const SidebarMenus: React.FC<TSidebarMenusProps> = ({
                 })}
               </ul>
             </div>
-          </>
+          </React.Fragment>
         );
       })}
     </>

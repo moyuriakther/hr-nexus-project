@@ -79,17 +79,17 @@ const getAllDepartments = async (params: any, options: IPaginationOptions) => {
 };
 
 const createDepartment = async (data: any) => {
+  console.log(data);
   const result = await prisma.department.create({
     data: {
       ...data,
     },
   });
-  console.log(result);
+
   return result;
 };
 
 const updateDepartment = async (id: string, data: any) => {
-  // console.log(data);
   const result = await prisma.department.update({
     where: {
       id,

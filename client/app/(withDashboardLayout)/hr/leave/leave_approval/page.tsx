@@ -1,36 +1,35 @@
 "use client";
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
-import React, { useState } from "react";
-import { pageHeaderData } from "../components/pageHeaderData";
+import {
+  useDeleteLeaveMutation,
+  useGetAllLeaveQuery,
+} from "@/app/Redux/api/leaveApi";
 import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
-import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import { fakeData } from "./components/leaveApprovalFakeData";
-import AddLeaveApproval from "./components/AddLeaveApproval";
+import { TLeave } from "@/app/types";
+import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
 import { Button } from "@nextui-org/react";
+import { useState } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { toast } from "sonner";
+import { pageHeaderData } from "../components/pageHeaderData";
+import AddLeaveApproval from "./components/AddLeaveApproval";
 import ApprovedApplicationModal from "./components/ApprovedApplicationModal";
+import { tableHeader } from "./components/tableHeader";
 
 const LeaveApproval = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { data: leaveTypes, isLoading } = useGetAllLeaveQuery("");
+  const [deleteLeaveType] = useDeleteLeaveMutation();
 
-  const tableHeader = [
-    "Sl",
-    "Employee Name",
-    "Type",
-    "Apply Date",
-    "Leave Start Date",
-    "Leave End Date",
-    "Days",
-    "Approved Date",
-    "Approved Start Date",
-    "Approved End Date",
-    "Approved Days",
-    "Hard Copy",
-    "Status",
-    "Action",
-  ];
+  const handleDelete = async (id: string) => {
+    const res = await deleteLeaveType(id).unwrap();
+
+    if (res?.id) {
+      toast.success("Leave delete successful!");
+    }
+  };
 
   return (
     <div>
@@ -40,40 +39,75 @@ const LeaveApproval = () => {
         <AddLeaveApproval />
 
         <HRTable tableHeader={tableHeader}>
-          {fakeData.map((leave, i) => (
-            <tr className={`hover:bg-gray-100`} key={i}>
-              <HRTableRow>{leave.sl}</HRTableRow>
-              <HRTableRow>{leave.employeeName}</HRTableRow>
-              <HRTableRow>{leave.type}</HRTableRow>
-              <HRTableRow>{leave.applyDate}</HRTableRow>
-              <HRTableRow>{leave.leaveStartDate}</HRTableRow>
-              <HRTableRow>{leave.leaveEndDate}</HRTableRow>
-              <HRTableRow>{leave.days}</HRTableRow>
-              <HRTableRow>{leave.approvedDate}</HRTableRow>
-              <HRTableRow>{leave.approvedStartDate}</HRTableRow>
-              <HRTableRow>{leave.approvedEndDate}</HRTableRow>
-              <HRTableRow>{leave.approvedDays}</HRTableRow>
-              <HRTableRow>{leave.hardCopy}</HRTableRow>
-              <HRTableRow>{leave.status}</HRTableRow>
+          {isLoading
+            ? "Loading....."
+            : leaveTypes?.data.map((leave: TLeave, i: number) => (
+                <tr className={`hover:bg-gray-100`} key={i}>
+                  <HRTableRow>{i + 1}</HRTableRow>
+                  <HRTableRow>
+                    {leave?.employee?.firstName} {leave?.employee?.lastName}
+                  </HRTableRow>
+                  <HRTableRow>{leave?.leaveType}</HRTableRow>
+                  <HRTableRow>
+                    {getDayMonthAndYear(leave?.applyDate)}
+                  </HRTableRow>
+                  <HRTableRow>
+                    {getDayMonthAndYear(leave?.startDate)}
+                  </HRTableRow>
+                  <HRTableRow>{getDayMonthAndYear(leave?.endDate)}</HRTableRow>
+                  <HRTableRow>{leave?.days}</HRTableRow>
+                  <HRTableRow>
+                    {getDayMonthAndYear(leave?.approvedDate)}
+                  </HRTableRow>
+                  <HRTableRow>
+                    {getDayMonthAndYear(leave?.approvedStartDate)}
+                  </HRTableRow>
+                  <HRTableRow>
+                    {getDayMonthAndYear(leave?.approvedEndDate)}
+                  </HRTableRow>
+                  <HRTableRow>{leave?.approvedDays}</HRTableRow>
+                  <HRTableRow>
+                    <Button
+                      size="sm"
+                      className={`${
+                        leave?.status === "APPROVED"
+                          ? "text-green-500 bg-green-200 h-6 text-sm rounded-[4px]"
+                          : leave?.status === "REJECTED"
+                          ? "text-[#dc3545] bg-red-100 h-6 text-sm rounded-[4px]"
+                          : leave?.status === "PENDING"
+                          ? "bg-blue-100 text-blue-500 h-6 text-sm rounded-[4px]"
+                          : ""
+                      }`}
+                    >
+                      {leave?.status}
+                    </Button>
+                  </HRTableRow>
 
-              <HRTableRow>
-                <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() => setIsOpen(true)}
-                    className=" bg-primary text-green-500 border border-green-500 bg-opacity-15"
-                  >
-                    <FaEdit className="text-base" />
-                  </Button>
-                  <HRIconsButton className="bg-red-100 border border-red-500 text-red-500">
-                    <FaTrash className="text-base" />
-                  </HRIconsButton>
-                </div>
-              </HRTableRow>
-            </tr>
-          ))}
+                  <HRTableRow>
+                    <div className="items-center gap-2">
+                      <button
+                        onClick={() => setIsOpen(true)}
+                        className=" bg-green-100 text-green-500 border border-green-500  rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
+                      >
+                        <FaEdit className="text-base" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(leave?.id)}
+                        className="bg-red-100 border border-red-500 text-red-500  rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
+                      >
+                        <FaTrash className="text-base" />
+                      </button>
+                    </div>
+                  </HRTableRow>
+                  <ApprovedApplicationModal
+                    leave={leave}
+                    setIsOpen={setIsOpen}
+                    modalIsOpen={isOpen}
+                  />
+                </tr>
+              ))}
         </HRTable>
       </div>
-      <ApprovedApplicationModal setIsOpen={setIsOpen} modalIsOpen={isOpen} />
     </div>
   );
 };

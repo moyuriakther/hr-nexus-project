@@ -1,11 +1,17 @@
 "use client";
 
+import {
+  useCreateLeaveMutation,
+  useUpdateLeaveMutation,
+} from "@/app/Redux/api/leaveApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRModal from "@/app/components/Modal/HRModal";
+import { TLeave } from "@/app/types";
 import { Button, Divider } from "@nextui-org/react";
 import React from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 type TProps = {
   modalIsOpen: boolean;
@@ -13,15 +19,25 @@ type TProps = {
 };
 
 const CreateLeaveTypeModal = ({ modalIsOpen, setIsOpen }: TProps) => {
-  //TODO: Add Leave Type
-  const handleSubmit = (values: FieldValues) => {
-    console.log(values);
+  const [createLeaveType, { isLoading }] = useCreateLeaveMutation();
+
+  const handleSubmit = async (values: FieldValues) => {
+    const resData = {
+      days: Number(values?.days),
+      leaveType: values?.leaveType,
+    };
+    console.log(resData);
+    const res = await createLeaveType(resData).unwrap();
+    if (res?.id) {
+      toast.success("Create leave type successful!");
+      setIsOpen(false);
+    }
   };
 
   return (
     <HRModal
       modalIsOpen={modalIsOpen}
-      modalTitle="Leave application create"
+      modalTitle="Leave type create"
       setIsOpen={setIsOpen}
     >
       <HRForm onSubmit={handleSubmit}>
@@ -47,7 +63,7 @@ const CreateLeaveTypeModal = ({ modalIsOpen, setIsOpen }: TProps) => {
 
         <div className="mt-4 mb-5">
           <HRInput
-            name="leaveDays"
+            name="days"
             required
             type="text"
             label="Leave Days"
@@ -56,13 +72,23 @@ const CreateLeaveTypeModal = ({ modalIsOpen, setIsOpen }: TProps) => {
         </div>
 
         <Divider />
-        <Button
-          size="sm"
-          type="submit"
-          className="bg-primary text-white rounded-[3px] text-base mt-4 flex justify-end"
-        >
-          Create
-        </Button>
+        <div className="flex gap-4 justify-end">
+          <Button
+            onClick={() => setIsOpen(false)}
+            size="sm"
+            className="bg-red-500 text-white rounded-[3px] text-base mt-4 flex justify-end"
+          >
+            Close
+          </Button>
+          <Button
+            isDisabled={isLoading}
+            size="sm"
+            type="submit"
+            className="bg-primary text-white rounded-[3px] text-base mt-4 flex justify-end"
+          >
+            {isLoading ? "Creating..." : "Create"}
+          </Button>
+        </div>
       </HRForm>
     </HRModal>
   );
