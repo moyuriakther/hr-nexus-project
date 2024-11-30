@@ -1,29 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRRadioInput from "@/app/components/Form/HRRadioInput";
 import HRModal from "@/app/components/Modal/HRModal";
-import { useCreateDepartmentMutation } from "@/app/Redux/api/departmentApi";
+import { useUpdateDepartmentMutation } from "@/app/Redux/api/departmentApi";
 import { Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { toast } from "sonner";
 
-const CreateDepartmentModal = () => {
+const EditDepartmentModal = ({departmentId}:any) => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  const [createDepartment] = useCreateDepartmentMutation();
+  const [updateDepartment] = useUpdateDepartmentMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-      const depData = {
-        ...values,
-        description: "Responsible for recruitment"
-      }
    try {
-      const res = await createDepartment(depData).unwrap();
+      const res = await updateDepartment({departmentId: departmentId, body: {...values}}).unwrap();
       if (res?.id) {
-        toast.success("Department Created Successfully");
+        toast.success("Department Updated Successfully");
         setModalIsOpen(false);
       }
     } catch (error) {
@@ -46,12 +42,10 @@ const CreateDepartmentModal = () => {
       <Button
         onClick={() => setModalIsOpen(!modalIsOpen)}
         size="sm"
-        className="bg-primary rounded-[4px] text-sm text-white"
+        className="bg-green-100 text-green-500 border border-green-500 min-w-1"
       >
-        <FaPlusCircle />Add department
+       <FaEdit className="text-base" />
       </Button>
-
-      
       <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setModalIsOpen}
@@ -98,4 +92,4 @@ const CreateDepartmentModal = () => {
   );
 };
 
-export default CreateDepartmentModal;
+export default EditDepartmentModal;

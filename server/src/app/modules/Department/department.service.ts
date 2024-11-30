@@ -89,7 +89,6 @@ const createDepartment = async (data: any) => {
 };
 
 const updateDepartment = async (id: string, data: any) => {
-  // console.log(data);
   const result = await prisma.department.update({
     where: {
       id,

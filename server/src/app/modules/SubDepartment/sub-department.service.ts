@@ -9,7 +9,9 @@ const getSingleSubDepartment = async (id: string) => {
   const result = await prisma.subDepartment.findUniqueOrThrow({
     where: {
       id,
-    },
+    },include:{
+      department: true
+    }
   });
   return result;
 };

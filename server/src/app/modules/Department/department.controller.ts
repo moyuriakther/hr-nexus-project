@@ -48,9 +48,7 @@ const createDepartment = catchAsync(async (req: Request, res: Response) => {
 const updateDepartment = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const data = req.body;
-
   const result = await DepartmentService.updateDepartment(id, data);
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

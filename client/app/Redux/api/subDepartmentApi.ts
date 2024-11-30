@@ -17,8 +17,31 @@ export const subDepartmentApi = baseApi.injectEndpoints({
         method: "GET",
         }),
         providesTags: [tagTypes.subDepartment]
-    })
+    }),
+    getSubDepartment: build.query({
+       query: (id) => ({
+        url: `/sub-department/${id}`,
+        method: "GET",
+        }),
+        providesTags: [tagTypes.subDepartment]
+    }),
+    updateSubDepartment: build.mutation({
+      query: (data) => ({
+        url: `/sub-department/${data.id}`,
+        method: "PATCH",
+        data: data.body,
+      }),
+      invalidatesTags: [tagTypes.subDepartment],
+    }),
+    deleteSubDepartment: build.mutation({
+      query: (data) => ({
+        url: `/sub-department/${data.id}`,
+        method: "PATCH",
+        data: data.body,
+      }),
+      invalidatesTags: [tagTypes.subDepartment],
+    }),
   }),
 });
 
-export const { useCreateSubDepartmentMutation, useGetAllSubDepartmentsQuery } = subDepartmentApi;
+export const { useCreateSubDepartmentMutation, useGetAllSubDepartmentsQuery, useGetSubDepartmentQuery, useUpdateSubDepartmentMutation, useDeleteSubDepartmentMutation } = subDepartmentApi;

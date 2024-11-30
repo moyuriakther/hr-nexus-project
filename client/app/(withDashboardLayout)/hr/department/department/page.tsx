@@ -3,16 +3,44 @@
 import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
 import HRTableRow from "@/app/components/Table/HRTableRow";
 import { Button } from "@nextui-org/react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import CreateDepartment from "./component/CreateDepartment";
 import HRTable from "@/app/components/Table/HRTable";
-import { useGetAllDepartmentsQuery } from "@/app/Redux/api/departmentApi";
+import { useDeleteDepartmentMutation, useGetAllDepartmentsQuery } from "@/app/Redux/api/departmentApi";
+import EditDepartmentModal from "./component/EditDepartmentModal";
+import Pagination from "./component/Pagination";
+import { useState } from "react";
 
 
 const DepartmentPage = () => {
-   const tableHeader = ["SL", "Department Name", "Status", "Action"];
-   const {data} = useGetAllDepartmentsQuery({})
-    const departments = data?.data;
+  const tableHeader = ["SL", "Department Name", "Status", "Action"];
+  const {data, isLoading} = useGetAllDepartmentsQuery({})
+  const departments = data?.data;
+  const [deleteDepartment, {isSuccess}] = useDeleteDepartmentMutation()
+  const departmentDelete = (id:any) =>{
+    deleteDepartment({id:id, body: {isDeleted: true}})
+  }
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Calculate pagination details
+  const totalPages = Math.ceil(departments?.length / itemsPerPage);
+
+  // Handlers
+  const handlePageChange = (page: number) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+// console.log(departments)
+    if(isLoading){
+      <p>Loading....</p>
+    }
+    if(isSuccess){
+      <p>Success....</p>
+    }
   //  const departments = [
   //   { id: 1, name: "Finance", status: "Inactive" },
   //   { id: 2, name: "Staff", status: "Active" },
@@ -43,22 +71,25 @@ const DepartmentPage = () => {
                   size="sm"
                   className="h-6 text-sm text-white bg-primary rounded-[4px]"
                 >
-                  {department?.status}
+                  {department?.isActive === true ? 'Active' : "UnActive"}
                 </Button>
               </HRTableRow>
               <HRTableRow>
                 <div className="flex items-center gap-2">
-                  <HRIconsButton className="bg-blue-100 text-blue-500 border border-blue-500">
-                    <FaEdit className="text-base" />
-                  </HRIconsButton>
+                  <EditDepartmentModal departmentId={department?.id} />
                   <HRIconsButton className="bg-red-100 border border-red-500 text-red-500">
-                    <FaTrash className="text-base" />
+                    <FaTrash className="text-base" onClick={() => departmentDelete(department?.id)}/>
                   </HRIconsButton>
                 </div>
               </HRTableRow>
             </tr>
           ))}
         </HRTable>
+        <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
       </div>
     </div>
   );

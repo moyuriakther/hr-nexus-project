@@ -2,34 +2,23 @@
 "use client";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
-import HRRadioInput from "@/app/components/Form/HRRadioInput";
 import HRModal from "@/app/components/Modal/HRModal";
-import { useGetAllDepartmentsQuery } from "@/app/Redux/api/departmentApi";
-import { useCreateSubDepartmentMutation } from "@/app/Redux/api/subDepartmentApi";
+import { useUpdateClientMutation } from "@/app/Redux/api/clientApi";
 import { Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { toast } from "sonner";
 
-const CreateSubDepartmentModal = () => {
+const UpdateClientModal = ({clientId}:any) => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  const [createSubDepartment] = useCreateSubDepartmentMutation();
-  const {data} = useGetAllDepartmentsQuery({})
-  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-      const departmentId =await data?.data?.find((dep:any) =>dep.departmentName === values.department);
-      
-      const subDepData = {
-        ...values,
-        departmentId: departmentId?.id,
-        description: "Responsible for recruitment"
+  const [updateClient] = useUpdateClientMutation();
 
-      }
-      console.log(subDepData)
-   try {
-      const res = await createSubDepartment(subDepData).unwrap();
+  const onSubmit: SubmitHandler<FieldValues> = async(values) => {
+     try {
+      const res = await updateClient({clientId: clientId, body: {...values}}).unwrap();
       if (res?.id) {
-        toast.success("Sub Department Created Successfully");
+        toast.success("Client Updated Successfully");
         setModalIsOpen(false);
       }
     } catch (error) {
@@ -37,25 +26,14 @@ const CreateSubDepartmentModal = () => {
     }
   };
 
-  const radioOptions = [
-    {
-      value: "Active",
-      label: "Active",
-    },
-    {
-      value: "Inactive",
-      label: "Inactive",
-    },
-  ];
-
   return (
     <div>
       <Button
         onClick={() => setModalIsOpen(!modalIsOpen)}
         size="sm"
-        className="bg-primary rounded-[4px] text-sm text-white"
+        className="bg-green-100 text-green-500 border border-green-500 min-w-1"
       >
-        <FaPlusCircle />Add Sub department
+          <FaEdit className="text-base" />
       </Button>
 
       
@@ -65,27 +43,50 @@ const CreateSubDepartmentModal = () => {
         modalTitle="New position"
       >
         <HRForm onSubmit={onSubmit}>
-          <div className="flex items-center gap-x-3">
-            <p className="font-medium">Sub department name</p>
+          <div className="flex items-center gap-x-14">
+            <p className="font-medium">Client name</p>
             <HRInput
-              name="subDepartmentName"
+              name="clientName"
               type="text"
               className="lg:w-[560px]"
-              placeholder="Sub Department name"
+              placeholder="Client name"
             />
           </div>
           <div className="flex items-center gap-x-20">
-            <p className="font-medium">Department</p>
+            <p className="font-medium mr-1">Country</p>
             <HRInput
-              name="department"
+              name="country"
               type="text"
               className="lg:w-[560px]"
-              placeholder="Select Department"
+              placeholder="Country"
             />
           </div>
           <div className="flex items-center gap-x-20">
-            <p className="font-medium mr-6">Is Active</p>
-            <HRRadioInput name="isActive" options={radioOptions} />
+            <p className="font-medium mr-5">Email</p>
+            <HRInput
+              name="email"
+              type="text"
+              className="lg:w-[560px]"
+              placeholder="Email"
+            />
+          </div>
+          <div className="flex items-center gap-x-7">
+            <p className="font-medium">Company Name</p>
+            <HRInput
+              name="companyName"
+              type="text"
+              className="lg:w-[560px]"
+              placeholder="Company Name"
+            />
+          </div>
+          <div className="flex items-center gap-x-20">
+            <p className="font-medium">Address</p>
+            <HRInput
+              name="address"
+              type="text"
+              className="lg:w-[560px]"
+              placeholder="Address"
+            />
           </div>
 
           <div>
@@ -114,4 +115,4 @@ const CreateSubDepartmentModal = () => {
   );
 };
 
-export default CreateSubDepartmentModal;
+export default UpdateClientModal;

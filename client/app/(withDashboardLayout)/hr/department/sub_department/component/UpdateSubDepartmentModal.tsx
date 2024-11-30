@@ -1,29 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRRadioInput from "@/app/components/Form/HRRadioInput";
 import HRModal from "@/app/components/Modal/HRModal";
-import { useCreateDepartmentMutation } from "@/app/Redux/api/departmentApi";
+import { useUpdateSubDepartmentMutation } from "@/app/Redux/api/subDepartmentApi";
 import { Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { toast } from "sonner";
 
-const CreateDepartmentModal = () => {
+const UpdateSubDepartmentModal = ({subDepartment}:any) => {
+  // console.log(subDepartment)
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  const [createDepartment] = useCreateDepartmentMutation();
+  const [updateSubDepartment] = useUpdateSubDepartmentMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-      const depData = {
-        ...values,
-        description: "Responsible for recruitment"
-      }
    try {
-      const res = await createDepartment(depData).unwrap();
+      const res = await updateSubDepartment({id: subDepartmentId, body: {...values}}).unwrap();
       if (res?.id) {
-        toast.success("Department Created Successfully");
+        toast.success("Department Updated Successfully");
         setModalIsOpen(false);
       }
     } catch (error) {
@@ -46,9 +43,9 @@ const CreateDepartmentModal = () => {
       <Button
         onClick={() => setModalIsOpen(!modalIsOpen)}
         size="sm"
-        className="bg-primary rounded-[4px] text-sm text-white"
+        className="bg-green-100 text-green-500 border border-green-500 min-w-1"
       >
-        <FaPlusCircle />Add department
+        <FaEdit className="text-base" />
       </Button>
 
       
@@ -58,18 +55,29 @@ const CreateDepartmentModal = () => {
         modalTitle="New position"
       >
         <HRForm onSubmit={onSubmit}>
-          <div className="flex items-center gap-x-4">
-            <p className="font-medium">Department name</p>
+          <div className="flex items-center gap-x-3">
+            <p className="font-medium">Sub department name</p>
             <HRInput
-              name="departmentName"
+              defaultValue={subDepartment?.subDepartmentName}
+              name="subDepartmentName"
               type="text"
               className="lg:w-[560px]"
-              placeholder="Department name"
+              placeholder="Sub Department name"
             />
           </div>
           <div className="flex items-center gap-x-20">
-            <p className="font-medium">Is Active</p>
-            <HRRadioInput name="isActive" options={radioOptions} />
+            <p className="font-medium">Department</p>
+            <HRInput
+             defaultValue={subDepartment?.department?.departmentName}
+              name="department"
+              type="text"
+              className="lg:w-[560px]"
+              placeholder="Select Department"
+            />
+          </div>
+          <div className="flex items-center gap-x-20">
+            <p className="font-medium mr-6">Is Active</p>
+            <HRRadioInput checked={subDepartment?.isActive === true} name="isActive" options={radioOptions} />
           </div>
 
           <div>
@@ -98,4 +106,4 @@ const CreateDepartmentModal = () => {
   );
 };
 
-export default CreateDepartmentModal;
+export default UpdateSubDepartmentModal;
