@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import HRForm from "@/app/components/Form/HRForm";
@@ -19,7 +20,6 @@ const CreateDepartmentModal = () => {
       const depData = {
         ...values,
         description: "Responsible for recruitment"
-
       }
    try {
       const res = await createDepartment(depData).unwrap();
@@ -33,11 +33,11 @@ const CreateDepartmentModal = () => {
   };
   const radioOptions = [
     {
-      value: "Active",
+      value: true,
       label: "Active",
     },
     {
-      value: "Inactive",
+      value: false,
       label: "Inactive",
     },
   ];
@@ -70,7 +70,7 @@ const CreateDepartmentModal = () => {
           </div>
           <div className="flex items-center gap-x-20">
             <p className="font-medium">Is Active</p>
-            <HRRadioInput name="status" options={radioOptions} />
+            <HRRadioInput name="isActive" options={radioOptions} />
           </div>
 
           <div>

@@ -1,12 +1,11 @@
 
 
-
 const ProjectsPage = () => {
 
   return (
      <div className="min-h-[89vh]">
       {/* <PageHeader item={pageHeaderData} /> */}
-<h1>projects page</h1>
+        <h1>projects page</h1>
       {/* <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
         <CreateClient />
         <HRTable tableHeader={tableHeader}>

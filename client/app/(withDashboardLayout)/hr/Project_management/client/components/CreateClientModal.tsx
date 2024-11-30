@@ -2,16 +2,27 @@
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRModal from "@/app/components/Modal/HRModal";
+import { useCreateClientMutation } from "@/app/Redux/api/clientApi";
 import { Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
+import { toast } from "sonner";
 
 const CreateClientModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [createClient] = useCreateClientMutation();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FieldValues> = async(values) => {
+     try {
+      const res = await createClient(values).unwrap();
+      if (res?.id) {
+        toast.success("Client Created Successfully");
+        setModalIsOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -34,7 +45,7 @@ const CreateClientModal = () => {
           <div className="flex items-center gap-x-14">
             <p className="font-medium">Client name</p>
             <HRInput
-              name="position_name"
+              name="clientName"
               type="text"
               className="lg:w-[560px]"
               placeholder="Client name"
@@ -43,7 +54,7 @@ const CreateClientModal = () => {
           <div className="flex items-center gap-x-20">
             <p className="font-medium mr-1">Country</p>
             <HRInput
-              name="position_name"
+              name="country"
               type="text"
               className="lg:w-[560px]"
               placeholder="Country"
@@ -52,7 +63,7 @@ const CreateClientModal = () => {
           <div className="flex items-center gap-x-20">
             <p className="font-medium mr-5">Email</p>
             <HRInput
-              name="position_name"
+              name="email"
               type="text"
               className="lg:w-[560px]"
               placeholder="Email"
@@ -61,7 +72,7 @@ const CreateClientModal = () => {
           <div className="flex items-center gap-x-7">
             <p className="font-medium">Company Name</p>
             <HRInput
-              name="position_name"
+              name="companyName"
               type="text"
               className="lg:w-[560px]"
               placeholder="Company Name"
@@ -70,7 +81,7 @@ const CreateClientModal = () => {
           <div className="flex items-center gap-x-20">
             <p className="font-medium">Address</p>
             <HRInput
-              name="position_name"
+              name="address"
               type="text"
               className="lg:w-[560px]"
               placeholder="Address"

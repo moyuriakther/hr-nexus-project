@@ -25,11 +25,11 @@ model User {
 
 // Employee model
 model Employee {
-  id              String    @id @default(uuid())
+  id              String  @id @default(uuid())
   firstName       String
   lastName        String
   middleName      String?
-  email           String    @unique
+  email           String  @unique
   password        String
   phoneNumber     String
   country         String?
@@ -40,11 +40,12 @@ model Employee {
   attendanceShift Shift?
   address         String?
   designation     String?
-  dateOfBirth     DateTime?
-  joiningDate     DateTime?
+  dateOfBirth     String?
+  joiningDate     String?
 
   // Bank info
   accountNumber         String?
+  bankName              String?
   tinNumber             String?
   branchAddress         String?
   routingNumber         String?
@@ -66,9 +67,9 @@ model Employee {
   dutyType String?
 
   // Employment info
-  hireDate          DateTime?
-  rehireDate        DateTime?
-  terminationDate   DateTime?
+  hireDate          String?
+  rehireDate        String?
+  terminationDate   String?
   cardNumber        String?
   monthlyWorkHours  Float?
   workPermit        Boolean?
@@ -88,7 +89,6 @@ model Employee {
   religion      String?
   ethnicGroup   String?
   profileImage  String?
-  passportPhoto String?
 
   // Emergency contact info
   emergencyContactPerson       String?
@@ -194,12 +194,13 @@ model Salary {
 // Leave model
 model Leave {
   id                String      @id @default(uuid())
-  applyDate         DateTime
+  applyDate         DateTime?   @default(now())
   leaveType         String
-  startDate         DateTime
-  endDate           DateTime
+  startDate         DateTime?
+  endDate           DateTime?
   days              Int?
-  reason            String
+  leaveCode         String?     @default("")
+  reason            String?
   approvedDate      DateTime?
   approvedStartDate DateTime?
   approvedEndDate   DateTime?
@@ -207,11 +208,12 @@ model Leave {
   managerComment    String?
   status            LeaveStatus @default(PENDING)
 
-  employeeId String
-  employee   Employee @relation(fields: [employeeId], references: [id])
-  isDeleted  Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
+  employeeId String?
+  employee   Employee? @relation(fields: [employeeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
 
   @@map("leaves")
 }
@@ -224,7 +226,7 @@ model Payment {
   totalSalary   Float
   releaseAmount Float?
   status        PaymentStatus?
-  date          DateTime
+  date          DateTime?      @default(now())
   isDeleted     Boolean        @default(false)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now())
@@ -317,7 +319,7 @@ model Holidays {
 // WeeklyHolidays model
 model WeeklyHolidays {
   id        String   @id @default(uuid())
-  dayName   String
+  dayName   String[]
   isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
