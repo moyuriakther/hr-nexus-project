@@ -2,6 +2,7 @@ import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
 import { Button, Divider } from "@nextui-org/react";
 import { FaFileCsv, FaFileExcel, FaFilter, FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../position/components/fakeData/limitCount";
+import Link from "next/link";
 
 const CreateEmployee = () => {
   return (
@@ -19,7 +20,12 @@ const CreateEmployee = () => {
             size="sm"
             className="bg-primary rounded-[4px] text-sm text-white"
           >
-            <FaPlusCircle /> Add employee
+            <Link
+              href="/hr/employees/create"
+              className="flex items-center gap-2"
+            >
+              <FaPlusCircle /> Add employee
+            </Link>
           </Button>
         </div>
       </div>
