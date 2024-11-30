@@ -7,11 +7,14 @@ export const store = configureStore({
     sidebar: sidebarReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(baseApi.middleware),
-});
+import multiStepperReducer from "./multiStepper/multiStepperSlice";
+import { baseApi } from "./api/baseApi";
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;
+// Combine reducers
+const reducer = {
+  sidebar: sidebarReducer,
+  multiStepper: multiStepperReducer,
+  [baseApi.reducerPath]: baseApi.reducer,
+};
+
+

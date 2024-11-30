@@ -7,4 +7,4 @@ export const projectFilterableFields = [
   "subDepartment",
   "name",
 ];
-export const projectSearchableFields = ["email", "name", "phoneNumber"];
+export const projectSearchableFields = ["projectName", "projectDuration"];

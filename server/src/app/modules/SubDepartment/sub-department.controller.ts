@@ -49,8 +49,40 @@ const createSubDepartment = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const updateSubDepartment = catchAsync(async (req: Request, res: Response) => {
+  const result = await subDepartmentService.updateSubDepartment(
+    req.params.id,
+    req.body
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: " Sub Departments updated successfully!",
+
+    data: result,
+  });
+});
+
+// Delete a sub department
+const deleteSubDepartment = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const result = await subDepartmentService.deleteSubDepartment(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Client deleted successfully!",
+    data: result,
+  });
+});
+
 export const subDepartmentController = {
   getAllSubDepartments,
   getSingleSubDepartment,
   createSubDepartment,
+  updateSubDepartment,
+  deleteSubDepartment,
 };

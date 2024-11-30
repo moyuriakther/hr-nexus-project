@@ -18,8 +18,13 @@ const createAward = async (data: any) => {
 const getAllAwards = async (params: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
+  console.log(searchTerm);
 
-  const andConditions: Prisma.AwardWhereInput[] = [];
+  const andConditions: Prisma.AwardWhereInput[] = [
+    {
+      isDeleted: false,
+    },
+  ];
 
   if (params.searchTerm) {
     andConditions.push({

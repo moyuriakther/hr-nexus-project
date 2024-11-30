@@ -46,6 +46,7 @@ export const employeeApi = baseApi.injectEndpoints({
   }),
 });
 
+
 export const {
   useCreateEmployeeMutation,
   useGetAllEmployeeQuery,
@@ -53,3 +54,4 @@ export const {
   useDeleteEmployeeMutation,
   useUpdateEmployeeMutation,
 } = employeeApi;
+

@@ -1,10 +1,2 @@
-export const awardFilterableFields = [
-  "searchTerm",
-  "id",
-  "email",
-  "phoneNumber",
-  "department",
-  "subDepartment",
-  "name",
-];
-export const awardSearchableFields = ["email", "name", "phoneNumber"];
+export const awardFilterableFields = ["searchTerm"];
+export const awardSearchableFields = ["awardName", "giftItem", "awardBy"];

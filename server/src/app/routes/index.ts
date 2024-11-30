@@ -12,8 +12,10 @@ import { LoanRoutes } from "../modules/Loan/loan.route";
 import { ProjectRoutes } from "../modules/Projects/projects.route";
 import { PaymentRoutes } from "../modules/Payment/payment.route";
 import { SalaryRoutes } from "../modules/Salary/salary.route";
+import { HolidaysRoutes } from "../modules/Holidays/holidays.route";
 import { weeklyHolidayRoutes } from "../modules/WeeklyHolidays/weekly.holidays.route";
-import { HolidaysRoutes } from "../modules/Holiday/holidays.route";
+import { NoticeboardRoutes } from "../modules/NoticeBoard/noticeboard.route";
+
 
 const router = express.Router();
 
@@ -71,12 +73,16 @@ const moduleRoutes = [
     route: ProjectRoutes,
   },
   {
+    path: "/holidays",
+    route: HolidaysRoutes,
+  },
+  {
     path: "/weekly-holidays",
     route: weeklyHolidayRoutes,
   },
   {
-    path: "/holidays",
-    route: HolidaysRoutes,
+    path: "/noticeboard",
+    route: NoticeboardRoutes,
   },
 ];
 

@@ -1,10 +1,2 @@
-export const leaveFilterableFields = [
-  "searchTerm",
-  "id",
-  "email",
-  "phoneNumber",
-  "department",
-  "subDepartment",
-  "name",
-];
-export const leaveSearchableFields = ["email", "name", "phoneNumber"];
+export const leaveFilterableFields = ["searchTerm"];
+export const leaveSearchableFields = ["reason", "leaveType", "days"];

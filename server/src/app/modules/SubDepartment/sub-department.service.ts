@@ -9,7 +9,9 @@ const getSingleSubDepartment = async (id: string) => {
   const result = await prisma.subDepartment.findUniqueOrThrow({
     where: {
       id,
-    },
+    },include:{
+      department: true
+    }
   });
   return result;
 };
@@ -20,7 +22,11 @@ const getAllSubDepartments = async (
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
-  const andConditions: Prisma.SubDepartmentWhereInput[] = [];
+  const andConditions: Prisma.SubDepartmentWhereInput[] = [
+    {
+      isDeleted: false,
+    },
+  ];
 
   if (params.searchTerm) {
     andConditions.push({
@@ -59,15 +65,7 @@ const getAllSubDepartments = async (
             createdAt: "desc",
           },
     include: {
-      department: {
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      },
+      department: true,
     },
   });
 
@@ -86,12 +84,39 @@ const getAllSubDepartments = async (
 };
 
 const createSubDepartment = async (data: any) => {
+  console.log(data);
+
+  // Adjusting the data structure
+  const { departmentId, subDepartmentName, description } = data;
+
   const result = await prisma.subDepartment.create({
     data: {
-      ...data,
+      departmentId,
+      subDepartmentName,
+      description,
     },
   });
+
   console.log(result);
+  return result;
+};
+
+const updateSubDepartment = async (id: string, data: any) => {
+  // console.log(data);
+  const result = await prisma.subDepartment.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return result;
+};
+
+const deleteSubDepartment = async (id: string) => {
+  const result = await prisma.department.update({
+    where: { id },
+    data: { isDeleted: true },
+  });
   return result;
 };
 
@@ -99,4 +124,6 @@ export const subDepartmentService = {
   getAllSubDepartments,
   getSingleSubDepartment,
   createSubDepartment,
+  updateSubDepartment,
+  deleteSubDepartment,
 };
