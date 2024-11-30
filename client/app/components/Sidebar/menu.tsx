@@ -242,23 +242,15 @@ export const Menus: TSidebarMenus[] = [
     children: [
       {
         title: "Attendance report",
-        path: "/hr/reports/attendance_report",
+        path: "/hr/reports/attendance-report",
       },
       {
         title: "Leave report",
-        path: "/hr/reports/leave_report",
+        path: "/hr/reports/leave-report",
       },
       {
         title: "Employee reports",
-        path: "/hr/reports/employee_reports",
-      },
-      {
-        title: "Payroll",
-        path: "/hr/reports/payroll",
-      },
-      {
-        title: "Adhoc report",
-        path: "/hr/reports/adhoc_report",
+        path: "/hr/reports/employee-reports",
       },
     ],
   },
