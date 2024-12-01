@@ -1,12 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import sidebarReducer from "./sidebar/sidebarSlice";
-import { baseApi } from "./api/baseApi";
-
-export const store = configureStore({
-  reducer: {
-    sidebar: sidebarReducer,
-    [baseApi.reducerPath]: baseApi.reducer,
-  },
 import multiStepperReducer from "./multiStepper/multiStepperSlice";
 import { baseApi } from "./api/baseApi";
 
@@ -17,4 +10,9 @@ const reducer = {
   [baseApi.reducerPath]: baseApi.reducer,
 };
 
-
+// Configure the store
+export const store = configureStore({
+  reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(baseApi.middleware),
+});
