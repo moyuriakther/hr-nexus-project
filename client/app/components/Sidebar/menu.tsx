@@ -16,13 +16,7 @@ import { GiTrophy } from "react-icons/gi";
 import { HiBuildingLibrary } from "react-icons/hi2";
 import { IoIosSettings } from "react-icons/io";
 
-export const Menus: TSidebarMenus[] = [
-  {
-    name: "Dashboard",
-    path: "/dashboard",
-    icon: <FaHome className="text-[17px] text-gray-700" />,
-  },
-
+export const employeesMenu: TSidebarMenus[] = [
   {
     name: "Attendance",
     icon: <FaUser className="text-[17px] text-gray-700" />,
@@ -40,6 +34,58 @@ export const Menus: TSidebarMenus[] = [
         path: "/hr/attendances/missing-attendance",
       },
     ],
+  },
+  {
+    name: "Leave",
+    icon: <FaPlane className="text-[17px] text-gray-700" />,
+    children: [
+      {
+        title: "Weekly holiday",
+        path: "/hr/leave/weekly_holiday",
+      },
+      {
+        title: "Holiday",
+        path: "/hr/leave/holiday",
+      },
+      {
+        title: "Leave application",
+        path: "/hr/leave/leave_application",
+      },
+    ],
+  },
+  {
+    name: "Project management",
+    icon: <FaTasks className="text-[17px] text-gray-700" />,
+    children: [
+      {
+        title: "Client",
+        path: "/hr/Project_management/client",
+      },
+      {
+        title: "Projects",
+        path: "/hr/Project_management/projects",
+      },
+      {
+        title: "Manage tasks",
+        path: "/hr/Project_management/manage_tasks",
+      },
+      {
+        title: "Reports",
+        path: "/hr/Project_management/reports",
+      },
+      {
+        title: "Team members",
+        path: "/hr/Project_management/team_members",
+      },
+    ],
+  },
+];
+
+export const Menus: TSidebarMenus[] = [
+  {
+    name: "Dashboard",
+    path: "/dashboard",
+    icon: <FaHome className="text-[17px] text-gray-700" />,
   },
 
   {
@@ -83,25 +129,6 @@ export const Menus: TSidebarMenus[] = [
       {
         title: "Employee performance",
         path: "/hr/employees/employee_performance",
-      },
-    ],
-  },
-
-  {
-    name: "Leave",
-    icon: <FaPlane className="text-[17px] text-gray-700" />,
-    children: [
-      {
-        title: "Weekly holiday",
-        path: "/hr/leave/weekly_holiday",
-      },
-      {
-        title: "Holiday",
-        path: "/hr/leave/holiday",
-      },
-      {
-        title: "Leave application",
-        path: "/hr/leave/leave_application",
       },
     ],
   },
@@ -182,33 +209,6 @@ export const Menus: TSidebarMenus[] = [
       {
         title: "Units",
         path: "/hr/procurement/units",
-      },
-    ],
-  },
-
-  {
-    name: "Project management",
-    icon: <FaTasks className="text-[17px] text-gray-700" />,
-    children: [
-      {
-        title: "Client",
-        path: "/hr/Project_management/client",
-      },
-      {
-        title: "Projects",
-        path: "/hr/Project_management/projects",
-      },
-      {
-        title: "Manage tasks",
-        path: "/hr/Project_management/manage_tasks",
-      },
-      {
-        title: "Reports",
-        path: "/hr/Project_management/reports",
-      },
-      {
-        title: "Team members",
-        path: "/hr/Project_management/team_members",
       },
     ],
   },

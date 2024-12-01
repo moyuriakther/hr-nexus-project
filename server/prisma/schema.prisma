@@ -108,6 +108,7 @@ model Employee {
 
   homeEmail  String?
   homePhone  String?
+  userRole   UserRole     @default(EMPLOYEE)
   status     Status       @default(ACTIVE)
   isDeleted  Boolean      @default(false)
   createdAt  DateTime     @default(now())
@@ -213,7 +214,6 @@ model Leave {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-
 
   @@map("leaves")
 }
