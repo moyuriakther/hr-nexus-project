@@ -43,3 +43,31 @@ export const loanPageHeaderData: TPageHeader[] = [
     path: "/hr/loan/employee-wise-loan",
   },
 ];
+
+export const reportPageHeaderData: TPageHeader[] = [
+  {
+    name: "Attendance Report",
+    path: "/hr/reports/attendance-report",
+  },
+  {
+    name: "Daily Present",
+    path: "/hr/reports/daily-present",
+  },
+  {
+    name: "Monthly Present",
+    path: "/hr/reports/monthly-present",
+  },
+
+  {
+    name: "Leave Reports",
+    path: "/hr/reports/leave-report",
+  },
+  {
+    name: "Employee Reports",
+    path: "/hr/reports/employee-reports",
+  },
+  {
+    name: "Employee Wise Attendance",
+    path: "/hr/reports/employee-wise-attendance",
+  },
+];

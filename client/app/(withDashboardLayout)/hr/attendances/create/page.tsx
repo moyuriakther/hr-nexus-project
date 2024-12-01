@@ -1,11 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import {
+  useForm,
+  Controller,
+  SubmitHandler,
+  FieldValues,
+} from "react-hook-form";
 import CustomSelect from "../components/CustomSelect";
 import BulkInsertModal from "../components/BulkInsertModal"; // Import BulkInsertModal component
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import { attendancePageHeaderData } from "../../employees/components/pageHeaderData";
+import { toast } from "sonner";
+import { useCreateAttendanceMutation } from "@/app/Redux/api/attendanceApi";
 
 const employeeOptions = [
   { value: "honorato_imogene", label: "Honorato Imogene Curry Terry" },
@@ -29,9 +36,22 @@ const AttendanceForm = () => {
   } = useForm<FormValues>();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [createAttendance] = useCreateAttendanceMutation();
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+    const depData = {
+      ...values,
+      description: "Responsible for recruitment",
+    };
+    try {
+      const res = await createAttendance(depData).unwrap();
+      if (res?.id) {
+        toast.success("Attendances Created successfully");
+        setIsModalOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

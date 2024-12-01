@@ -8,9 +8,26 @@ import HRTable from "@/app/components/Table/HRTable";
 import CreateClient from "./components/CreateClient";
 import { useDeleteClientMutation, useGetAllClientsQuery } from "@/app/Redux/api/clientApi";
 import UpdateClientModal from "./components/UpdateClientModal";
+import { useAppSelector } from "@/app/Redux/hook";
 
 
 const ClientsPage = () => {
+  const filters = useAppSelector((state) => state.filters);
+  const { search } = filters;
+  const searchClient = (dept: any) => {
+  if (search) {
+    const fieldsToSearch = [
+      dept?.clientName,
+      dept?.companyName,
+      dept?.email,
+      dept?.country,
+    ];
+    return fieldsToSearch.some((field) =>
+      field?.toString().toLowerCase().includes(search.trim().toLowerCase())
+    );
+  }
+  return true;
+};
    const tableHeader = ["SL", "Client Name", "Company Name", "Email", "Country", "Action"];
    const {data} = useGetAllClientsQuery({});
    const clients = data?.data;
@@ -36,7 +53,7 @@ const ClientsPage = () => {
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
         <CreateClient />
         <HRTable tableHeader={tableHeader}>
-          {clients?.map((client:any, i: number) => (
+          {clients?.filter(searchClient)?.map((client:any, i: number) => (
             <tr
               className={`${i % 2 === 0 ? "bg-gray-100" : ""} hover:bg-gray-50`}
               key={client.id}
@@ -55,10 +72,7 @@ const ClientsPage = () => {
                 </Button>
               </HRTableRow>
               <HRTableRow>
-                <div className="flex items-center gap-2">
-                  {/* <HRIconsButton className="bg-blue-100 text-blue-500 border border-blue-500">
-                    <FaEdit className="text-base" />
-                  </HRIconsButton> */}
+                <div className="flex items-center gap-2"> 
                   <UpdateClientModal clientId={client?.id}/>
                   <HRIconsButton className="bg-red-100 border border-red-500 text-red-500">
                     <FaTrash className="text-base" onClick={() =>clientDelete(client?.id)}/>
