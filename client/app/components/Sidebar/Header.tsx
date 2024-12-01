@@ -58,21 +58,50 @@ const Header = () => {
                 name="Tony Reichert"
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="User Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-bold">Signed in as</p>
-                <p className="font-bold">@tonyreichert</p>
+            <DropdownMenu
+              aria-label="User Actions"
+              variant="flat"
+              className="p-5  rounded-lg w-[300px]"
+            >
+              {/* User Profile Section */}
+              <DropdownItem key="profile" className="gap-2">
+                <div className="flex flex-col items-center">
+                  {/* Avatar */}
+                  <div className="w-[70px] h-[70px] bg-gray-200 rounded-full flex items-center justify-center">
+                    <img
+                      src="https://via.placeholder.com/70"
+                      alt="Admin Avatar"
+                      className="w-full h-full rounded-full"
+                    />
+                  </div>
+                  {/* Name and Email */}
+                  <h1 className="text-[18px] font-bold text-[#212229] mt-2">
+                    Admin
+                  </h1>
+                  <p className="text-[13px] text-[#70737C]">admin@admin.com</p>
+                </div>
               </DropdownItem>
-              <DropdownItem key="settings">My Settings</DropdownItem>
-              <DropdownItem key="team_settings">Team Settings</DropdownItem>
-              <DropdownItem key="analytics">Analytics</DropdownItem>
-              <DropdownItem key="system">System</DropdownItem>
-              <DropdownItem key="configurations">Configurations</DropdownItem>
-              <DropdownItem key="help_and_feedback">
-                Help & Feedback
+
+              {/* Manage Account */}
+              <DropdownItem key="settings" className="mt-3">
+                <a
+                  href="dashboard/profile"
+                  className="text-center block text-[#188753] text-[16px] hover:underline"
+                >
+                  Manage your account
+                </a>
               </DropdownItem>
-              <DropdownItem key="logout" color="danger">
-                Log Out
+
+              {/* Buttons Section */}
+              <DropdownItem key="buttons" className="mt-4">
+                <div className="flex justify-center gap-4">
+                  <button className="py-2 px-4 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200">
+                    Sign out
+                  </button>
+                  <button className="py-2 px-4 bg-gray-100 text-red-600 rounded-lg hover:bg-gray-200">
+                    Close
+                  </button>
+                </div>
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
