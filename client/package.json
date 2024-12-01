@@ -12,6 +12,7 @@
     "@headlessui/react": "^2.2.0",
     "@hookform/resolvers": "^3.9.1",
     "@nextui-org/react": "^2.4.8",
+    "@nextui-org/tabs": "^2.0.37",
     "@reduxjs/toolkit": "^2.3.0",
     "apexcharts": "^3.41.0",
     "axios": "^1.7.7",
