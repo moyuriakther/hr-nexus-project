@@ -2,6 +2,8 @@ export type TBasicInfoState = {
   firstName: string;
   middleName: string;
   lastName: string;
+  email: string;
+  password: string;
   phoneNumber: string;
   country: string;
   city: string;
@@ -80,6 +82,6 @@ export type TOthers = {
 
 export type TSupervisor = {
   isSupervisor: boolean;
-  email: string;
-  password: string;
+  supervisorEmail: string;
+  supervisorPassword: string;
 };

@@ -88,6 +88,7 @@ model Employee {
   alternateEmergencyContact    String?
   alternateEmergencyHomePhone  String?
   alternateEmergencyWorkPhone  String?
+
   bloodGroup                   String?
   healthCondition              String?
   isDisabled                   Boolean       @default(false)
@@ -102,9 +103,13 @@ model Employee {
   award                        Award[]
   department                   Department    @relation(fields: [departmentId], references: [id])
   subDepartment                SubDepartment @relation(fields: [subDepartmentId], references: [id])
-  leave                        Leave[]
-  loan                         Loan[]
-  salary                       Salary[]
+  userRole   UserRole     @default(EMPLOYEE)  
+  isDeleted  Boolean      @default(false)  
+  salary     Salary[]
+  leave      Leave[]
+  payment    Payment[]
+  loan       Loan[]
+
 
   @@map("employees")
 }
@@ -182,11 +187,13 @@ model Leave {
   approvedDays      Int?
   managerComment    String?
   status            LeaveStatus @default(PENDING)
+
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @default(now())
   employeeId        String?
   leaveCode         String?     @default("")
   employee          Employee?   @relation(fields: [employeeId], references: [id])
+
 
   @@map("leaves")
 }
