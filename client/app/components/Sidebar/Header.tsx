@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import { useAppDispatch, useAppSelector } from "@/app/Redux/hook";
 import { setOpen } from "@/app/Redux/sidebar/sidebarSlice";
 import {
@@ -17,6 +18,7 @@ import { MdCleaningServices } from "react-icons/md";
 const Header = () => {
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.sidebar);
+  const { data: myProfile } = useGetMyProfileQuery("");
 
   return (
     <div className="px-4 py-3 shadow-md sticky top-0 bg-white z-[9]">
@@ -51,11 +53,11 @@ const Header = () => {
                 as="button"
                 avatarProps={{
                   isBordered: true,
-                  src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+                  src: myProfile?.photo,
                 }}
                 className="transition-transform"
-                description="@tonyreichert"
-                name="Tony Reichert"
+                description={myProfile?.name}
+                name={myProfile?.role}
               />
             </DropdownTrigger>
             <DropdownMenu
@@ -69,16 +71,18 @@ const Header = () => {
                   {/* Avatar */}
                   <div className="w-[70px] h-[70px] bg-gray-200 rounded-full flex items-center justify-center">
                     <img
-                      src="https://via.placeholder.com/70"
+                      src={myProfile?.photo}
                       alt="Admin Avatar"
                       className="w-full h-full rounded-full"
                     />
                   </div>
                   {/* Name and Email */}
                   <h1 className="text-[18px] font-bold text-[#212229] mt-2">
-                    Admin
+                    {myProfile?.role}
                   </h1>
-                  <p className="text-[13px] text-[#70737C]">admin@admin.com</p>
+                  <p className="text-[13px] text-[#70737C]">
+                    {myProfile?.email}
+                  </p>
                 </div>
               </DropdownItem>
 
@@ -86,7 +90,7 @@ const Header = () => {
               <DropdownItem key="settings" className="mt-3">
                 <a
                   href="dashboard/profile"
-                  className="text-center block text-[#188753] text-[16px] hover:underline"
+                  className="text-center block text-[#188753] text-[16px]"
                 >
                   Manage your account
                 </a>
