@@ -101,12 +101,6 @@ const LoanDisburseList = () => {
           <h2 className="text-xl font-semibold text-gray-800">
             Loan disburse list
           </h2>
-          <button
-            className="bg-[#198754] text-white py-2 px-4 rounded-md hover:bg-green-600"
-            onClick={() => console.log("Add Loan clicked")}
-          >
-            + Add Loan
-          </button>
         </div>
 
         {/* Table Controls */}

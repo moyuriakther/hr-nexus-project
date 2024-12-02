@@ -10,11 +10,25 @@ import { useDeleteDepartmentMutation, useGetAllDepartmentsQuery } from "@/app/Re
 import EditDepartmentModal from "./component/EditDepartmentModal";
 import Pagination from "./component/Pagination";
 import { useState } from "react";
+import { useAppSelector } from "@/app/Redux/hook";
 
 
 const DepartmentPage = () => {
+  const filters = useAppSelector((state) => state.filters);
+  const { search } = filters;
+    const searchDept = (dept:any) => {
+    if (search) {
+      return dept?.departmentName
+        .trim()
+        .toLowerCase()
+        .includes(search.trim().toLowerCase());
+    } else {
+      return true;
+    }
+  };
   const tableHeader = ["SL", "Department Name", "Status", "Action"];
   const {data, isLoading} = useGetAllDepartmentsQuery({})
+  
   const departments = data?.data;
   const [deleteDepartment, {isSuccess}] = useDeleteDepartmentMutation()
   const departmentDelete = (id:any) =>{
@@ -57,9 +71,9 @@ const DepartmentPage = () => {
       {/* <PageHeader item={pageHeaderData} /> */}
 
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
-        <CreateDepartment />
+        <CreateDepartment/>
         <HRTable tableHeader={tableHeader}>
-          {departments?.map((department:any, i:number) => (
+          {departments?.filter(searchDept)?.map((department:any, i:number) => (
             <tr
               className={`${i % 2 === 0 ? "bg-gray-100" : ""} hover:bg-gray-50`}
               key={department.id}

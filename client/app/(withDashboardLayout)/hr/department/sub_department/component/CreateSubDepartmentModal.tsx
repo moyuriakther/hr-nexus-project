@@ -3,6 +3,7 @@
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRRadioInput from "@/app/components/Form/HRRadioInput";
+import HRSelect from "@/app/components/Form/HRSelect";
 import HRModal from "@/app/components/Modal/HRModal";
 import { useGetAllDepartmentsQuery } from "@/app/Redux/api/departmentApi";
 import { useCreateSubDepartmentMutation } from "@/app/Redux/api/subDepartmentApi";
@@ -16,8 +17,10 @@ const CreateSubDepartmentModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [createSubDepartment] = useCreateSubDepartmentMutation();
   const {data} = useGetAllDepartmentsQuery({})
+  const departments= data?.data;
+
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-      const departmentId =await data?.data?.find((dep:any) =>dep.departmentName === values.department);
+      const departmentId =await departments?.find((dep:any) =>dep.departmentName === values.department);
       
       const subDepData = {
         ...values,
@@ -36,14 +39,16 @@ const CreateSubDepartmentModal = () => {
       console.log(error);
     }
   };
-
+  const deptOptions = departments?.map((dep:any) =>(
+    ({ value: dep.departmentName, label: dep.departmentName})
+  ));
   const radioOptions = [
     {
-      value: "Active",
+      value: true,
       label: "Active",
     },
     {
-      value: "Inactive",
+      value: false,
       label: "Inactive",
     },
   ];
@@ -76,12 +81,11 @@ const CreateSubDepartmentModal = () => {
           </div>
           <div className="flex items-center gap-x-20">
             <p className="font-medium">Department</p>
-            <HRInput
-              name="department"
-              type="text"
-              className="lg:w-[560px]"
-              placeholder="Select Department"
-            />
+            <HRSelect
+            name="department"
+            placeholder="Choose a department"
+            options={deptOptions}
+          />
           </div>
           <div className="flex items-center gap-x-20">
             <p className="font-medium mr-6">Is Active</p>

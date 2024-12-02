@@ -8,10 +8,23 @@ import {  FaTrash } from "react-icons/fa";
 import CreateSubDepartment from "./component/CreateSubDepartment";
 import { useDeleteSubDepartmentMutation, useGetAllSubDepartmentsQuery } from "@/app/Redux/api/subDepartmentApi";
 import UpdateSubDepartmentModal from "./component/UpdateSubDepartmentModal";
+import { useAppSelector } from "@/app/Redux/hook";
 
 
 
 const SubDepartmentPage = () => {
+    const filters = useAppSelector((state) => state.filters);
+  const { search } = filters;
+    const searchSubDept = (dept:any) => {
+    if (search) {
+      return dept?.subDepartmentName
+        .trim()
+        .toLowerCase()
+        .includes(search.trim().toLowerCase());
+    } else {
+      return true;
+    }
+  };
   const tableHeader = ["SL", "Sub department Name", "Department Name", "Status", "Action"];
   const {data} = useGetAllSubDepartmentsQuery({});
   const [deleteSubDepartment, {isSuccess, isLoading}] = useDeleteSubDepartmentMutation();
@@ -39,7 +52,7 @@ const SubDepartmentPage = () => {
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
         <CreateSubDepartment />
         <HRTable tableHeader={tableHeader}>
-          {subDepartments?.map((subDept:any, i:number) => (
+          {subDepartments?.filter(searchSubDept)?.map((subDept:any, i:number) => (
             <tr
               className={`${i % 2 === 0 ? "bg-gray-100" : ""} hover:bg-gray-50`}
               key={subDept?.id}
