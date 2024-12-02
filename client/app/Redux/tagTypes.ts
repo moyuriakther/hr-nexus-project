@@ -5,12 +5,13 @@ export enum tagTypes {
   subDepartment = "subDepartment",
   attendance = "attendance",
   award = "award",
-  client="client",
-  project="project",
+  client = "client",
+  project = "project",
   leave = "leave",
   payment = "payment",
   weekdaysHoliday = "weekdaysHoliday",
   holiday = "holiday",
+  user = "user",
 }
 
 export const tagTypesList = [
@@ -20,12 +21,11 @@ export const tagTypesList = [
   tagTypes.payment,
   tagTypes.weekdaysHoliday,
   tagTypes.holiday,
-  tagTypes.department, 
+  tagTypes.department,
   tagTypes.subDepartment,
   tagTypes.client,
-  tagTypes.attendance, 
-  tagTypes.award, 
-  tagTypes.project
+  tagTypes.attendance,
+  tagTypes.award,
+  tagTypes.project,
+  tagTypes.user,
 ];
-
-
