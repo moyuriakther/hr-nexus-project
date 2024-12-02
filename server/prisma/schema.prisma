@@ -89,27 +89,25 @@ model Employee {
   alternateEmergencyHomePhone  String?
   alternateEmergencyWorkPhone  String?
 
-  bloodGroup                   String?
-  healthCondition              String?
-  isDisabled                   Boolean       @default(false)
-  disabilitiesDescription      String?
-  homeEmail                    String?
-  homePhone                    String?
-  status                       Status        @default(ACTIVE)
-  createdAt                    DateTime      @default(now())
-  updatedAt                    DateTime      @default(now())
-  payment                      Payment[]
-  attendance                   Attendance[]
-  award                        Award[]
-  department                   Department    @relation(fields: [departmentId], references: [id])
-  subDepartment                SubDepartment @relation(fields: [subDepartmentId], references: [id])
-  userRole   UserRole     @default(EMPLOYEE)  
-  isDeleted  Boolean      @default(false)  
-  salary     Salary[]
-  leave      Leave[]
-  payment    Payment[]
-  loan       Loan[]
-
+  bloodGroup              String?
+  healthCondition         String?
+  isDisabled              Boolean       @default(false)
+  disabilitiesDescription String?
+  homeEmail               String?
+  homePhone               String?
+  status                  Status        @default(ACTIVE)
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @default(now())
+  payment                 Payment[]
+  attendance              Attendance[]
+  award                   Award[]
+  department              Department    @relation(fields: [departmentId], references: [id])
+  subDepartment           SubDepartment @relation(fields: [subDepartmentId], references: [id])
+  userRole                UserRole      @default(EMPLOYEE)
+  isDeleted               Boolean       @default(false)
+  salary                  Salary[]
+  leave                   Leave[]
+  loan                    Loan[]
 
   @@map("employees")
 }
@@ -188,12 +186,11 @@ model Leave {
   managerComment    String?
   status            LeaveStatus @default(PENDING)
 
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @default(now())
-  employeeId        String?
-  leaveCode         String?     @default("")
-  employee          Employee?   @relation(fields: [employeeId], references: [id])
-
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  employeeId String?
+  leaveCode  String?   @default("")
+  employee   Employee? @relation(fields: [employeeId], references: [id])
 
   @@map("leaves")
 }
@@ -324,22 +321,73 @@ model Recruitment {
   workingPeriod String?
   duties        String?
   supervisor    String?
-  interviewId   String
-  interview     Interview @relation(fields: [interviewId], references: [id])
+  interviews    Interview[]
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("notice_boards")
+}
+
+model Recruitment {
+  id               String  @id @default(uuid())
+  firstName        String
+  lastName         String?
+  email            String  @unique
+  phone            String
+  alternativePhone String?
+  ssn              String?
+  presentAddress   String?
+  permanentAddress String?
+  country          String?
+  city             String?
+  zipCode          String?
+  picture          String?
+
+  // Educational Info
+  obtainedDegree String?
+  university     String?
+  cgpa           String?
+  comments       String?
+
+  // past companies 
+  companyName   String?
+  workingPeriod String?
+  duties        String?
+  supervisor    String?
+  interviews    Interview[]
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("recruitment")
 }
 
 model Interview {
-  id            String        @id @default(uuid())
+  id            String      @id @default(uuid())
+  candidateName String
+  interviewer   String
   jobPosition   String
-  interviewData String
+  interviewDate String
   vivaMarks     String
   writtenMarks  String
   mcqTotalMarks String
   totalMarks    String
   selection     String
-  candidate     Recruitment[]
+  candidateId   String
+  candidate     Recruitment @relation(fields: [candidateId], references: [id])
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("interview")
+}
+
+model ProjectManagement {
+  id String @id @default(uuid())
 
   @@map("interview")
 }

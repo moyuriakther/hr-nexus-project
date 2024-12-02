@@ -79,6 +79,29 @@ export const employeesMenu: TSidebarMenus[] = [
       },
     ],
   },
+
+  {
+    name: "Recruitment",
+    icon: <FaNewspaper className="text-[17px] text-gray-700" />,
+    children: [
+      {
+        title: "Candidate list",
+        path: "/hr/recruitment/candidate_list",
+      },
+      {
+        title: "Candidate shortlist",
+        path: "/hr/recruitment/candidate_shortlist",
+      },
+      {
+        title: "Interview",
+        path: "/hr/recruitment/interview",
+      },
+      {
+        title: "Candidate selection",
+        path: "/hr/recruitment/candidate_selection",
+      },
+    ],
+  },
 ];
 
 export const Menus: TSidebarMenus[] = [
@@ -214,29 +237,6 @@ export const Menus: TSidebarMenus[] = [
   },
 
   {
-    name: "Recruitment",
-    icon: <FaNewspaper className="text-[17px] text-gray-700" />,
-    children: [
-      {
-        title: "Candidate list",
-        path: "/hr/recruitment/candidate_list",
-      },
-      {
-        title: "Candidate shortlist",
-        path: "/hr/recruitment/candidate_shortlist",
-      },
-      {
-        title: "Interview",
-        path: "/hr/recruitment/interview",
-      },
-      {
-        title: "Candidate selection",
-        path: "/hr/recruitment/candidate_selection",
-      },
-    ],
-  },
-
-  {
     name: "Reports",
     icon: <FaIndustry className="text-[17px] text-gray-700" />,
     children: [
@@ -282,6 +282,29 @@ export const Menus: TSidebarMenus[] = [
       {
         title: "Employee points",
         path: "/hr/reward_points/employee_points",
+      },
+    ],
+  },
+
+  {
+    name: "Recruitment",
+    icon: <FaNewspaper className="text-[17px] text-gray-700" />,
+    children: [
+      {
+        title: "Candidate list",
+        path: "/hr/recruitment/candidate_list",
+      },
+      {
+        title: "Candidate shortlist",
+        path: "/hr/recruitment/candidate_shortlist",
+      },
+      {
+        title: "Interview",
+        path: "/hr/recruitment/interview",
+      },
+      {
+        title: "Candidate selection",
+        path: "/hr/recruitment/candidate_selection",
       },
     ],
   },
