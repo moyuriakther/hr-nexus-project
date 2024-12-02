@@ -1,11 +1,11 @@
-import HRForm from "@/app/components/Form/HRForm";
-import HRInput from "@/app/components/Form/HRInput";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { FiEdit } from "react-icons/fi";
 import ChangePasswordForm from "./ChangePasswordForm";
 
 const ProfileTab = () => {
-  const handleSubmit = () => {};
+  const { data: myProfile } = useGetMyProfileQuery("");
+
   return (
     <div className="flex w-full flex-col gap-4 px-2">
       <Tabs aria-label="Options" isVertical={true} color="primary">
@@ -24,7 +24,7 @@ const ProfileTab = () => {
                   <h1 className="text-[18px] font-[700]  border-l-4 border-[#188753] pl-[8px]">
                     Personal Info
                   </h1>
-                  <a href="/dashboard/admin/edit">
+                  <a href={`/dashboard/${myProfile?.role}/edit`}>
                     <button className=" flex items-center gap-2 bg-black text-white px-[15px] py-[8px] rounded-[15px]">
                       <FiEdit /> Edit
                     </button>
@@ -37,7 +37,7 @@ const ProfileTab = () => {
                         Name
                       </h1>
                       <h1 className="font-[700] text-[20px]  text-black ">
-                        Rakib Hosen
+                        {myProfile?.name}
                       </h1>
                     </div>
                     <div>
@@ -45,7 +45,7 @@ const ProfileTab = () => {
                         Email
                       </h1>
                       <h1 className="font-[700] text-[20px]  text-black ">
-                        admin@gmail.com
+                        {myProfile?.email}
                       </h1>
                     </div>
                   </div>
@@ -55,7 +55,7 @@ const ProfileTab = () => {
                         Phone
                       </h1>
                       <h1 className="font-[700] text-[20px]  text-black ">
-                        0123456789
+                        {myProfile?.phoneNumber}
                       </h1>
                     </div>
                     <div>
@@ -63,7 +63,11 @@ const ProfileTab = () => {
                         Signature
                       </h1>
                       <div className="mt-2">
-                        <img src="" alt="" className="w-[111px] h-[132px]" />
+                        <img
+                          src={myProfile?.signature}
+                          alt="signature"
+                          className="w-[132px] h-[111px]"
+                        />
                       </div>
                     </div>
                   </div>

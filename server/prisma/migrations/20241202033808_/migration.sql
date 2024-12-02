@@ -32,6 +32,8 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL,
     "role" "UserRole" DEFAULT 'EMPLOYEE',
     "password" TEXT NOT NULL,
+    "photo" TEXT,
+    "coverPhoto" TEXT,
     "phoneNumber" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -121,10 +123,10 @@ CREATE TABLE "employees" (
 -- CreateTable
 CREATE TABLE "departments" (
     "id" TEXT NOT NULL,
-    "departmentName" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "departmentName" TEXT NOT NULL,
 
     CONSTRAINT "departments_pkey" PRIMARY KEY ("id")
 );
@@ -133,7 +135,7 @@ CREATE TABLE "departments" (
 CREATE TABLE "sub_departments" (
     "id" TEXT NOT NULL,
     "departmentId" TEXT NOT NULL,
-    "subDepartmentName" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -149,9 +151,9 @@ CREATE TABLE "attendances" (
     "checkIn" TIMESTAMP(3),
     "checkOut" TIMESTAMP(3),
     "monthName" TEXT,
-    "attendanceType" "AttendanceType",
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "attendanceType" "AttendanceType",
 
     CONSTRAINT "attendances_pkey" PRIMARY KEY ("id")
 );
@@ -178,21 +180,22 @@ CREATE TABLE "salaries" (
 -- CreateTable
 CREATE TABLE "leaves" (
     "id" TEXT NOT NULL,
-    "applyDate" TIMESTAMP(3) NOT NULL,
+    "applyDate" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "leaveType" TEXT NOT NULL,
-    "startDate" TIMESTAMP(3) NOT NULL,
-    "endDate" TIMESTAMP(3) NOT NULL,
+    "startDate" TIMESTAMP(3),
+    "endDate" TIMESTAMP(3),
     "days" INTEGER,
-    "reason" TEXT NOT NULL,
+    "reason" TEXT,
     "approvedDate" TIMESTAMP(3),
     "approvedStartDate" TIMESTAMP(3),
     "approvedEndDate" TIMESTAMP(3),
     "approvedDays" INTEGER,
     "managerComment" TEXT,
     "status" "LeaveStatus" NOT NULL DEFAULT 'PENDING',
-    "employeeId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "employeeId" TEXT,
+    "leaveCode" TEXT DEFAULT '',
 
     CONSTRAINT "leaves_pkey" PRIMARY KEY ("id")
 );
@@ -205,7 +208,7 @@ CREATE TABLE "Payment" (
     "totalSalary" DOUBLE PRECISION NOT NULL,
     "releaseAmount" DOUBLE PRECISION,
     "status" "PaymentStatus",
-    "date" TIMESTAMP(3) NOT NULL,
+    "date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -270,9 +273,9 @@ CREATE TABLE "loans" (
     "repaymentAmount" DOUBLE PRECISION,
     "approvedDate" TIMESTAMP(3),
     "repaymentFrom" TIMESTAMP(3),
-    "status" "LeaveStatus" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "status" "LeaveStatus" NOT NULL,
 
     CONSTRAINT "loans_pkey" PRIMARY KEY ("id")
 );
@@ -286,6 +289,7 @@ CREATE TABLE "holidays" (
     "totalDays" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "holidays_pkey" PRIMARY KEY ("id")
 );
@@ -293,32 +297,11 @@ CREATE TABLE "holidays" (
 -- CreateTable
 CREATE TABLE "weekly_holidays" (
     "id" TEXT NOT NULL,
-    "dayName" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dayName" TEXT[],
 
     CONSTRAINT "weekly_holidays_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "notice_boards" (
-    "id" TEXT NOT NULL,
-
-    CONSTRAINT "notice_boards_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "recruitment" (
-    "id" TEXT NOT NULL,
-
-    CONSTRAINT "recruitment_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "project_managements" (
-    "id" TEXT NOT NULL,
-
-    CONSTRAINT "project_managements_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -343,7 +326,7 @@ ALTER TABLE "attendances" ADD CONSTRAINT "attendances_employeeId_fkey" FOREIGN K
 ALTER TABLE "salaries" ADD CONSTRAINT "salaries_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "employees"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "leaves" ADD CONSTRAINT "leaves_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "employees"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "leaves" ADD CONSTRAINT "leaves_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "employees"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Payment" ADD CONSTRAINT "Payment_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "employees"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

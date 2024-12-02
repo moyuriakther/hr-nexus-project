@@ -1,10 +1,33 @@
+"use client";
+
+import { useChangePasswordMutation } from "@/app/Redux/api/userApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
+import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 const ChangePasswordForm = () => {
-  const handleChangePassword = (values: FieldValues) => {
-    console.log(values);
+  const router = useRouter();
+
+  const [changePassword, { isLoading }] = useChangePasswordMutation();
+
+  const handleChangePassword = async (values: FieldValues) => {
+    if (values.confirmPassword !== values.newPassword) {
+      toast.error("New password and confirm new password doesn't match😒");
+    }
+
+    const resData = {
+      oldPassword: values.oldPassword,
+      newPassword: values.newPassword,
+    };
+
+    const res = await changePassword(resData).unwrap();
+
+    if (res?.message) {
+      toast.success("Changed password successfully!!");
+      router.push("/dashboard/profile");
+    }
   };
 
   return (
@@ -32,13 +55,13 @@ const ChangePasswordForm = () => {
           <div className="w-[50%] mt-6">
             <HRInput
               name="confirmPassword"
-              label="Confirm password"
+              label="Confirm new password"
               type="text"
             />
           </div>
           <div className="flex justify-end items-center mt-2">
             <button className="bg-[#188753] text-white pr-12 pl-12 pt-2 pb-2 rounded">
-              Save changes
+              {isLoading ? "Changing......" : "Change password"}
             </button>
           </div>
         </HRForm>

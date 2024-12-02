@@ -9,10 +9,34 @@ import HRInput from "@/app/components/Form/HRInput";
 import { FieldValues } from "react-hook-form";
 import UpdateProfileImg from "../../profile/components/UpdateProfileImg";
 import ChangePasswordForm from "../../profile/components/ChangePasswordForm";
+import { uploadImage } from "@/app/utils/UploadImage";
+import HRFileInput from "@/app/components/Form/HRFileInput";
+import { useUpdateMyProfileMutation } from "@/app/Redux/api/userApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
-  const handleSubmit = (values: FieldValues) => {
-    console.log(values);
+  const router = useRouter();
+
+  const [updateProfile, { isLoading }] = useUpdateMyProfileMutation();
+
+  const handleSubmit = async (values: FieldValues) => {
+    const file = values.signature?.[0];
+
+    const resData = {
+      name: values.name,
+      email: values?.email,
+      phoneNumber: values?.phone,
+      signature: await uploadImage(file),
+    };
+
+    console.log(resData);
+    const res = await updateProfile(resData).unwrap();
+
+    if (res?.id) {
+      toast.success("Update my profile successfully!!");
+      router.push("/dashboard/profile");
+    }
   };
 
   return (
@@ -55,16 +79,12 @@ const ProfilePage = () => {
                           </div>
 
                           <div className="w-[50%] mt-6">
-                            <HRInput
-                              name="signature"
-                              label="Signature"
-                              type="file"
-                            />
+                            <HRFileInput name="signature" label="Signature" />
                           </div>
                         </div>
                         <div className="flex justify-end items-center mt-2 gap-6">
                           <button className="bg-[#188753] text-white pr-12 pl-12 pt-2 pb-2 rounded">
-                            Update
+                            {isLoading ? "Updating......" : "Update"}
                           </button>
                           <button className="bg-[#e5343d] text-white pr-12 pl-12 pt-2 pb-2 rounded">
                             Cancel

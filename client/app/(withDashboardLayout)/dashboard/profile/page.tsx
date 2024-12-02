@@ -11,7 +11,6 @@ const ProfilePage = () => {
     <div className="min-h-[89vh] bg-white p-[24px] rounded-[12px]">
       <UpdateProfileImg />
 
-      {/* Profile Tabs */}
       <div>
         <ProfileTab />
       </div>
