@@ -103,6 +103,22 @@ export const basicInfos = [
     required: true,
   },
   {
+    name: "email",
+    placeholder: "Email address",
+    type: "email",
+    label: "Email",
+    isSelect: false,
+    required: true,
+  },
+  {
+    name: "password",
+    placeholder: "Password",
+    type: "password",
+    label: "Password",
+    isSelect: false,
+    required: true,
+  },
+  {
     name: "country",
     label: "Country",
     isSelect: true,
@@ -175,6 +191,8 @@ export const basicInfoState: TBasicInfoState = {
   firstName: "",
   middleName: "",
   lastName: "",
+  email: "",
+  password: "",
   phoneNumber: "",
   country: "",
   city: "",
@@ -253,6 +271,6 @@ export const others: TOthers = {
 
 export const supervisor: TSupervisor = {
   isSupervisor: false,
-  email: "",
-  password: "",
+  supervisorEmail: "",
+  supervisorPassword: "",
 };
