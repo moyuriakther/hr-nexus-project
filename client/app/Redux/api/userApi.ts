@@ -13,10 +13,10 @@ export const userApi = baseApi.injectEndpoints({
     updateMyProfile: build.mutation({
       query: (data) => ({
         url: "/user/update-profile",
-        method: "PUT",
+        method: "patch",
         data: data,
       }),
-      invalidatesTags: [tagTypes.employee, tagTypes.admin, tagTypes.user],
+      invalidatesTags: [tagTypes.user, tagTypes.employee, tagTypes.admin],
     }),
     changePassword: build.mutation({
       query: (data) => ({
@@ -24,7 +24,7 @@ export const userApi = baseApi.injectEndpoints({
         method: "POST",
         data: data,
       }),
-      invalidatesTags: [tagTypes.employee, tagTypes.admin, tagTypes.user],
+      invalidatesTags: [tagTypes.user, tagTypes.employee, tagTypes.admin],
     }),
   }),
 });

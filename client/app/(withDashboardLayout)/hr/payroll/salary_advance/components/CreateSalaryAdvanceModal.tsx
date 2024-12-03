@@ -42,7 +42,7 @@ const CreateSalaryAdvanceModal = ({ modalIsOpen, setIsOpen }: TProps) => {
     const res = await createPayment(resData).unwrap();
 
     if (res?.id) {
-      toast.success("Create Employee successful!");
+      toast.success("Create payment successful!");
       setIsOpen(false);
     }
   };

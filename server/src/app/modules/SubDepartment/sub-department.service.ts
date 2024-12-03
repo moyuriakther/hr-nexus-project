@@ -9,9 +9,10 @@ const getSingleSubDepartment = async (id: string) => {
   const result = await prisma.subDepartment.findUniqueOrThrow({
     where: {
       id,
-    },include:{
-      department: true
-    }
+    },
+    include: {
+      department: true,
+    },
   });
   return result;
 };
@@ -84,8 +85,6 @@ const getAllSubDepartments = async (
 };
 
 const createSubDepartment = async (data: any) => {
-  console.log(data);
-
   // Adjusting the data structure
   const { departmentId, subDepartmentName, description } = data;
 
@@ -97,7 +96,6 @@ const createSubDepartment = async (data: any) => {
     },
   });
 
-  console.log(result);
   return result;
 };
 

@@ -2,189 +2,97 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useState } from "react";
+import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
+import {
+  useDeleteLoanMutation,
+  useGetAllLoanQuery,
+} from "@/app/Redux/api/loanApi";
+import HRTable from "@/app/components/Table/HRTable";
+import HRTableRow from "@/app/components/Table/HRTableRow";
+import { TLoan } from "@/app/types";
+import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
+import { Button } from "@nextui-org/react";
+import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import Table from "./components/Table";
-import Pagination from "../award/components/pagination";
-import TableControls from "../award/components/TableControls";
-import PageHeader from "../../components/PageHeader/PageHeader";
+import { toast } from "sonner";
 import { loanPageHeaderData } from "../employees/components/pageHeaderData";
-import AddLoanModal from "./components/AddLoanModal";
+import ComponentHeader from "./components/ComponentHeader";
+import { tableHeader } from "./components/common";
 
-const LoanList = () => {
-  const tableHeader = [
-    "Sl",
-    "Employee name",
-    "Permitted by",
-    "Loan no",
-    "Amount",
-    "Interest rate",
-    "Installment period",
-    "Installment cleared",
-    "Repayment amount",
-    "Approved date",
-    "Repayment from",
-    "Status",
-    "Action",
-  ];
+const loanPage = () => {
+  const { data: loans } = useGetAllLoanQuery("");
+  const [deleteAttendance, { isLoading }] = useDeleteLoanMutation();
 
-  const [loans, setLoans] = useState([
-    {
-      id: 1,
-      employeeName: "Maisha Lucy Zamora Gonzales",
-      permittedBy: "Oleg Hall Larson Sloan",
-      loanNo: "000048",
-      amount: 500000,
-      interestRate: 12,
-      installmentPeriod: 130000,
-      installmentCleared: 0,
-      repaymentAmount: 560000,
-      approvedDate: "2024-11-24",
-      repaymentFrom: "2024-11-30",
-      status: "Active",
-    },
-    {
-      id: 2,
-      employeeName: "Maisha Lucy Zamora Gonzales",
-      permittedBy: "Honorato Imogene Curry Terry",
-      loanNo: "000047",
-      amount: 10000,
-      interestRate: 15,
-      installmentPeriod: 1,
-      installmentCleared: 0,
-      repaymentAmount: 1150,
-      approvedDate: "2024-11-23",
-      repaymentFrom: "2024-12-24",
-      status: "Active",
-    },
-  ]);
-
-  const [entries, setEntries] = useState(10);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(loans.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentLoans = loans.slice(startIndex, startIndex + itemsPerPage);
-
-  // Modal state
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  // Handle page change
-  const handlePageChange = (page: number) => {
-    if (page > 0 && page <= totalPages) {
-      setCurrentPage(page);
+  const handleDelete = async (id: string) => {
+    const res = await deleteAttendance(id).unwrap();
+    if (res?.id) {
+      toast.success("Loan delete successful!");
     }
-  };
-
-  // Handle entries change
-  const handleEntriesChange = (value: number) => {
-    setEntries(value);
-  };
-
-  // Handle search change
-  const handleSearch = (value: string) => {
-    setSearchQuery(value);
-  };
-
-  // Handle adding new loan
-  const handleAddLoan = (newLoan: any) => {
-    setLoans((prevLoans) => [...prevLoans, newLoan]);
-  };
-
-  // Handlers for editing and deleting loan
-  const handleEdit = (id: number) => {
-    console.log("Edit loan with ID:", id);
-  };
-
-  const handleDelete = (id: number) => {
-    console.log("Delete loan with ID:", id);
   };
 
   return (
     <div>
-      <div className="mb-5">
-        <PageHeader item={loanPageHeaderData} />
-      </div>
-      <div className="bg-white shadow-sm rounded-md p-4">
-        {/* Header Section */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-800">Loan list</h2>
-          <div className="flex space-x-2">
-            <button
-              className="bg-[#198754] text-white text-xs py-1 px-4 rounded-md hover:bg-gray-300 flex items-center"
-              onClick={() => console.log("Filter clicked")}
-            >
-              <span className="material-icons">Filter</span>
-            </button>
-            <button
-              className="bg-[#198754] text-white py-2 px-4 text-sm rounded-md hover:bg-green-600"
-              onClick={() => setModalIsOpen(true)}
-            >
-              + Add loan
-            </button>
-          </div>
-        </div>
+      <PageHeader item={loanPageHeaderData} />
+      <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
+        <ComponentHeader />
 
-        <div className="border border-t-0 mb-8"></div>
-        <TableControls
-          onEntriesChange={handleEntriesChange}
-          onSearch={handleSearch}
-        />
+        <HRTable tableHeader={tableHeader}>
+          {loans?.data.map((loan: TLoan, i: number) => (
+            <tr className={`hover:bg-gray-100`} key={i}>
+              <HRTableRow>{i + 1}</HRTableRow>
+              <HRTableRow>
+                {loan?.employee?.firstName} {loan?.employee?.lastName}
+              </HRTableRow>
+              <HRTableRow>{loan?.permittedBy}</HRTableRow>
+              <HRTableRow>{loan.loanNo}</HRTableRow>
+              <HRTableRow>{loan.amount}</HRTableRow>
+              <HRTableRow>{loan.interestRate}</HRTableRow>
+              <HRTableRow>{loan.installmentPeriod}</HRTableRow>
+              <HRTableRow>{loan.installmentCleared}</HRTableRow>
+              <HRTableRow>{loan.repaymentAmount}</HRTableRow>
+              <HRTableRow>{getDayMonthAndYear(loan.approvedDate)}</HRTableRow>
+              <HRTableRow>{getDayMonthAndYear(loan.repaymentFrom)}</HRTableRow>
+              <HRTableRow>
+                <Button
+                  size="sm"
+                  className={`${
+                    loan?.status === "APPROVED"
+                      ? "text-green-500 bg-green-200 h-6 text-sm rounded-[4px]"
+                      : loan?.status === "REJECTED"
+                      ? "text-[#dc3545] bg-red-100 h-6 text-sm rounded-[4px]"
+                      : loan?.status === "PENDING"
+                      ? "bg-blue-100 text-blue-500 h-6 text-sm rounded-[4px]"
+                      : ""
+                  }`}
+                >
+                  {loan?.status}
+                </Button>
+              </HRTableRow>
 
-        <div className="overflow-x-auto">
-          <Table tableHeader={tableHeader}>
-            {currentLoans.map((loan, index) => (
-              <tr key={loan.id} className="text-xs text-center">
-                <td className="py-3 border">{index + 1}</td>
-                <td className=" py-3 border">{loan.employeeName}</td>
-                <td className=" py-3 border">{loan.permittedBy}</td>
-                <td className=" py-3 border">{loan.loanNo}</td>
-                <td className=" py-3 border">{loan.amount}</td>
-                <td className=" py-3 border">{loan.interestRate}</td>
-                <td className=" py-3 border">{loan.installmentPeriod}</td>
-                <td className=" py-3 border">{loan.installmentCleared}</td>
-                <td className="py-3 border">{loan.repaymentAmount}</td>
-                <td className=" py-3 border">{loan.approvedDate}</td>
-                <td className=" py-3 border">{loan.repaymentFrom}</td>
-                <td className="text-center py-3 border text-green-600 font-medium">
-                  {loan.status}
-                </td>
-                <td className="py-3 px-3 border flex space-x-2">
-                  <button
-                    onClick={() => handleEdit(loan.id)}
-                    className="bg-[#28a745] text-white text-xs py-1 px-2 rounded-md hover:bg-green-600 flex items-center space-x-1"
-                  >
-                    <FaEdit />
+              <HRTableRow>
+                <div className="flex items-center gap-2">
+                  <a href={`/hr/loan/update/${loan?.id}`}>
+
+                  <button className=" bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center">
+                    <FaEdit className="text-base" />
                   </button>
+                  </a>
+
                   <button
-                    onClick={() => handleDelete(loan.id)}
-                    className="bg-red-500 text-white text-xs py-1 px-2 rounded-md hover:bg-red-600 flex items-center space-x-1"
+                    disabled={isLoading}
+                    onClick={() => handleDelete(loan?.id)}
+                    className="bg-red-100 border border-red-500 text-red-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
                   >
-                    <FaTrash />
+                    <FaTrash className="text-base" />
                   </button>
-                </td>
-              </tr>
-            ))}
-          </Table>
-        </div>
-
-        {/* Pagination Section */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+                </div>
+              </HRTableRow>
+            </tr>
+          ))}
+        </HRTable>
       </div>
-
-      {/* Add Loan Modal */}
-      <AddLoanModal
-        modalIsOpen={modalIsOpen}
-        setIsOpen={setModalIsOpen}
-        onSave={handleAddLoan}
-      />
     </div>
   );
 };
 
-export default LoanList;
+export default loanPage;

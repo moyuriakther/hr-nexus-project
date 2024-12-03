@@ -40,7 +40,7 @@ const SalaryAdvancePage = () => {
     const res = await deletePayment(id).unwrap();
 
     if (res?.id) {
-      toast.success("Employee delete successful!");
+      toast.success("Payment delete successful!");
     }
   };
 

@@ -21,17 +21,17 @@ export const employeesMenu: TSidebarMenus[] = [
     name: "Attendance",
     icon: <FaUser className="text-[17px] text-gray-700" />,
     children: [
+      // {
+      //   title: "Attendance form",
+      //   path: "/hr/attendances/create",
+      // },
       {
-        title: "Attendance form",
-        path: "/hr/attendances/create",
+        title: "Attendance List",
+        path: "/hr/attendances/attendance-list",
       },
       {
-        title: "Monthly attendance",
-        path: "/hr/attendances/create/monthly",
-      },
-      {
-        title: "Missing attendance",
-        path: "/hr/attendances/missing-attendance",
+        title: "Daily attendance",
+        path: "/hr/attendances/create/daily",
       },
     ],
   },
