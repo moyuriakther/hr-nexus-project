@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { FaCamera } from "react-icons/fa";
-import { FiEdit } from "react-icons/fi";
+// import { FaCamera } from "react-icons/fa";
+// import { FiEdit } from "react-icons/fi";
 import ProfileTab from "./components/ProfileTab";
 import UpdateProfileImg from "./components/UpdateProfileImg";
 

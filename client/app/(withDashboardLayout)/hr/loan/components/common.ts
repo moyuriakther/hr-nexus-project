@@ -1,0 +1,15 @@
+export const tableHeader = [
+  "Sl",
+  "Employee name",
+  "Permitted by",
+  "Loan no",
+  "Amount",
+  "Interest rate",
+  "Installment period",
+  "Installment cleared",
+  "Repayment amount",
+  "Approved date",
+  "Repayment from",
+  "Status",
+  "Action",
+];

@@ -5,10 +5,10 @@ import React, { useState } from "react";
 import { pageHeaderData } from "../components/pageHeaderData";
 import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
-import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
+
 import { FaEdit, FaTrash } from "react-icons/fa";
 import CreateLeaveType from "./components/CreateLeaveType";
-import { Button } from "@nextui-org/react";
+
 import UpdateLeaveTypeModal from "./components/UpdateLeaveTypeModal";
 import {
   useDeleteLeaveMutation,

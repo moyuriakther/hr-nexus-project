@@ -21,17 +21,17 @@ export const employeesMenu: TSidebarMenus[] = [
     name: "Attendance",
     icon: <FaUser className="text-[17px] text-gray-700" />,
     children: [
+      // {
+      //   title: "Attendance form",
+      //   path: "/hr/attendances/create",
+      // },
       {
-        title: "Attendance form",
-        path: "/hr/attendances/create",
+        title: "Attendance List",
+        path: "/hr/attendances/attendance-list",
       },
       {
-        title: "Monthly attendance",
-        path: "/hr/attendances/create/monthly",
-      },
-      {
-        title: "Missing attendance",
-        path: "/hr/attendances/missing-attendance",
+        title: "Daily attendance",
+        path: "/hr/attendances/create/daily",
       },
     ],
   },
@@ -196,6 +196,32 @@ export const Menus: TSidebarMenus[] = [
       {
         title: "Manage employee salary",
         path: "/hr/payroll/manage_employee_salary",
+      },
+    ],
+  },
+  {
+    name: "Project management",
+    icon: <FaTasks className="text-[17px] text-gray-700" />,
+    children: [
+      {
+        title: "Client",
+        path: "/hr/Project_management/client",
+      },
+      {
+        title: "Projects",
+        path: "/hr/Project_management/projects",
+      },
+      {
+        title: "Manage tasks",
+        path: "/hr/Project_management/manage_tasks",
+      },
+      {
+        title: "Reports",
+        path: "/hr/Project_management/reports",
+      },
+      {
+        title: "Team members",
+        path: "/hr/Project_management/team_members",
       },
     ],
   },

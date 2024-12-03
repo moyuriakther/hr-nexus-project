@@ -3,7 +3,7 @@
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
 import { Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
-import { FaFileCsv, FaFileExcel, FaFilter, FaPlusCircle } from "react-icons/fa";
+import { FaFileCsv, FaFileExcel, FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../../employees/position/components/fakeData/limitCount";
 import CreateSalaryAdvanceModal from "./CreateSalaryAdvanceModal";
 

@@ -12,7 +12,10 @@ app.use(cookieParser());
 // origin: "http://localhost:3000",
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://hr-nexus-project.vercel.app"],
+  origin: [
+    "http://localhost:3000",
+    "https://hr-management-app-nine.vercel.app",
+  ],
   credentials: true,
 };
 

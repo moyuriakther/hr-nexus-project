@@ -7,9 +7,9 @@ import pick from "../../../shared/pick";
 import { awardFilterableFields } from "./award.utils";
 
 // Create a new award
-const createAward = catchAsync(async (req: Request, res: Response) => {
+const createAward = catchAsync(async (req, res) => {
+  console.log(req.body, 'award body')
   const result = await awardService.createAward(req.body);
-
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
@@ -50,7 +50,7 @@ const getSingleAward = catchAsync(async (req: Request, res: Response) => {
 const updateAward = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const data = req.body;
-
+console.log(id, data)
   const result = await awardService.updateAward(id, data);
 
   sendResponse(res, {

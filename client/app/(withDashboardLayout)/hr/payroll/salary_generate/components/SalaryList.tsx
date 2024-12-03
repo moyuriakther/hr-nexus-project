@@ -3,13 +3,14 @@
 import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
 import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
+import { Button, Divider } from "@nextui-org/react";
+import { FaCheck } from "react-icons/fa";
+import { FaChartBar } from "react-icons/fa6";
 import { useGetAllPaymentQuery } from "@/app/Redux/api/paymentApi";
 import { Payment } from "@/app/types";
 import { getMonthAndYear } from "@/app/utils/getYearAndMonth";
-import { Button, Divider } from "@nextui-org/react";
 import Link from "next/link";
-import { FaCheck } from "react-icons/fa";
-import { FaChartBar } from "react-icons/fa6";
+
 
 const SalaryList = () => {
   const { data: payments, isLoading } = useGetAllPaymentQuery("");

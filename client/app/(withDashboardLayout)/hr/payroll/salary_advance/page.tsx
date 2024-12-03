@@ -1,7 +1,7 @@
 "use client";
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
-import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
+// import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
 import {
   useDeletePaymentMutation,
   useGetAllPaymentQuery,
@@ -40,7 +40,7 @@ const SalaryAdvancePage = () => {
     const res = await deletePayment(id).unwrap();
 
     if (res?.id) {
-      toast.success("Employee delete successful!");
+      toast.success("Payment delete successful!");
     }
   };
 

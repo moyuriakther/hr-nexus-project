@@ -22,7 +22,7 @@ const PageHeader: React.FC<TPageHeaderProps> = ({ item }) => {
                 item.path === pathname
                   ? "bg-primary text-white "
                   : "bg-transparent"
-              } rounded-[3px] text-base`}
+              } rounded-[3px] text-base hover:bg-primary hover:bg-opacity-20 hover:text-primary`}
             >
               <Link href={`${item.path}`}>{item.name}</Link>
             </Button>

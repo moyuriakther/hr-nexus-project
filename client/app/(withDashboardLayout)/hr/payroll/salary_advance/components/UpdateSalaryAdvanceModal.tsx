@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  useGetSinglePaymentQuery,
+  // useGetSinglePaymentQuery,
   useUpdatePaymentMutation,
 } from "@/app/Redux/api/paymentApi";
 import HRForm from "@/app/components/Form/HRForm";

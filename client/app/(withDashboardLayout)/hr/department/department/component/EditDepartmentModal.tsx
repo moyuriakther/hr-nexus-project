@@ -11,13 +11,19 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaEdit } from "react-icons/fa";
 import { toast } from "sonner";
 
-const EditDepartmentModal = ({departmentId}:any) => {
+const EditDepartmentModal = ({ departmentId }: any) => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [updateDepartment] = useUpdateDepartmentMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-   try {
-      const res = await updateDepartment({departmentId: departmentId, body: {...values}}).unwrap();
+    console.log(values);
+    values["date"] = values?.data && new Date(values?.date)?.toISOString();
+    try {
+      const res = await updateDepartment({
+        departmentId: departmentId,
+        body: { ...values },
+      }).unwrap();
+      console.log(res);
       if (res?.id) {
         toast.success("Department Updated Successfully");
         setModalIsOpen(false);
@@ -28,11 +34,11 @@ const EditDepartmentModal = ({departmentId}:any) => {
   };
   const radioOptions = [
     {
-      value: true,
+      value: "true",
       label: "Active",
     },
     {
-      value: false,
+      value: "false",
       label: "Inactive",
     },
   ];
@@ -44,7 +50,7 @@ const EditDepartmentModal = ({departmentId}:any) => {
         size="sm"
         className="bg-green-100 text-green-500 border border-green-500 min-w-1"
       >
-       <FaEdit className="text-base" />
+        <FaEdit className="text-base" />
       </Button>
       <HRModal
         modalIsOpen={modalIsOpen}

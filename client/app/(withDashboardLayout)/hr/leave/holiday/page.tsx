@@ -1,7 +1,6 @@
 "use client";
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
-import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
 import {
   useDeleteHolidayMutation,
   useGetAllHolidayQuery,
@@ -10,7 +9,6 @@ import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
 import { THoliday } from "@/app/types";
 import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
-import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { pageHeaderData } from "../components/pageHeaderData";

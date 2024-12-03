@@ -16,3 +16,8 @@ export const getDayMonthAndYear = (dateString: string): string => {
     return "";
   }
 };
+
+export const getTimeFromDate = (timeDate: string) => {
+  const date = new Date(timeDate);
+  return date.toTimeString().slice(0, 5);
+};

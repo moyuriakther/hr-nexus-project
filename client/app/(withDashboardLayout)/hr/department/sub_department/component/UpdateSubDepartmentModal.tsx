@@ -11,14 +11,17 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaEdit } from "react-icons/fa";
 import { toast } from "sonner";
 
-const UpdateSubDepartmentModal = ({subDepartment}:any) => {
+const UpdateSubDepartmentModal = ({ subDepartment }: any) => {
   // console.log(subDepartment)
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [updateSubDepartment] = useUpdateSubDepartmentMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-   try {
-      const res = await updateSubDepartment({id: subDepartmentId, body: {...values}}).unwrap();
+    try {
+      const res = await updateSubDepartment({
+        id: subDepartment.id,
+        body: { ...values },
+      }).unwrap();
       if (res?.id) {
         toast.success("Department Updated Successfully");
         setModalIsOpen(false);
@@ -29,11 +32,11 @@ const UpdateSubDepartmentModal = ({subDepartment}:any) => {
   };
   const radioOptions = [
     {
-      value: true,
+      value: "true",
       label: "Active",
     },
     {
-      value: false,
+      value: "false",
       label: "Inactive",
     },
   ];
@@ -48,7 +51,6 @@ const UpdateSubDepartmentModal = ({subDepartment}:any) => {
         <FaEdit className="text-base" />
       </Button>
 
-      
       <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setModalIsOpen}
@@ -68,7 +70,7 @@ const UpdateSubDepartmentModal = ({subDepartment}:any) => {
           <div className="flex items-center gap-x-20">
             <p className="font-medium">Department</p>
             <HRInput
-             defaultValue={subDepartment?.department?.departmentName}
+              defaultValue={subDepartment?.department?.departmentName}
               name="department"
               type="text"
               className="lg:w-[560px]"
@@ -77,7 +79,11 @@ const UpdateSubDepartmentModal = ({subDepartment}:any) => {
           </div>
           <div className="flex items-center gap-x-20">
             <p className="font-medium mr-6">Is Active</p>
-            <HRRadioInput checked={subDepartment?.isActive === true} name="isActive" options={radioOptions} />
+            <HRRadioInput
+              checked={subDepartment?.isActive === true}
+              name="isActive"
+              options={radioOptions}
+            />
           </div>
 
           <div>
