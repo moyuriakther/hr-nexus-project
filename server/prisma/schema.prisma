@@ -120,19 +120,21 @@ model Department {
   departmentName String
   employee       Employee[]
   subDepartment  SubDepartment[]
+  isDeleted      Boolean         @default(false)
 
   @@map("departments")
 }
 
 model SubDepartment {
-  id           String     @id @default(uuid())
-  departmentId String
-  name         String
-  description  String
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @default(now())
-  employee     Employee[]
-  department   Department @relation(fields: [departmentId], references: [id])
+  id                String     @id @default(uuid())
+  departmentId      String
+  subDepartmentName String
+  description       String
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @default(now())
+  employee          Employee[]
+  department        Department @relation(fields: [departmentId], references: [id])
+  isDeleted         Boolean    @default(false)
 
   @@map("sub_departments")
 }
