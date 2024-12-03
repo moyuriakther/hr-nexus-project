@@ -18,7 +18,7 @@ const UpdateSubDepartmentModal = ({subDepartment}:any) => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
    try {
-      const res = await updateSubDepartment({id: subDepartmentId, body: {...values}}).unwrap();
+      const res = await updateSubDepartment({id: subDepartment.id, body: {...values}}).unwrap();
       if (res?.id) {
         toast.success("Department Updated Successfully");
         setModalIsOpen(false);
