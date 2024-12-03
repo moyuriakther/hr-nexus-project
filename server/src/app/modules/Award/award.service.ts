@@ -3,9 +3,12 @@ import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import prisma from "../../../shared/prisma";
 import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
 import { awardSearchableFields } from "./award.utils";
+import ApiError from "../../../errors/ApiError";
+import httpStatus from "http-status";
 
 // Create a new award
 const createAward = async (data: any) => {
+  console.log(data, 'award')
   const result = await prisma.award.create({
     data: {
       ...data,
@@ -23,7 +26,7 @@ const getAllAwards = async (params: any, options: IPaginationOptions) => {
   const andConditions: Prisma.AwardWhereInput[] = [
     {
       isDeleted: false,
-    },
+    }, 
   ];
 
   if (params.searchTerm) {
@@ -101,12 +104,22 @@ const getSingleAward = async (id: string) => {
 
 // Update an award by ID
 const updateAward = async (id: string, data: any) => {
+  console.log(id, data)
+  const isExist = await prisma.award.findUnique({
+    where: {
+      id
+    }
+  })
+  if(!isExist){
+    throw new ApiError(httpStatus.NOT_FOUND, "Award not found")
+  }
   const result = await prisma.award.update({
     where: {
       id,
     },
-    data,
+    data: data,
   });
+  console.log(result)
   return result;
 };
 
