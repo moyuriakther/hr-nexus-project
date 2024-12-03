@@ -3,6 +3,7 @@
 import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import { useAppDispatch, useAppSelector } from "@/app/Redux/hook";
 import { setOpen } from "@/app/Redux/sidebar/sidebarSlice";
+import { logoutUser } from "@/app/services/actions/logoutUser";
 import {
   Button,
   Dropdown,
@@ -12,6 +13,7 @@ import {
   User,
 } from "@nextui-org/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { CgMenuRight } from "react-icons/cg";
 import { MdCleaningServices } from "react-icons/md";
@@ -20,7 +22,10 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.sidebar);
   const { data: myProfile } = useGetMyProfileQuery("");
-
+  const router = useRouter();
+  const handleLogOut = () => {
+    logoutUser(router);
+  };
   return (
     <div className="px-4 py-3 shadow-md sticky top-0 bg-white z-[9]">
       <div className="flex items-center justify-between">
@@ -105,7 +110,10 @@ const Header = () => {
               {/* Buttons Section */}
               <DropdownItem key="buttons" className="mt-4">
                 <div className="flex justify-center gap-4">
-                  <button className="py-2 px-4 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200">
+                  <button
+                    onClick={handleLogOut}
+                    className="py-2 px-4 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200"
+                  >
                     Sign out
                   </button>
                   <button className="py-2 px-4 bg-gray-100 text-red-600 rounded-lg hover:bg-gray-200">

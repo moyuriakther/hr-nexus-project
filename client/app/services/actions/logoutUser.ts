@@ -1,5 +1,4 @@
-
-import { authKey } from "@/constants/authKey";
+import { authKey } from "@/app/constants";
 import { deleteCookies } from "./deleteCookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 

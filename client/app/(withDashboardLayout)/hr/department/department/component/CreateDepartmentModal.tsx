@@ -34,11 +34,11 @@ const CreateDepartmentModal = () => {
   };
   const radioOptions = [
     {
-      value: true,
+      value: "true",
       label: "Active",
     },
     {
-      value: false,
+      value: "false",
       label: "Inactive",
     },
   ];

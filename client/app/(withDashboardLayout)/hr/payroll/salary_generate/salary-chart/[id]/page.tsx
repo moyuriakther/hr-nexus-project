@@ -9,7 +9,7 @@ import Image from "next/image";
 import logo from "../../../../../../assets/images/logo.png";
 import SalaryChartTable from "../components/SalaryChartTable";
 
-const SalaryChartPage = ({ useParams }: { useParams: { id: string } }) => {
+const SalaryChartPage = () => {
   return (
     <div className="min-h-[89vh]">
       <PageHeader item={pageHeaderData} />
