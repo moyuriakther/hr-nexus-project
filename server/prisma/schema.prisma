@@ -26,23 +26,23 @@ model User {
 }
 
 model Employee {
-  id                           String        @id @default(uuid())
+  id                           String         @id @default(uuid())
   firstName                    String
   lastName                     String
   middleName                   String?
-  email                        String        @unique
+  email                        String         @unique
   password                     String
   phoneNumber                  String
   country                      String?
   passport                     String?
-  nidNumber                    String
+  nidNumber                    String?
   alternateNumber              String?
   city                         String?
   attendanceShift              Shift?
   address                      String?
   designation                  String?
-  dateOfBirth                  DateTime?
-  joiningDate                  DateTime?
+  dateOfBirth                  String?
+  joiningDate                  String?
   accountNumber                String?
   tinNumber                    String?
   branchAddress                String?
@@ -56,11 +56,11 @@ model Employee {
   otherBenefit                 Float?
   departmentId                 String
   subDepartmentId              String
-  position                     String
+  position                     String?
   dutyType                     String?
-  hireDate                     DateTime?
-  rehireDate                   DateTime?
-  terminationDate              DateTime?
+  hireDate                     String?
+  rehireDate                   String?
+  terminationDate              String?
   cardNumber                   String?
   monthlyWorkHours             Float?
   workPermit                   Boolean?
@@ -72,9 +72,9 @@ model Employee {
   terminationReason            String?
   workInCity                   String?
   employeeType                 String
-  gender                       Gender
-  maritalStatus                MaritalStatus
-  numberOfKids                 Int?          @default(0)
+  gender                       Gender?
+  maritalStatus                MaritalStatus?
+  numberOfKids                 Int?           @default(0)
   sosNumber                    String?
   religion                     String?
   ethnicGroup                  String?
@@ -97,7 +97,7 @@ model Employee {
   homePhone               String?
   status                  Status        @default(ACTIVE)
   createdAt               DateTime      @default(now())
-  updatedAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
   payment                 Payment[]
   attendance              Attendance[]
   award                   Award[]
@@ -116,7 +116,7 @@ model Department {
   id             String          @id @default(uuid())
   description    String
   createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   departmentName String
   employee       Employee[]
   subDepartment  SubDepartment[]
@@ -147,7 +147,7 @@ model Attendance {
   checkOut       DateTime?
   monthName      String?
   createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   attendanceType AttendanceType?
   employee       Employee        @relation(fields: [employeeId], references: [id])
 

@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "employees" ALTER COLUMN "nidNumber" DROP NOT NULL,
+ALTER COLUMN "position" DROP NOT NULL,
+ALTER COLUMN "gender" DROP NOT NULL,
+ALTER COLUMN "maritalStatus" DROP NOT NULL;
