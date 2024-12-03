@@ -19,7 +19,7 @@ import { loanPageHeaderData } from "../employees/components/pageHeaderData";
 import ComponentHeader from "./components/ComponentHeader";
 import { tableHeader } from "./components/common";
 
-const loanPage = () => {
+const LoanPage = () => {
   const { data: loans } = useGetAllLoanQuery("");
   const [deleteAttendance, { isLoading }] = useDeleteLoanMutation();
 
@@ -72,10 +72,9 @@ const loanPage = () => {
               <HRTableRow>
                 <div className="flex items-center gap-2">
                   <a href={`/hr/loan/update/${loan?.id}`}>
-
-                  <button className=" bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center">
-                    <FaEdit className="text-base" />
-                  </button>
+                    <button className=" bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center">
+                      <FaEdit className="text-base" />
+                    </button>
                   </a>
 
                   <button
@@ -95,4 +94,4 @@ const loanPage = () => {
   );
 };
 
-export default loanPage;
+export default LoanPage;

@@ -7,7 +7,7 @@ import { pageHeaderData } from "../../../components/pageHeaderData";
 // import HRTable from "@/app/components/Table/HRTable";
 // import HRTableRow from "@/app/components/Table/HRTableRow";
 
-const SalaryApprovalPage = ({ useParams }: { useParams: { id: string } }) => {
+const SalaryApprovalPage = () => {
   const fakeData = [
     { id: 1, name: "Gross salary", debit: 2000 },
     { id: 1, name: "Net salary", credit: 4000 },
