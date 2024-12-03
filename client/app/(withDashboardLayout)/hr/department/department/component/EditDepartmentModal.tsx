@@ -16,8 +16,11 @@ const EditDepartmentModal = ({departmentId}:any) => {
   const [updateDepartment] = useUpdateDepartmentMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+   console.log(values)
+    values['date'] = values?.data && new Date(values?.date)?.toISOString();
    try {
       const res = await updateDepartment({departmentId: departmentId, body: {...values}}).unwrap();
+      console.log(res)
       if (res?.id) {
         toast.success("Department Updated Successfully");
         setModalIsOpen(false);
@@ -59,6 +62,7 @@ const EditDepartmentModal = ({departmentId}:any) => {
               type="text"
               className="lg:w-[560px]"
               placeholder="Department name"
+             
             />
           </div>
           <div className="flex items-center gap-x-20">

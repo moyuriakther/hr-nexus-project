@@ -1,157 +1,134 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
+import HRForm from "@/app/components/Form/HRForm";
+import HRInput from "@/app/components/Form/HRInput";
+import HRSelect from "@/app/components/Form/HRSelect";
 import HRModal from "@/app/components/Modal/HRModal";
 import { useCreateAwardMutation } from "@/app/Redux/api/awardApi";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useGetAllEmployeeQuery } from "@/app/Redux/api/employeeApi";
+import { Button, Divider } from "@nextui-org/react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
-// Define the type for the form data
-type AwardFormData = {
-  awardName: string;
-  awardDescription?: string;
-  giftItem: string;
-  date: string;
-  employeeName: string;
-  awardedBy: string;
-};
-
-type AddAwardModalProps = {
-  modalIsOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onSave: (data: AwardFormData) => void;
-};
-
-const AddAwardModal: React.FC<AddAwardModalProps> = ({
-  modalIsOpen,
-  setIsOpen,
-}) => {
-  const { register, reset, handleSubmit } = useForm<AwardFormData>();
+const CreateAwardModal = ({modalIsOpen,
+  setIsOpen}:any) => {
   const [createAward] = useCreateAwardMutation();
+  const {data: employees} = useGetAllEmployeeQuery({})
 
-  // Submit handler for the form
-  const onSubmit: SubmitHandler<AwardFormData> = async (values) => {
-    try {
-      const awardData = { ...values };
+  const empOptions = employees?.map((emp:any) =>({value: emp?.id, label: emp?.firstName+" " + emp?.lastName}));
+
+  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+      const formattedDate = new Date(values.date).toISOString();
+      if(formattedDate){
+        <p>Date is Required</p>
+      }
+      const awardData = {
+        employeeId: values.employeeId,
+        awardName: values.awardName,
+        awardDescription: values.awardDescription,
+        giftItem: values.giftItem,
+        date: formattedDate,
+        awardBy: values.awardBy
+       };
+       console.log({formattedDate})
+   try {
       const res = await createAward(awardData).unwrap();
       if (res?.id) {
         toast.success("Award Created Successfully");
         setIsOpen(false);
-        reset();
       }
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(`Error: ${error.message || "An error occurred"}`);
-      } else {
-        toast.error("Error creating award");
-      }
-      console.error(error);
+      console.log(error);
     }
   };
 
   return (
-    <HRModal
-      modalIsOpen={modalIsOpen}
-      setIsOpen={setIsOpen}
-      modalTitle="Award Form"
-    >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-4">
-          {/* Award Name */}
-          <div className="flex justify-between items-center">
-            <label className="block font-medium text-gray-700">
-              Award name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              {...register("awardName", { required: true })}
-              placeholder="Award name"
-              className="w-80 border rounded-md p-2 ms-10"
-            />
+      <div>
+      <HRModal
+        modalIsOpen={modalIsOpen}
+        setIsOpen={setIsOpen}
+        modalTitle="Award Form"
+      >
+        <HRForm onSubmit={onSubmit}>
+          <div className="space-y-4">
+            <div className="flex items-center gap-x-4">
+              <label className="font-medium w-[150px]">Award name</label>
+              <HRInput
+                name="awardName"
+                type="text"
+                className="flex-1 lg:w-[560px]"
+                placeholder="Award name"
+              />
+            </div>
+            <div className="flex items-center gap-x-4">
+              <label className="font-medium w-[150px]">Award description</label>
+              <HRInput
+                name="awardDescription"
+                type="text"
+                className="flex-1 lg:w-[560px]"
+                placeholder="Award description"
+              />
+            </div>
+            <div className="flex items-center gap-x-4">
+              <label className="font-medium w-[150px]">Gift item</label>
+              <HRInput
+                name="giftItem"
+                type="text"
+                className="flex-1 lg:w-[560px]"
+                placeholder="Gift item"
+              />
+            </div>
+            <div className="flex items-center gap-x-4">
+              <label className="font-medium w-[150px]">Date</label>
+              <HRInput
+                name="date"
+                type="date"
+                className="flex-1 lg:w-[560px]"
+                placeholder="Date"
+              />
+            </div>
+            <div className="flex items-center gap-x-4">
+              <label className="font-medium w-[150px]">Select Employee </label>
+              <HRSelect
+                options={empOptions}
+                name="employeeId"
+                className="flex-1 lg:w-[560px]"
+                placeholder="Select Employee name"
+              />
+            </div>
+            <div className="flex items-center gap-x-4">
+              <label className="font-medium w-[150px]">Award by</label>
+              <HRInput
+                name="awardBy"
+                type="text"
+                className="flex-1 lg:w-[560px]"
+                placeholder="Award by"
+              />
+            </div>
           </div>
 
-          {/* Award Description */}
-          <div className="flex justify-between items-center">
-            <label className="block font-medium text-gray-700">
-              Award description
-            </label>
-            <textarea
-              {...register("awardDescription")}
-              placeholder="Award description"
-              className="w-80 border rounded-md p-2"
-            />
+          <Divider className="my-4" />
+          <div className="mt-5 flex items-center justify-end gap-2">
+            <Button
+              onClick={() => setIsOpen(!modalIsOpen)}
+              className="rounded-[3px] text-base shadow-md h-9"
+              color="danger"
+              size="sm"
+            >
+              Close
+            </Button>
+            <Button
+              type="submit"
+              className="rounded-[3px] text-base bg-blue-600 text-white h-9"
+              size="sm"
+            >
+              Save
+            </Button>
           </div>
-
-          {/* Gift Item */}
-          <div className="flex justify-between items-center">
-            <label className="block font-medium text-gray-700">
-              Gift item <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              {...register("giftItem", { required: true })}
-              placeholder="Gift item"
-              className="w-80 border rounded-md p-2"
-            />
-          </div>
-
-          {/* Date */}
-          <div className="flex justify-between items-center">
-            <label className="block font-medium text-gray-700">
-              Date <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="date"
-              {...register("date", { required: true })}
-              className="w-80 border rounded-md p-2"
-            />
-          </div>
-
-          {/* Employee Name */}
-          <div className="flex justify-between items-center">
-            <label className="block font-medium text-gray-700">
-              Employee name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              {...register("employeeName", { required: true })}
-              placeholder="Employee name"
-              className="w-80 border rounded-md p-2"
-            />
-          </div>
-
-          {/* Awarded By */}
-          <div className="flex justify-between items-center">
-            <label className="block font-medium text-gray-700">
-              Award by <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              {...register("awardedBy", { required: true })}
-              placeholder="Award by"
-              className="w-80 border rounded-md p-2"
-            />
-          </div>
-        </div>
-
-        {/* Modal Buttons */}
-        <div className="flex justify-end mt-4 space-x-4">
-          <button
-            type="button"
-            className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-            onClick={() => setIsOpen(false)}
-          >
-            Close
-          </button>
-          <button
-            type="submit"
-            className="bg-[#198754] text-white py-2 px-4 rounded-md hover:bg-green-600"
-          >
-            Save
-          </button>
-        </div>
-      </form>
-    </HRModal>
+        </HRForm>
+      </HRModal>
+    </div>
   );
 };
 
-export default AddAwardModal;
+export default CreateAwardModal;
