@@ -26,60 +26,72 @@ model User {
 }
 
 model Employee {
-  id                           String        @id @default(uuid())
-  firstName                    String
-  lastName                     String
-  middleName                   String?
-  email                        String        @unique
-  password                     String
-  phoneNumber                  String
-  country                      String?
-  passport                     String?
-  nidNumber                    String
-  alternateNumber              String?
-  city                         String?
-  attendanceShift              Shift?
-  address                      String?
-  designation                  String?
-  dateOfBirth                  DateTime?
-  joiningDate                  DateTime?
-  accountNumber                String?
-  tinNumber                    String?
-  branchAddress                String?
-  routingNumber                String?
-  basicSalary                  Float?
-  transportAllowance           Float?
-  grossSalary                  Float?
-  medicalBenefit               Float?
-  transportationBenefit        Float?
-  familyBenefit                Float?
-  otherBenefit                 Float?
-  departmentId                 String
-  subDepartmentId              String
-  position                     String
-  dutyType                     String?
-  hireDate                     DateTime?
-  rehireDate                   DateTime?
-  terminationDate              DateTime?
-  cardNumber                   String?
-  monthlyWorkHours             Float?
-  workPermit                   Boolean?
-  payFrequency                 String?
-  payFrequencyText             String?
-  hourlyRate                   Float?
-  hourlyRate2                  Float?
-  employeeGrade                String?
-  terminationReason            String?
-  workInCity                   String?
-  employeeType                 String
-  gender                       Gender
-  maritalStatus                MaritalStatus
-  numberOfKids                 Int?          @default(0)
-  sosNumber                    String?
-  religion                     String?
-  ethnicGroup                  String?
-  profileImage                 String?
-  passportPhoto                String?
+  id              String  @id @default(uuid())
+  firstName       String
+  lastName        String
+  middleName      String?
+  email           String  @unique
+  password        String
+  phoneNumber     String
+  country         String?
+  passport        String?
+  nidNumber       String
+  alternateNumber String?
+  city            String?
+  attendanceShift Shift?
+  address         String?
+  designation     String?
+  dateOfBirth     String?
+  joiningDate     String?
+
+  // Bank info
+  accountNumber         String?
+  bankName              String?
+  tinNumber             String?
+  branchAddress         String?
+  routingNumber         String?
+  basicSalary           Float?
+  transportAllowance    Float?
+  grossSalary           Float?
+  medicalBenefit        Float?
+  transportationBenefit Float?
+  familyBenefit         Float?
+  otherBenefit          Float?
+
+  // Department info
+  departmentId    String
+  subDepartmentId String
+  department      Department    @relation(fields: [departmentId], references: [id])
+  subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id])
+
+  position String
+  dutyType String?
+
+  // Employment info
+  hireDate          String?
+  rehireDate        String?
+  terminationDate   String?
+  cardNumber        String?
+  monthlyWorkHours  Float?
+  workPermit        Boolean?
+  payFrequency      String?
+  payFrequencyText  String?
+  hourlyRate        Float?
+  hourlyRate2       Float?
+  employeeGrade     String?
+  terminationReason String?
+  workInCity        String?
+  employeeType      String
+
+  gender        Gender
+  maritalStatus MaritalStatus
+  numberOfKids  Int?          @default(0)
+  sosNumber     String?
+  religion      String?
+  ethnicGroup   String?
+  profileImage  String?
+
+  // Emergency contact info
   emergencyContactPerson       String?
   emergencyContactRelationship String?
   emergencyContactNumber       String?
@@ -89,28 +101,24 @@ model Employee {
   alternateEmergencyHomePhone  String?
   alternateEmergencyWorkPhone  String?
 
-  bloodGroup                   String?
-  healthCondition              String?
-  isDisabled                   Boolean       @default(false)
-  disabilitiesDescription      String?
-  homeEmail                    String?
-  homePhone                    String?
-  isDeleted                    Boolean       @default(false)
-  status                       Status        @default(ACTIVE)
-  createdAt                    DateTime      @default(now())
-  updatedAt                    DateTime      @default(now())
-  payment                      Payment[]
-  attendance                   Attendance[]
-  award                        Award[]
-  department                   Department    @relation(fields: [departmentId], references: [id])
-  subDepartment                SubDepartment @relation(fields: [subDepartmentId], references: [id])
-  userRole   UserRole     @default(EMPLOYEE)  
-  isDeleted  Boolean      @default(false)  
+  // Health info
+  bloodGroup              String?
+  healthCondition         String?
+  isDisabled              Boolean @default(false)
+  disabilitiesDescription String?
+
+  homeEmail  String?
+  homePhone  String?
+  status     Status       @default(ACTIVE)
+  isDeleted  Boolean      @default(false)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  attendance Attendance[]
   salary     Salary[]
   leave      Leave[]
   payment    Payment[]
+  award      Award[]
   loan       Loan[]
-
 
   @@map("employees")
 }
@@ -191,12 +199,11 @@ model Leave {
   managerComment    String?
   status            LeaveStatus @default(PENDING)
 
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @default(now())
-  employeeId        String?
-  leaveCode         String?     @default("")
-  employee          Employee?   @relation(fields: [employeeId], references: [id])
-
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  employeeId String?
+  leaveCode  String?   @default("")
+  employee   Employee? @relation(fields: [employeeId], references: [id])
 
   @@map("leaves")
 }
@@ -328,22 +335,73 @@ model Recruitment {
   workingPeriod String?
   duties        String?
   supervisor    String?
-  interviewId   String
-  interview     Interview @relation(fields: [interviewId], references: [id])
+  interviews    Interview[]
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("notice_boards")
+}
+
+model Recruitment {
+  id               String  @id @default(uuid())
+  firstName        String
+  lastName         String?
+  email            String  @unique
+  phone            String
+  alternativePhone String?
+  ssn              String?
+  presentAddress   String?
+  permanentAddress String?
+  country          String?
+  city             String?
+  zipCode          String?
+  picture          String?
+
+  // Educational Info
+  obtainedDegree String?
+  university     String?
+  cgpa           String?
+  comments       String?
+
+  // past companies 
+  companyName   String?
+  workingPeriod String?
+  duties        String?
+  supervisor    String?
+  interviews    Interview[]
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("recruitment")
 }
 
 model Interview {
-  id            String        @id @default(uuid())
+  id            String      @id @default(uuid())
+  candidateName String
+  interviewer   String
   jobPosition   String
-  interviewData String
+  interviewDate String
   vivaMarks     String
   writtenMarks  String
   mcqTotalMarks String
   totalMarks    String
   selection     String
-  candidate     Recruitment[]
+  candidateId   String
+  candidate     Recruitment @relation(fields: [candidateId], references: [id])
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("interview")
+}
+
+model ProjectManagement {
+  id String @id @default(uuid())
 
   @@map("interview")
 }

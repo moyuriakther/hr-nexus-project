@@ -11,7 +11,7 @@
 Our team comprises six dedicated members:
 
 - **Tasmim Rahman**: Team Leader & Frontend Developer
-- **Mahin Khan**: Co-Team Leader & Backend Developer
+- **Mahin Khan**: Co-Team Leader & Full Stack Developer
 - **Moyuri Akther**: GitHub Manager & Full Stack Developer
 - **Md Masum**: Backend Developer
 - **Rakib Hosen**: Backend Developer
