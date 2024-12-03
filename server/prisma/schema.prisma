@@ -114,27 +114,30 @@ model Employee {
 
 model Department {
   id             String          @id @default(uuid())
+  departmentName String
   description    String
   createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  departmentName String
-  employee       Employee[]
-  subDepartment  SubDepartment[]
+  updatedAt      DateTime        @default(now())
+  isActive       Boolean         @default(true)
   isDeleted      Boolean         @default(false)
+  subDepartment  SubDepartment[]
+  employee       Employee[]
 
   @@map("departments")
 }
 
+// SubDepartment model
 model SubDepartment {
   id                String     @id @default(uuid())
   departmentId      String
+  department        Department @relation(fields: [departmentId], references: [id])
   subDepartmentName String
   description       String
+  isActive          Boolean    @default(true)
+  isDeleted         Boolean    @default(false)
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @default(now())
   employee          Employee[]
-  department        Department @relation(fields: [departmentId], references: [id])
-  isDeleted         Boolean    @default(false)
 
   @@map("sub_departments")
 }
