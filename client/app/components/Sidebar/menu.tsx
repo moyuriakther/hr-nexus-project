@@ -196,6 +196,32 @@ export const Menus: TSidebarMenus[] = [
       },
     ],
   },
+  {
+    name: "Project management",
+    icon: <FaTasks className="text-[17px] text-gray-700" />,
+    children: [
+      {
+        title: "Client",
+        path: "/hr/Project_management/client",
+      },
+      {
+        title: "Projects",
+        path: "/hr/Project_management/projects",
+      },
+      {
+        title: "Manage tasks",
+        path: "/hr/Project_management/manage_tasks",
+      },
+      {
+        title: "Reports",
+        path: "/hr/Project_management/reports",
+      },
+      {
+        title: "Team members",
+        path: "/hr/Project_management/team_members",
+      },
+    ],
+  },
 
   {
     name: "Procurement",

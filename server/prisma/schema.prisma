@@ -190,12 +190,12 @@ model Leave {
   approvedDays      Int?
   managerComment    String?
   status            LeaveStatus @default(PENDING)
-
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
-  employeeId String?
-  leaveCode  String?   @default("")
-  employee   Employee? @relation(fields: [employeeId], references: [id])
+  isDeleted         Boolean     @default(false)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @default(now())
+  employeeId        String?
+  leaveCode         String?     @default("")
+  employee          Employee?   @relation(fields: [employeeId], references: [id])
 
   @@map("leaves")
 }
@@ -223,6 +223,7 @@ model Client {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
   project     Project[]
+  isDeleted   Boolean   @default(false)
 
   @@map("clients")
 }
@@ -239,6 +240,7 @@ model Project {
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @default(now())
   client             Client        @relation(fields: [clientId], references: [id])
+  isDeleted          Boolean       @default(false)
   ProjectTask        ProjectTask[]
 
   @@map("projects")
@@ -275,6 +277,7 @@ model Award {
   awardBy          String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @default(now())
+  isDeleted        Boolean   @default(false)
   employee         Employee  @relation(fields: [employeeId], references: [id])
 
   @@map("awards")
@@ -295,6 +298,7 @@ model Loan {
   createdAt          DateTime    @default(now())
   updatedAt          DateTime    @default(now())
   status             LeaveStatus
+  isDeleted          Boolean     @default(false)
   employee           Employee    @relation(fields: [employeeId], references: [id])
 
   @@map("loans")

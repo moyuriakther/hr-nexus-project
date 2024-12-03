@@ -152,6 +152,7 @@ import {
   useGetAllAwardQuery,
 } from "@/app/Redux/api/awardApi";
 import UpdateAwardModal from "../components/UpdateAwardModal";
+import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
 
 const AwardList = () => {
   const { data } = useGetAllAwardQuery({});
@@ -255,7 +256,9 @@ const AwardList = () => {
             <td className="px-4 py-2 border">{award.awardName}</td>
             <td className="px-4 py-2 border">{award.awardDescription}</td>
             <td className="px-4 py-2 border">{award.giftItem}</td>
-            <td className="px-4 py-2 border">{award.date}</td>
+            <td className="px-4 py-2 border">
+              {getDayMonthAndYear(award.date)}
+            </td>
             <td className="px-4 py-2 border">
               {award.employee.firstName + " " + award.employee.lastName}
             </td>

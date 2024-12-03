@@ -90,7 +90,7 @@ const UpdateProfileImg = () => {
         >
           <Image
             src={myProfile?.coverPhoto}
-            alt=""
+            alt="ssss"
             className="rounded-[10px] h-[250px] w-full"
             width={120}
             height={120}
@@ -122,7 +122,7 @@ const UpdateProfileImg = () => {
           <div className="absolute -bottom-[60px] left-8 w-[120px] h-[120px] bg-gray-900 text-white rounded-full flex items-center justify-center border-[5px] border-white overflow-visible">
             <Image
               src={myProfile?.photo}
-              alt=""
+              alt="sssss"
               className="w-full h-full object-cover rounded-full"
               width={120}
               height={120}
