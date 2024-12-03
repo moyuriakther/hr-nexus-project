@@ -16,3 +16,5 @@ RESET_PASSWORD_EXPIRES_IN = "5m"
 RESET_PASSWORD_LINK= "http://localhost:3000/reset-password"
 EMAIL = "farhan.adnan1952@gmail.com"
 EMAIL_APP_PASSWORD = "epsw llyk bghy oubo "
+
+DATABASE_URL="postgresql://neondb_owner:NCX3GkO6siWH@ep-black-scene-a5a90lc1.us-east-2.aws.neon.tech/neondb?sslmode=require"
