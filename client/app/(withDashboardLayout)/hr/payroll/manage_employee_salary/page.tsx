@@ -3,7 +3,7 @@
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
-import { Button } from "@nextui-org/react";
+import Link from "next/link";
 import { FaDownload, FaEye } from "react-icons/fa";
 import { pageHeaderData } from "../components/pageHeaderData";
 import ManageSalaryTableHeader from "./components/ManageSalaryTableHeader";
@@ -37,14 +37,14 @@ const ManageEmployeeSalaryPage = () => {
 
               <HRTableRow>
                 <div className="flex items-center gap-2">
-                  <a href={`manage_employee_salary/payslip/${salary?.id}`}>
+                  <Link href={`manage_employee_salary/payslip/${salary?.id}`}>
                     <button
                       // onClick={() => setIsOpen(true)}
                       className="bg-yellow-500 text-black border flex items-center gap-1 py-1 px-2 text-center rounded-[3px] border-yellow-500"
                     >
                       <FaEye className="text-base" /> Payslip
                     </button>
-                  </a>
+                  </Link>
                   <button className="bg-primary text-white border border-primary  flex items-center gap-1 py-1 px-2 text-center rounded-[3px]">
                     <FaDownload className="text-base" /> Download pay slip
                   </button>

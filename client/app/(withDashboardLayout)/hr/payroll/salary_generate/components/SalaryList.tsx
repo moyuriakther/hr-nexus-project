@@ -3,13 +3,13 @@
 import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
 import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
-import { Button, Divider } from "@nextui-org/react";
-import { FaEdit, FaTrash, FaCheck } from "react-icons/fa";
-import { FaChartBar } from "react-icons/fa6";
-import { fakeData } from "./fakeData";
 import { useGetAllPaymentQuery } from "@/app/Redux/api/paymentApi";
 import { Payment } from "@/app/types";
 import { getMonthAndYear } from "@/app/utils/getYearAndMonth";
+import { Button, Divider } from "@nextui-org/react";
+import Link from "next/link";
+import { FaCheck } from "react-icons/fa";
+import { FaChartBar } from "react-icons/fa6";
 
 const SalaryList = () => {
   const { data: payments, isLoading } = useGetAllPaymentQuery("");
@@ -64,19 +64,21 @@ const SalaryList = () => {
 
                   <HRTableRow>
                     <div className="flex items-center gap-2">
-                      <a
+                      <Link
                         href={`salary_generate/salary-approval/${payroll?.id}`}
                       >
                         <HRIconsButton className="bg-blue-100 text-blue-500 border w-1 border-blue-500">
                           <FaCheck className="text-base" />
                         </HRIconsButton>
-                      </a>
+                      </Link>
 
-                      <a href={`salary_generate/salary-chart/${payroll?.id}`}>
+                      <Link
+                        href={`salary_generate/salary-chart/${payroll?.id}`}
+                      >
                         <HRIconsButton className="bg-blue-100 text-blue-500 border w-1 border-blue-500">
                           <FaChartBar className="text-base" />
                         </HRIconsButton>
-                      </a>
+                      </Link>
                     </div>
                   </HRTableRow>
                 </tr>
