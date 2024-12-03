@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // "use client";
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import { Divider } from "@nextui-org/react";
 import { pageHeaderData } from "../../../components/pageHeaderData";
-import HRTable from "@/app/components/Table/HRTable";
-import HRTableRow from "@/app/components/Table/HRTableRow";
+// import HRTable from "@/app/components/Table/HRTable";
+// import HRTableRow from "@/app/components/Table/HRTableRow";
 
 const SalaryApprovalPage = ({ useParams }: { useParams: { id: string } }) => {
   const fakeData = [

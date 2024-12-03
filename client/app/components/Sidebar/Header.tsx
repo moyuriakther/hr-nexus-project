@@ -11,6 +11,7 @@ import {
   DropdownTrigger,
   User,
 } from "@nextui-org/react";
+import Image from "next/image";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { CgMenuRight } from "react-icons/cg";
 import { MdCleaningServices } from "react-icons/md";
@@ -70,10 +71,15 @@ const Header = () => {
                 <div className="flex flex-col items-center">
                   {/* Avatar */}
                   <div className="w-[70px] h-[70px] bg-gray-200 rounded-full flex items-center justify-center">
-                    <img
-                      src={myProfile?.photo}
+                    <Image
+                      src={
+                        myProfile?.photo ||
+                        "https://cdn-icons-png.flaticon.com/512/219/219970.png"
+                      }
                       alt="Admin Avatar"
                       className="w-full h-full rounded-full"
+                      width={50}
+                      height={50}
                     />
                   </div>
                   {/* Name and Email */}

@@ -1,13 +1,10 @@
 "use client";
 
-import {
-  useCreateLeaveMutation,
-  useUpdateLeaveMutation,
-} from "@/app/Redux/api/leaveApi";
+import { useCreateLeaveMutation } from "@/app/Redux/api/leaveApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRModal from "@/app/components/Modal/HRModal";
-import { TLeave } from "@/app/types";
+
 import { Button, Divider } from "@nextui-org/react";
 import React from "react";
 import { FieldValues } from "react-hook-form";
