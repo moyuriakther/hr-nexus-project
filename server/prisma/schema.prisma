@@ -325,41 +325,6 @@ model Recruitment {
 
   isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-
-  @@map("notice_boards")
-}
-
-model Recruitment {
-  id               String  @id @default(uuid())
-  firstName        String
-  lastName         String?
-  email            String  @unique
-  phone            String
-  alternativePhone String?
-  ssn              String?
-  presentAddress   String?
-  permanentAddress String?
-  country          String?
-  city             String?
-  zipCode          String?
-  picture          String?
-
-  // Educational Info
-  obtainedDegree String?
-  university     String?
-  cgpa           String?
-  comments       String?
-
-  // past companies 
-  companyName   String?
-  workingPeriod String?
-  duties        String?
-  supervisor    String?
-  interviews    Interview[]
-
-  isDeleted Boolean  @default(false)
-  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("recruitment")
@@ -389,7 +354,7 @@ model Interview {
 model ProjectManagement {
   id String @id @default(uuid())
 
-  @@map("interview")
+  @@map("ProjectManagement")
 }
 
 enum EmployeeType {
