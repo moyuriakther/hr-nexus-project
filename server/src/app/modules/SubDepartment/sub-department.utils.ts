@@ -1,2 +1,2 @@
-export const subDepartmentFilterableFields = ["searchTerm", "name"];
+export const subDepartmentFilterableFields = ["searchTerm"];
 export const subDepartmentSearchableFields = ["subDepartmentName"];

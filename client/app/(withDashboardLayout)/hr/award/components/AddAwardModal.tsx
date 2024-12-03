@@ -10,28 +10,31 @@ import { Button, Divider } from "@nextui-org/react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
-const CreateAwardModal = ({modalIsOpen,
-  setIsOpen}:any) => {
+const CreateAwardModal = ({ modalIsOpen, setIsOpen }: any) => {
   const [createAward] = useCreateAwardMutation();
-  const {data: employees} = useGetAllEmployeeQuery({})
+  const { data: employees } = useGetAllEmployeeQuery({});
 
-  const empOptions = employees?.map((emp:any) =>({value: emp?.id, label: emp?.firstName+" " + emp?.lastName}));
+  const empOptions = employees?.map((emp: any) => ({
+    value: emp?.id,
+    label: emp?.firstName + " " + emp?.lastName,
+  }));
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-      const formattedDate = new Date(values.date).toISOString();
-      if(formattedDate){
-        <p>Date is Required</p>
-      }
-      const awardData = {
-        employeeId: values.employeeId,
-        awardName: values.awardName,
-        awardDescription: values.awardDescription,
-        giftItem: values.giftItem,
-        date: formattedDate,
-        awardBy: values.awardBy
-       };
-       console.log({formattedDate})
-   try {
+    const formattedDate = new Date(values.date).toISOString();
+    if (formattedDate) {
+      <p>Date is Required</p>;
+    }
+    const awardData = {
+      employeeId: values.employeeId,
+      awardName: values.awardName,
+      awardDescription: values.awardDescription,
+      giftItem: values.giftItem,
+      date: formattedDate,
+      awardBy: values.awardBy,
+    };
+    console.log({ formattedDate });
+    console.log(awardData);
+    try {
       const res = await createAward(awardData).unwrap();
       if (res?.id) {
         toast.success("Award Created Successfully");

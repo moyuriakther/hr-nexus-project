@@ -2,7 +2,7 @@
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import {
-  useDeleteAttendanceMutation,
+  // useDeleteAttendanceMutation,
   useGetAllAttendanceQuery,
 } from "@/app/Redux/api/attendanceApi";
 import HRTable from "@/app/components/Table/HRTable";
@@ -12,14 +12,14 @@ import {
   getDayMonthAndYear,
   getTimeFromDate,
 } from "@/app/utils/getYearAndMonth";
-import { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import { toast } from "sonner";
+// import { useState } from "react";
+// import { FaEdit, FaTrash } from "react-icons/fa";
+// import { toast } from "sonner";
 import { attendancePageHeaderData } from "../../employees/components/pageHeaderData";
 import ComponentHeader from "./components/ComponentHeader";
 
 const AttendancePage = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data: attendances } = useGetAllAttendanceQuery("");
   // const [deleteAttendance, { isLoading }] = useDeleteAttendanceMutation();
 

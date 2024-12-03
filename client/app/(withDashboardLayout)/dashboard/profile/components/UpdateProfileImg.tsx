@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   useGetMyProfileQuery,
   useUpdateMyProfileMutation,
 } from "@/app/Redux/api/userApi";
 import { uploadImage } from "@/app/utils/UploadImage";
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
@@ -86,10 +88,12 @@ const UpdateProfileImg = () => {
               : "bg-gradient-to-r rounded-[10px] from-blue-900 via-blue-600 to-blue-500 h-[250px]"
           }`}
         >
-          <img
+          <Image
             src={myProfile?.coverPhoto}
-            alt=""
+            alt="ssss"
             className="rounded-[10px] h-[250px] w-full"
+            width={120}
+            height={120}
           />
         </div>
 
@@ -116,10 +120,12 @@ const UpdateProfileImg = () => {
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className="absolute -bottom-[60px] left-8 w-[120px] h-[120px] bg-gray-900 text-white rounded-full flex items-center justify-center border-[5px] border-white overflow-visible">
-            <img
+            <Image
               src={myProfile?.photo}
-              alt=""
+              alt="sssss"
               className="w-full h-full object-cover rounded-full"
+              width={120}
+              height={120}
             />
           </div>
 

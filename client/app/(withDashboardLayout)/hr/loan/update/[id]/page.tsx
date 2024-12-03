@@ -5,18 +5,18 @@ import {
   useGetSingleLoanQuery,
   useUpdateLoanMutation,
 } from "@/app/Redux/api/loanApi";
-import {
-  useGetSinglePaymentQuery,
-  useUpdatePaymentMutation,
-} from "@/app/Redux/api/paymentApi";
+// import {
+//   // useGetSinglePaymentQuery,
+//   // useUpdatePaymentMutation,
+// } from "@/app/Redux/api/paymentApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRRadioInput from "@/app/components/Form/HRRadioInput";
-import HRModal from "@/app/components/Modal/HRModal";
-import { Payment, TLoan } from "@/app/types";
+// import HRModal from "@/app/components/Modal/HRModal";
+// import { Payment, TLoan } from "@/app/types";
 import {
   getDayMonthAndYear,
-  getMonthAndYear,
+  // getMonthAndYear,
 } from "@/app/utils/getYearAndMonth";
 import { Button, Divider } from "@nextui-org/react";
 import { useParams, useRouter } from "next/navigation";

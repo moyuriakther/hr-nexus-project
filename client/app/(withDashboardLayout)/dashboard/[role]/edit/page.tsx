@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import { FaCamera } from "react-icons/fa";
-import { FiEdit } from "react-icons/fi";
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";

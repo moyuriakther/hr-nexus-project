@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const recruiters = [
   {
@@ -72,12 +73,12 @@ const Recruitment = () => {
       ))}
 
       <div className="py-4">
-        <a
+        <Link
           className="font-[600] text-[14px] leading-[14px] flex items-center justify-center gap-1 text-[#0d0d0]"
           href="hr/selection"
         >
           See More
-        </a>
+        </Link>
       </div>
     </div>
   );
