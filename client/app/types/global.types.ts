@@ -49,3 +49,12 @@ export type TSelect = {
   key: string;
   value: string;
 };
+
+export type TAuthUser = {
+  email: string;
+  exp: number;
+  iat: number;
+  id: string;
+  name: string;
+  role: string;
+};

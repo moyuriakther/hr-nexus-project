@@ -12,7 +12,7 @@ const createEmployee = async (payload: any) => {
   // Execute a Prisma transaction
   const employeeInfo = await prisma.$transaction(async (prisma) => {
     const UserName = payload.firstName + " " + payload.lastName;
-    const userInfo = await prisma.user.create({
+    await prisma.user.create({
       data: {
         name: UserName,
         email: payload.email,
@@ -58,7 +58,6 @@ const createEmployee = async (payload: any) => {
         transportAllowance: payload.transportAllowance,
         gender: payload.gender,
         maritalStatus: payload.maritalStatus,
-
         hourlyRate: payload.hourlyRate,
         hourlyRate2: payload.hourlyRate2,
         familyBenefit: payload.familyBenefit,
@@ -71,8 +70,6 @@ const createEmployee = async (payload: any) => {
         numberOfKids: payload.numberOfKids,
         nidNumber: payload.nidNumber,
         emergencyContactNumber: payload.emergencyContactNumber,
-        passportPhoto: payload.passportPhoto,
-
         profileImage: payload.profileImage,
         religion: payload.religion,
         emergencyContactPerson: payload.emergencyContactPerson,
@@ -95,9 +92,7 @@ const createEmployee = async (payload: any) => {
         routingNumber: payload.routingNumber,
         rehireDate: payload.rehireDate,
         subDepartmentId: payload.subDepartmentId,
-        password: payload.password,
-
-        updatedAt: payload.updatedAt,
+        password: hashPassword,
       },
     });
 
@@ -180,8 +175,6 @@ const getEmployees = async (params: any, options: IPaginationOptions) => {
   };
 };
 const getSingleEmployee = async (id: string) => {
-  // console.log(data);
-
   const result = await prisma.employee.findUniqueOrThrow({
     where: {
       id,
@@ -190,7 +183,6 @@ const getSingleEmployee = async (id: string) => {
   return result;
 };
 const updateEmployee = async (id: string, data: any) => {
-  // console.log(data);
   const result = await prisma.employee.update({
     where: {
       id,

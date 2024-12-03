@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { AuthController } from "./auth.controller";
+import auth from "../../middleware/auth";
 
 const router = express.Router();
 
@@ -10,10 +11,6 @@ router.post(
   AuthController.refreshToken
 );
 
-router.post(
-  "/change-password",
-
-  AuthController.changePassword
-);
+router.post("/change-password", auth(), AuthController.changePassword);
 
 export const AuthRoutes = router;

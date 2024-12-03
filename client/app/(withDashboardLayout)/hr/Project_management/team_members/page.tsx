@@ -1,8 +1,11 @@
+"use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useGetAllProjectsQuery } from "@/app/Redux/api/projectsApi";
 import { Divider } from "@nextui-org/react";
 
 
 const TeamMemberPage = () => {
-
+const {data: projects} = useGetAllProjectsQuery({})
   return (
      <div className="min-h-[89vh] ">
       <div className="bg-gray-100 flex justify-start ">
@@ -19,11 +22,14 @@ const TeamMemberPage = () => {
             className="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             defaultValue=""
           >
-            <option value="" disabled>
+            {
+              projects?.data?.map((project:any) =><><option value={project?.projectName}>{project?.projectName}</option></>)
+            }
+            {/* <option value="" disabled>
               Select One...
             </option>
             <option value="team1">Team 1</option>
-            <option value="team2">Team 2</option>
+            <option value="team2">Team 2</option> */}
           </select>
 
           {/* Select Dropdown 2 */}
@@ -31,11 +37,9 @@ const TeamMemberPage = () => {
             className="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             defaultValue=""
           >
-            <option value="" disabled>
-              Select one
-            </option>
-            <option value="member1">Member 1</option>
-            <option value="member2">Member 2</option>
+             {
+              projects?.data?.map((project:any) =><><option value={project?.client?.clientName}>{project?.client?.clientName}</option></>)
+            }
           </select>
 
           {/* Submit Button */}

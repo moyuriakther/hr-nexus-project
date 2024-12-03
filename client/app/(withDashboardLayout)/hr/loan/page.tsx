@@ -7,6 +7,7 @@ import Pagination from "../award/components/pagination";
 import TableControls from "../award/components/TableControls";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import { loanPageHeaderData } from "../employees/components/pageHeaderData";
+import AddLoanModal from "./components/AddLoanModal";
 
 const LoanList = () => {
   const tableHeader = [
@@ -55,39 +56,41 @@ const LoanList = () => {
       status: "Active",
     },
   ]);
-  console.log(setLoans);
 
   const [entries, setEntries] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
-  console.log(entries);
-  console.log(searchQuery);
-
-  const handleEntriesChange = (value: number) => {
-    setEntries(value);
-    console.log("Entries per page:", value);
-  };
-
-  const handleSearch = (value: string) => {
-    setSearchQuery(value);
-    console.log("Search query:", value);
-  };
-
-  // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
-  // Calculate pagination details
   const totalPages = Math.ceil(loans.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentLoans = loans.slice(startIndex, startIndex + itemsPerPage);
 
-  // Handlers
+  // Modal state
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  // Handle page change
   const handlePageChange = (page: number) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
 
+  // Handle entries change
+  const handleEntriesChange = (value: number) => {
+    setEntries(value);
+  };
+
+  // Handle search change
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+  };
+
+  // Handle adding new loan
+  const handleAddLoan = (newLoan: any) => {
+    setLoans((prevLoans) => [...prevLoans, newLoan]);
+  };
+
+  // Handlers for editing and deleting loan
   const handleEdit = (id: number) => {
     console.log("Edit loan with ID:", id);
   };
@@ -114,7 +117,7 @@ const LoanList = () => {
             </button>
             <button
               className="bg-[#198754] text-white py-2 px-4 text-sm rounded-md hover:bg-green-600"
-              onClick={() => console.log("Add loan clicked")}
+              onClick={() => setModalIsOpen(true)}
             >
               + Add loan
             </button>
@@ -171,6 +174,13 @@ const LoanList = () => {
           onPageChange={handlePageChange}
         />
       </div>
+
+      {/* Add Loan Modal */}
+      <AddLoanModal
+        modalIsOpen={modalIsOpen}
+        setIsOpen={setModalIsOpen}
+        onSave={handleAddLoan}
+      />
     </div>
   );
 };

@@ -8,7 +8,8 @@ type TInputProps = {
   placeholder?: string;
   label?: string;
   className?: string;
-  defaultValue?:string|number;
+  defaultValue?: string | number;
+  disabled?: boolean;
 };
 
 const HRInput = ({
@@ -18,6 +19,7 @@ const HRInput = ({
   label,
   className,
   defaultValue,
+  disabled,
 }: TInputProps) => {
   const { control } = useFormContext();
 
@@ -33,6 +35,7 @@ const HRInput = ({
               {...field}
               value={value}
               type={type}
+              disabled={disabled}
               placeholder={placeholder}
               defaultValue={defaultValue}
               className={cn(
