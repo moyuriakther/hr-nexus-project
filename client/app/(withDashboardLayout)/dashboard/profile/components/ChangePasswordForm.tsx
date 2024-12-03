@@ -26,7 +26,7 @@ const ChangePasswordForm = () => {
 
     if (res?.message) {
       toast.success("Changed password successfully!!");
-      router.push("/dashboard/profile");
+      router.push("/login");
     }
   };
 

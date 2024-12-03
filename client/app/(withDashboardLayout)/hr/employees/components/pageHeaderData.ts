@@ -17,16 +17,12 @@ export const pageHeaderData: TPageHeader[] = [
 
 export const attendancePageHeaderData: TPageHeader[] = [
   {
-    name: "Attendance form",
-    path: "/hr/attendances/create",
+    name: "Daily attendance form",
+    path: "/hr/attendances/create/daily",
   },
   {
-    name: "Monthly attendance",
-    path: "/hr/attendances/create/monthly",
-  },
-  {
-    name: "Missing attendance",
-    path: "/hr/attendances/missing-attendance",
+    name: "Attendance list",
+    path: "/hr/attendances/attendance-list",
   },
 ];
 export const loanPageHeaderData: TPageHeader[] = [

@@ -12,6 +12,7 @@ export enum tagTypes {
   weekdaysHoliday = "weekdaysHoliday",
   holiday = "holiday",
   user = "user",
+  loan = "loan",
 }
 
 export const tagTypesList = [
@@ -28,4 +29,5 @@ export const tagTypesList = [
   tagTypes.award,
   tagTypes.project,
   tagTypes.user,
+  tagTypes.loan,
 ];

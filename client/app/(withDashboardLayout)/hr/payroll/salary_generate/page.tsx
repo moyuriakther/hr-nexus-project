@@ -16,8 +16,8 @@ const SalaryGeneratePage = () => {
   return (
     <div className="min-h-[89vh]">
       <PageHeader item={pageHeaderData} />
-      <div className="mt-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
-        <div className="bg-white lg:col-span-4 py-4 rounded-[3px] shadow-lg lg:w-fit w-[95%] h-72">
+      <div className="mt-4">
+        {/* <div className="bg-white lg:col-span-4 py-4 rounded-[3px] shadow-lg lg:w-fit w-[95%] h-72">
           <h2 className="text-2xl px-6 text-black font-semibold mt-3 pb-3 mb-4">
             Select salary month
           </h2>
@@ -46,8 +46,8 @@ const SalaryGeneratePage = () => {
               </div>
             </HRForm>
           </div>
-        </div>
-        <div className="lg:col-span-8">
+        </div> */}
+        <div className="">
           <SalaryList />
         </div>
       </div>
