@@ -390,9 +390,10 @@ model Recruitment {
   supervisor    String?
   interviews    Interview[]
 
-  isDeleted Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isDeleted Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  shortList ShortList[]
 
   @@map("recruitment")
 }
@@ -416,6 +417,22 @@ model Interview {
   updatedAt DateTime @updatedAt
 
   @@map("interview")
+}
+
+model ShortList {
+  id String @id @default(uuid())
+
+  name          String
+  jobPosition   String
+  interviewDate String
+  candidateId   String
+  candidate     Recruitment @relation(fields: [candidateId], references: [id])
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("shortlist")
 }
 
 // model ProjectManagement {

@@ -1,13 +1,13 @@
-import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
-import MultiStepForm from "./components/MultiStepper";
-import { pageHeaderData } from "../components/pageHeaderData";
 import { Button, Divider } from "@nextui-org/react";
+import MultiStepForm from "../../create/components/MultiStepper";
 import Link from "next/link";
 import { FaList } from "react-icons/fa";
+import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
+import { pageHeaderData } from "../../components/pageHeaderData";
 
-const CreateEmployeePage = () => {
+const EditEmployeePage = () => {
   return (
-    <div>
+    <>
       <PageHeader item={pageHeaderData} />
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
         <div className="lg:pb-12 pb-8">
@@ -27,11 +27,10 @@ const CreateEmployeePage = () => {
           </div>
           <Divider />
         </div>
-
         <MultiStepForm />
       </div>
-    </div>
+    </>
   );
 };
 
-export default CreateEmployeePage;
+export default EditEmployeePage;
