@@ -10,5 +10,5 @@ function main() {
   });
 }
 
-// seedAdmin();
+seedAdmin();
 main();

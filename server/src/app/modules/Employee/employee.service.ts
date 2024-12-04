@@ -182,13 +182,105 @@ const getSingleEmployee = async (id: string) => {
   });
   return result;
 };
-const updateEmployee = async (id: string, data: any) => {
+const updateEmployee = async (id: string, payload: any) => {
+  const hashPassword: string = await bcrypt.hash(payload.password, 12);
+
+  const user = await prisma.employee.findUnique({
+    where: {
+      id,
+    },
+  });
+
   const result = await prisma.employee.update({
     where: {
       id,
     },
-    data,
+    data: {
+      firstName: payload?.firstName || user?.firstName,
+      lastName: payload?.lastName || user?.lastName,
+      middleName: payload?.middleName || user?.middleName,
+      email: payload?.email || user?.email,
+      phoneNumber: payload?.phoneNumber || user?.phoneNumber,
+      address: payload?.address || user?.address,
+      dateOfBirth: payload?.dateOfBirth || user?.dateOfBirth,
+      joiningDate: payload?.joiningDate || user?.joiningDate,
+      status: payload?.status || user?.status,
+      designation: payload?.designation || user?.designation,
+      departmentId: payload?.departmentId || user?.departmentId,
+      employeeType: payload?.employeeType || user?.employeeType,
+      accountNumber: payload?.accountNumber || user?.accountNumber,
+      alternateNumber: payload?.alternateNumber || user?.alternateNumber,
+      alternateEmergencyContact:
+        payload?.alternateEmergencyContact || user?.alternateEmergencyContact,
+      alternateEmergencyHomePhone:
+        payload?.alternateEmergencyHomePhone ||
+        user?.alternateEmergencyHomePhone,
+      alternateEmergencyWorkPhone:
+        payload?.alternateEmergencyWorkPhone ||
+        user?.alternateEmergencyWorkPhone,
+      attendanceShift: payload?.attendanceShift || user?.attendanceShift,
+      basicSalary: payload?.basicSalary || user?.basicSalary,
+      bloodGroup: payload?.bloodGroup || user?.bloodGroup,
+      branchAddress: payload?.branchAddress || user?.branchAddress,
+      cardNumber: payload?.cardNumber || user?.cardNumber,
+      city: payload?.city || user?.city,
+      country: payload?.country || user?.country,
+      tinNumber: payload?.tinNumber || user?.tinNumber,
+      terminationDate: payload?.terminationDate || user?.terminationDate,
+      terminationReason: payload?.terminationReason || user?.terminationReason,
+      workInCity: payload?.workInCity || user?.workInCity,
+      workPermit: payload?.workPermit || user?.workPermit,
+      transportationBenefit:
+        payload?.transportationBenefit || user?.transportationBenefit,
+      transportAllowance:
+        payload?.transportAllowance || user?.transportAllowance,
+      gender: payload?.gender || user?.gender,
+      maritalStatus: payload?.maritalStatus || user?.maritalStatus,
+      hourlyRate: payload?.hourlyRate || user?.hourlyRate,
+      hourlyRate2: payload?.hourlyRate2 || user?.hourlyRate2,
+      familyBenefit: payload?.familyBenefit || user?.familyBenefit,
+      medicalBenefit: payload?.medicalBenefit || user?.medicalBenefit,
+      otherBenefit: payload?.otherBenefit || user?.otherBenefit,
+      healthCondition: payload?.healthCondition || user?.healthCondition,
+      homeEmail: payload?.homeEmail || user?.homeEmail,
+      homePhone: payload?.homePhone || user?.homePhone,
+      isDisabled: payload?.isDisabled || user?.isDisabled,
+      numberOfKids: payload?.numberOfKids || user?.numberOfKids,
+      nidNumber: payload?.nidNumber || user?.nidNumber,
+      emergencyContactNumber:
+        payload?.emergencyContactNumber || user?.emergencyContactNumber,
+      profileImage: payload?.profileImage || user?.profileImage,
+      religion: payload?.religion || user?.religion,
+      emergencyContactPerson:
+        payload?.emergencyContactPerson || user?.emergencyContactPerson,
+      emergencyHomePhone:
+        payload?.emergencyHomePhone || user?.emergencyHomePhone,
+      emergencyWorkPhone:
+        payload?.emergencyWorkPhone || user?.emergencyWorkPhone,
+      disabilitiesDescription:
+        payload?.disabilitiesDescription || user?.disabilitiesDescription,
+      position: payload?.position || user?.position,
+      emergencyContactRelationship:
+        payload?.emergencyContactRelationship ||
+        user?.emergencyContactRelationship,
+      dutyType: payload?.dutyType || user?.dutyType,
+      employeeGrade: payload?.employeeGrade || user?.employeeGrade,
+      hireDate: payload?.hireDate || user?.hireDate,
+      monthlyWorkHours: payload?.monthlyWorkHours || user?.monthlyWorkHours,
+      sosNumber: payload?.sosNumber || user?.sosNumber,
+
+      grossSalary: payload?.grossSalary || user?.grossSalary,
+      ethnicGroup: payload?.ethnicGroup || user?.ethnicGroup,
+      payFrequency: payload?.payFrequency || user?.payFrequency,
+      passport: payload?.passport || user?.passport,
+      payFrequencyText: payload?.payFrequencyText || user?.payFrequencyText,
+      routingNumber: payload?.routingNumber || user?.routingNumber,
+      rehireDate: payload?.rehireDate || user?.rehireDate,
+      subDepartmentId: payload?.subDepartmentId || user?.subDepartmentId,
+      password: hashPassword || user?.password,
+    },
   });
+
   return result;
 };
 
