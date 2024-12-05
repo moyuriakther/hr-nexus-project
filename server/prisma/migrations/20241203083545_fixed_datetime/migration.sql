@@ -1,0 +1,13 @@
+-- AlterTable
+ALTER TABLE "attendances" ALTER COLUMN "updatedAt" DROP DEFAULT;
+
+-- AlterTable
+ALTER TABLE "departments" ALTER COLUMN "updatedAt" DROP DEFAULT;
+
+-- AlterTable
+ALTER TABLE "employees" ALTER COLUMN "dateOfBirth" SET DATA TYPE TEXT,
+ALTER COLUMN "joiningDate" SET DATA TYPE TEXT,
+ALTER COLUMN "hireDate" SET DATA TYPE TEXT,
+ALTER COLUMN "rehireDate" SET DATA TYPE TEXT,
+ALTER COLUMN "terminationDate" SET DATA TYPE TEXT,
+ALTER COLUMN "updatedAt" DROP DEFAULT;

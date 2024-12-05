@@ -2,16 +2,16 @@
 
 import { assets } from "@/app/assets";
 import { useAppDispatch, useAppSelector } from "@/app/Redux/hook";
+import { setOpen } from "@/app/Redux/sidebar/sidebarSlice";
+import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { HiX } from "react-icons/hi";
 import style from "./sidebar.module.css";
+import MobileSidebar from "./SidebarForMobile";
 import SidebarMenus from "./SidebarMenus";
 import SidebarSearch from "./SidebarSearch";
-import MobileSidebar from "./SidebarForMobile";
-import { HiX } from "react-icons/hi";
-import { Button } from "@nextui-org/react";
-import { setOpen } from "@/app/Redux/sidebar/sidebarSlice";
 
 const Sidebar = () => {
   const { open } = useAppSelector((state) => state.sidebar);

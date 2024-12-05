@@ -10,8 +10,6 @@ const loginUser = async (payload: { email: string; password: string }) => {
       email: payload.email,
     },
   });
-  console.log(userData);
-
   const isCorrectPassword: boolean = await bcrypt.compare(
     payload.password,
     userData.password

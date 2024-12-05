@@ -7,113 +7,436 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// models will be here 
-
 model User {
-  id          String    @id @default(uuid())
-  email       String    @unique
-  name        String
-  role        UserRole? @default(EMPLOYEE)
-  password    String
-  phoneNumber String
-
+  id                 String    @id @default(uuid())
+  email              String    @unique
+  name               String
+  role               UserRole? @default(EMPLOYEE)
+  password           String
   photo              String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  needPasswordChange Boolean  @default(true)
-  status             Status?  @default(INACTIVE)
+  coverPhoto         String?
+  signature          String?
+  phoneNumber        String
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  needPasswordChange Boolean   @default(true)
+  status             Status?   @default(ACTIVE)
 
   @@map("users")
 }
 
 model Employee {
-  id          String    @id @default(uuid())
-  address     String?
-  designation String?
-  dateOfBirth DateTime?
-  joiningDate DateTime?
-  status      Status    @default(ACTIVE)
+  id                           String         @id @default(uuid())
+  firstName                    String
+  lastName                     String
+  middleName                   String?
+  email                        String         @unique
+  password                     String
+  phoneNumber                  String
+  country                      String?
+  passport                     String?
+  nidNumber                    String?
+  alternateNumber              String?
+  city                         String?
+  attendanceShift              Shift?
+  address                      String?
+  designation                  String?
+  dateOfBirth                  String?
+  joiningDate                  String?
+  accountNumber                String?
+  tinNumber                    String?
+  branchAddress                String?
+  routingNumber                String?
+  basicSalary                  Float?
+  transportAllowance           Float?
+  grossSalary                  Float?
+  medicalBenefit               Float?
+  transportationBenefit        Float?
+  familyBenefit                Float?
+  otherBenefit                 Float?
+  departmentId                 String
+  subDepartmentId              String
+  position                     String?
+  dutyType                     String?
+  hireDate                     String?
+  rehireDate                   String?
+  terminationDate              String?
+  cardNumber                   String?
+  monthlyWorkHours             Float?
+  workPermit                   Boolean?
+  payFrequency                 String?
+  payFrequencyText             String?
+  hourlyRate                   Float?
+  hourlyRate2                  Float?
+  employeeGrade                String?
+  terminationReason            String?
+  workInCity                   String?
+  employeeType                 String
+  gender                       Gender?
+  maritalStatus                MaritalStatus?
+  numberOfKids                 Int?           @default(0)
+  sosNumber                    String?
+  religion                     String?
+  ethnicGroup                  String?
+  profileImage                 String?
+  passportPhoto                String?
+  emergencyContactPerson       String?
+  emergencyContactRelationship String?
+  emergencyContactNumber       String?
+  emergencyHomePhone           String?
+  emergencyWorkPhone           String?
+  alternateEmergencyContact    String?
+  alternateEmergencyHomePhone  String?
+  alternateEmergencyWorkPhone  String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  // Health info
+  bloodGroup              String?
+  healthCondition         String?
+  isDisabled              Boolean       @default(false)
+  disabilitiesDescription String?
+  homeEmail               String?
+  homePhone               String?
+  status                  Status        @default(ACTIVE)
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+  payment                 Payment[]
+  attendance              Attendance[]
+  award                   Award[]
+  department              Department    @relation(fields: [departmentId], references: [id])
+  subDepartment           SubDepartment @relation(fields: [subDepartmentId], references: [id])
+  userRole                UserRole      @default(EMPLOYEE)
+  isDeleted               Boolean       @default(false)
+  salary                  Salary[]
+  leave                   Leave[]
+  loan                    Loan[]
 
   @@map("employees")
 }
 
 model Department {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id             String          @id @default(uuid())
+  departmentName String
+  description    String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now())
+  isActive       Boolean         @default(true)
+  isDeleted      Boolean         @default(false)
+  subDepartment  SubDepartment[]
+  employee       Employee[]
+
+  @@map("departments")
 }
 
+// SubDepartment model
 model SubDepartment {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id                String     @id @default(uuid())
+  departmentId      String
+  department        Department @relation(fields: [departmentId], references: [id])
+  subDepartmentName String
+  description       String
+  isActive          Boolean    @default(true)
+  isDeleted         Boolean    @default(false)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @default(now())
+  employee          Employee[]
+
+  @@map("sub_departments")
+}
+
+model Attendance {
+  id             String          @id @default(uuid())
+  employeeId     String
+  date           DateTime?
+  checkIn        DateTime?
+  checkOut       DateTime?
+  monthName      String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  attendanceType AttendanceType?
+  employee       Employee        @relation(fields: [employeeId], references: [id])
+
+  @@map("attendances")
 }
 
 model Salary {
-  id                 String @id @default(uuid())
-  employeeId         Int
-  basicSalary        Int
-  totalBenifits      Int
-  transportAllowance Int
-  grossSalary        Int
-  stateIncomeTax     Int
-  socialSecurity     Int
-  contribution       Int
-  loanDeduction      Int
-  selaryAdvance      Int
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id                 String   @id @default(uuid())
+  employeeId         String
+  basicSalary        Float
+  totalBenefits      Float
+  transportAllowance Float
+  grossSalary        Float
+  stateIncomeTax     Float
+  socialSecurity     Float
+  contribution       Float
+  loanDeduction      Float
+  salaryAdvance      Float
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+  employee           Employee @relation(fields: [employeeId], references: [id])
 
   @@map("salaries")
 }
 
 model Leave {
   id                String      @id @default(uuid())
-  applyDate         DateTime
+  applyDate         DateTime?   @default(now())
   leaveType         String
-  startDate         DateTime
-  endDate           DateTime
-  days              Int
-  reason            String
-  approvedDate      DateTime
-  approvedStartDate DateTime
-  approvedEndDate   DateTime
-  approvedDays      Int
-  managerComment    String
-  status            LeaveStatus
+  startDate         DateTime?
+  endDate           DateTime?
+  days              Int?
+  reason            String?
+  approvedDate      DateTime?
+  approvedStartDate DateTime?
+  approvedEndDate   DateTime?
+  approvedDays      Int?
+  managerComment    String?
+  status            LeaveStatus @default(PENDING)
+  isDeleted         Boolean     @default(false)
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @default(now())
+  employeeId        String?
+  leaveCode         String?     @default("")
+  employee          Employee?   @relation(fields: [employeeId], references: [id])
 
   @@map("leaves")
 }
 
+model Payment {
+  id            String         @id @default(uuid())
+  employeeId    String
+  salaryMonth   String
+  totalSalary   Float
+  releaseAmount Float?
+  status        PaymentStatus?
+  date          DateTime?      @default(now())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now())
+  employee      Employee       @relation(fields: [employeeId], references: [id])
+}
+
+model Client {
+  id          String    @id @default(uuid())
+  clientName  String
+  country     String?
+  email       String?
+  companyName String?
+  address     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  project     Project[]
+  isDeleted   Boolean   @default(false)
+
+  @@map("clients")
+}
+
+model Project {
+  id                 String        @id @default(uuid())
+  clientId           String
+  projectName        String?
+  projectDescription String?
+  approximateTasks   Int?
+  projectDuration    String?
+  startDate          DateTime?
+  endDate            DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @default(now())
+  client             Client        @relation(fields: [clientId], references: [id])
+  isDeleted          Boolean       @default(false)
+  ProjectTask        ProjectTask[]
+
+  @@map("projects")
+}
+
+model ProjectTask {
+  id        String  @id @default(uuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  employeeIds String[]
+
+  taskName        String?
+  taskDescription String?
+  taskType        String?
+  taskStatus      TaskStatus?
+  taskStartDate   DateTime?
+  taskEndDate     DateTime?
+  taskPriority    String?
+  priority        PriorityStatus?
+  createdBy       String?
+  isDeleted       Boolean         @default(false)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @default(now())
+}
+
+model Award {
+  id               String    @id @default(uuid())
+  employeeId       String
+  awardName        String
+  awardDescription String?
+  giftItem         String?
+  date             DateTime?
+  awardBy          String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now())
+  isDeleted        Boolean   @default(false)
+  employee         Employee  @relation(fields: [employeeId], references: [id])
+
+  @@map("awards")
+}
+
+model Loan {
+  id                 String      @id @default(uuid())
+  employeeId         String
+  permittedBy        String?
+  loanNo             String?
+  amount             Float?
+  interestRate       Float?
+  installmentPeriod  Int?
+  installmentCleared Int?
+  repaymentAmount    Float?
+  isDeleted          Boolean     @default(false)
+  approvedDate       DateTime?
+  repaymentFrom      DateTime?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @default(now())
+  status             LeaveStatus
+  employee           Employee    @relation(fields: [employeeId], references: [id])
+
+  @@map("loans")
+}
+
 model Holidays {
-  id          String   @id @default(uuid())
-  holidayName String
-  fromDate    DateTime
-  toDate      DateTime
-  totalDays   Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id          String    @id @default(uuid())
+  holidayName String?
+  fromDate    DateTime?
+  toDate      DateTime?
+  totalDays   Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  isDeleted   Boolean   @default(false)
 
   @@map("holidays")
 }
 
 model WeeklyHolidays {
   id        String   @id @default(uuid())
-  dayName   String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  dayName   String[]
 
   @@map("weekly_holidays")
+}
+
+// model Recruitment {
+//   id               String  @id @default(uuid())
+//   firstName        String
+//   lastName         String?
+//   email            String  @unique
+//   phone            String
+//   alternativePhone String?
+//   ssn              String?
+//   presentAddress   String?
+//   permanentAddress String?
+//   country          String?
+//   city             String?
+//   zipCode          String?
+//   picture          String?
+
+//   // Educational Info
+//   obtainedDegree String?
+//   university     String?
+//   cgpa           String?
+//   comments       String?
+
+//   // past companies 
+//   companyName   String?
+//   workingPeriod String?
+//   duties        String?
+//   supervisor    String?
+//   interviews    Interview[]
+
+//   isDeleted Boolean  @default(false)
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @default(now())
+
+//   @@map("notice_boards")
+// }
+
+model Recruitment {
+  id               String  @id @default(uuid())
+  firstName        String
+  lastName         String?
+  email            String  @unique
+  phone            String
+  alternativePhone String?
+  ssn              String?
+  presentAddress   String?
+  permanentAddress String?
+  country          String?
+  city             String?
+  zipCode          String?
+  picture          String?
+
+  // Educational Info
+  obtainedDegree String?
+  university     String?
+  cgpa           String?
+  comments       String?
+
+  // past companies 
+  companyName   String?
+  workingPeriod String?
+  duties        String?
+  supervisor    String?
+  interviews    Interview[]
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("recruitment")
+}
+
+model Interview {
+  id            String      @id @default(uuid())
+  candidateName String
+  interviewer   String
+  jobPosition   String
+  interviewDate String
+  vivaMarks     String
+  writtenMarks  String
+  mcqTotalMarks String
+  totalMarks    String
+  selection     String
+  candidateId   String
+  candidate     Recruitment @relation(fields: [candidateId], references: [id])
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("interview")
+}
+
+// model ProjectManagement {
+//   id String @id @default(uuid())
+
+//   @@map("interview")
+// }
+
+enum EmployeeType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERN
+  TEMPORARY
+  REMOTE
+}
+
+enum Shift {
+  GENERAL
+  OVERTIME
+  NIGHT
 }
 
 enum Status {
@@ -130,4 +453,42 @@ enum LeaveStatus {
 enum UserRole {
   ADMIN
   EMPLOYEE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
+enum AttendanceType {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REJECTED
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  TODO
+}
+
+enum PriorityStatus {
+  HIGH
+  MEDIUM
+  LOW
 }

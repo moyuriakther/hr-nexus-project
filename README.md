@@ -11,7 +11,7 @@
 Our team comprises six dedicated members:
 
 - **Tasmim Rahman**: Team Leader & Frontend Developer
-- **Mahin Khan**: Co-Team Leader & Backend Developer
+- **Mahin Khan**: Co-Team Leader & Full Stack Developer
 - **Moyuri Akther**: GitHub Manager & Full Stack Developer
 - **Md Masum**: Backend Developer
 - **Rakib Hosen**: Backend Developer
@@ -168,4 +168,3 @@ To deliver a cutting-edge HR management solution within the project timeline usi
 ## Conclusion
 
 **HR Nexus** bridges the gap between HR operations and technology, offering HR Managers an efficient and scalable solution. It reflects our team's dedication and technical expertise in addressing the unique challenges of modern HR management.
-
