@@ -2,30 +2,27 @@
 
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
-import HRRadioInput from "@/app/components/Form/HRRadioInput";
 import HRModal from "@/app/components/Modal/HRModal";
+import { useCreatePositionMutation } from "@/app/Redux/api/positionApi";
 import { Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
+import { toast } from "sonner";
 
 const CreatePositionModalContent = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [createPosition] = useCreatePositionMutation();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
-  };
 
-  const radioOptions = [
-    {
-      value: "Active",
-      label: "Active",
-    },
-    {
-      value: "Inactive",
-      label: "Inactive",
-    },
-  ];
+    const res = await createPosition(data).unwrap();
+    if (res?.id) {
+      toast.success("Position Created Successfully");
+      setModalIsOpen(false);
+    }
+  };
 
   return (
     <div>
@@ -37,7 +34,6 @@ const CreatePositionModalContent = () => {
         <FaPlusCircle /> Add position
       </Button>
 
-      
       <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setModalIsOpen}
@@ -47,25 +43,22 @@ const CreatePositionModalContent = () => {
           <div className="flex items-center gap-x-10">
             <p className="font-medium">Position Name</p>
             <HRInput
-              name="position_name"
+              name="positionName"
               type="text"
               className="lg:w-[560px]"
+              required={true}
               placeholder="Position Name"
             />
           </div>
           <div className="flex items-center gap-x-10">
-            <p className="font-medium">Position Name</p>
+            <p className="font-medium">Position Detail</p>
             <HRInput
-              name="position_details"
+              name="PositionDetails"
               type="text"
+              required={true}
               className="lg:w-[560px]"
-              placeholder="Position Name"
+              placeholder="Position Details"
             />
-          </div>
-
-          <div className="flex items-center gap-x-20">
-            <p className="font-medium">Is Active</p>
-            <HRRadioInput name="isActive" options={radioOptions} />
           </div>
 
           <div>

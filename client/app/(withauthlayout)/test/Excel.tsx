@@ -10,8 +10,6 @@ const PaymentExport = () => {
     { label: "ID", key: "id" },
     { label: "Amount", key: "amount" },
     { label: "Salary Month", key: "salaryMonth" },
-
-    // -[-[---[-[ you can add more headers here]]]]
   ];
 
   return (
