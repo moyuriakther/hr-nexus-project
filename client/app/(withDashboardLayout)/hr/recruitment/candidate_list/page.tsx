@@ -35,7 +35,7 @@ const CandidateList = () => {
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
       <SearchAndModal
-        menuName={"Candidate List"}
+        menuName={"Candidate "}
         excelExportParamsData={excelExportParamsData}
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}

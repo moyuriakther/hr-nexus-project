@@ -13,7 +13,7 @@ const InterviewCandidate=({data,isLoading}:{data:TInterview[],isLoading:boolean}
     const [id, setId]=useState<SetStateAction<string|number>>('')
   const [updateModalIsOpen, setIsUpdateModal]=useState(false)
   const [currentPage, setCurrentPage]=useState(1)
-  const totalPage=Math.round(data.length/10)
+  const totalPage=Math.round(data?.length/5)
   const startIndex=Number(currentPage)*5-5
   const lastIndex=startIndex+5
     if (isLoading) {
@@ -44,7 +44,7 @@ const InterviewCandidate=({data,isLoading}:{data:TInterview[],isLoading:boolean}
         <div>
           <UpdateInterViewCandidate setIsOpen={setIsUpdateModal} modalIsOpen={updateModalIsOpen} id={id}/>
           <HRTable tableHeader={interviewTableHeader}>
-        {data.slice(startIndex, lastIndex).map((candidate, index) => {
+        {data?.slice(startIndex, lastIndex).map((candidate, index) => {
           return (
             <tr
               className={`${

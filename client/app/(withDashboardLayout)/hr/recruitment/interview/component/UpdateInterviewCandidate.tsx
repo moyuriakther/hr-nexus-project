@@ -60,7 +60,7 @@ const UpdateInterViewCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
                   placeholder={inputField?.placeholder}
                   name={`${inputField?.key}`}
                   required={inputField?.required}
-                  defaultValue={data[inputField?.key as keyof TCandidateList]||""}
+                  defaultValue={data?.[inputField?.key as keyof TCandidateList]||""}
                 />
               </div>
             );

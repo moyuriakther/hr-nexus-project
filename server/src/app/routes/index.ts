@@ -17,7 +17,7 @@ import { weeklyHolidayRoutes } from "../modules/WeeklyHolidays/weekly.holidays.r
 // import { NoticeboardRoutes } from "../modules/NoticeBoard/noticeboard.route";
 // import { ReportRoutes } from "../modules/Report/report.route";
 import { RecruitmentRoutes } from "../modules/recruitment/recruitment.routes";
-import { PositionRoutes } from "../modules/Position/position.routes";
+import { CandidateRoutes } from "../modules/Candidates/candidate.route";
 
 const router = express.Router();
 
@@ -95,8 +95,8 @@ const moduleRoutes = [
     route: RecruitmentRoutes,
   },
   {
-    path: "/position",
-    route: PositionRoutes,
+    path: "/candidates",
+    route: CandidateRoutes,
   },
 ];
 
