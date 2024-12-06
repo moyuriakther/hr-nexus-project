@@ -4,9 +4,11 @@ import { FaFileCsv, FaFileExcel, FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../fakeData/limitCount";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
+import ExcelExport from "@/app/(withauthlayout)/test/ExcelExport";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SearchAndModal = ({menuName,handleSearch,setIsOpen,modalIsOpen}:{menuName:string,handleSearch:any,setIsOpen:any,modalIsOpen:any}) => {
+const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,modalIsOpen}:{menuName:string,excelExportParamsData:any, handleSearch:any,setIsOpen:any,modalIsOpen:any}) => {
+  const {data,headers,baseFileName,isLoading,displayField}=excelExportParamsData
   return (
     <div className="mb-5">
       <div className="flex items-center justify-between flex-wrap pb-4 lg:gap-0 gap-2">
@@ -39,7 +41,7 @@ const SearchAndModal = ({menuName,handleSearch,setIsOpen,modalIsOpen}:{menuName:
           <p>entries</p>
         </div>
 
-        <div className="flex items-center">
+        {headers&&<div className="flex items-center">
           <Button
             size="sm"
             className="bg-primary rounded-none text-sm mx-2 text-white"
@@ -50,10 +52,17 @@ const SearchAndModal = ({menuName,handleSearch,setIsOpen,modalIsOpen}:{menuName:
             size="sm"
             className="bg-primary rounded-none text-sm text-white"
           >
-            <FaFileExcel /> Excel
+            {/* <FaFileExcel /> Excel */}
+            <ExcelExport
+      data={data?.data || []}
+      headers={headers}
+      baseFileName={baseFileName}
+      isLoading={isLoading}
+      displayField={displayField}
+    />
           </Button>
         </div>
-
+        }
         <HRForm onSubmit={handleSearch}>
       <div className="mb-5 text-md font-semibold flex gap-1 items-center">
         <label>Search: </label>
