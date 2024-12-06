@@ -1,15 +1,21 @@
 import HRTable from "@/app/components/Table/HRTable";
 import Loader from "@/app/components/utils/Loader";
 import { useDeleteCandidateMutation } from "@/app/Redux/api/candidateListApi";
-import { useState } from "react";
+import {  useState } from "react";
 import { noticeTableHeader } from "../fakeData";
 import { TNoticeData } from "../Type/type";
-import Pagination from "../../../recruitment/component/Pagination";
+import PaginationSoluation from "@/app/(withDashboardLayout)/components/UI/Pagination";
+
 
 const NoticeData=({data, isLoading}:{data:TNoticeData[],isLoading:boolean})=>{
-
+    
     const [deleteCandidate] = useDeleteCandidateMutation({});
   const [updateModalIsOpen, setIsUpdateModal]=useState(false)
+
+  const [currentPage, setCurrentPage]=useState(1)
+  const totalPage=Math.round(data.length/10)
+  const startIndex=Number(currentPage)*5-5
+  const lastIndex=startIndex+5
     if (isLoading) {
       return <Loader />;
     }
@@ -17,7 +23,7 @@ const NoticeData=({data, isLoading}:{data:TNoticeData[],isLoading:boolean})=>{
     if (data?.length === 0) {
       return (
         <tr>
-          <td colSpan={9} className="text-center">
+          <td colSpan={9} className="text-center text-xl text-red-500">
             No Data Found
           </td>
         </tr>
@@ -34,9 +40,9 @@ const NoticeData=({data, isLoading}:{data:TNoticeData[],isLoading:boolean})=>{
       };
     
     return(
-        <div>
+        <>
              <HRTable tableHeader={noticeTableHeader}>
-       {data.slice(0, 10).map((notice, index) => {
+       {data.slice(startIndex,lastIndex).map((notice, index) => {
           return (
             <tr
               className={`${
@@ -98,8 +104,11 @@ const NoticeData=({data, isLoading}:{data:TNoticeData[],isLoading:boolean})=>{
           );
         })}
       </HRTable>
-      <Pagination data={data}/>
-        </div>
+      <div className="flex justify-between items-center my-4">
+        <p>Showing 1 to 5 entries</p>
+        <PaginationSoluation currentPage={currentPage} totalPage={totalPage} setCurrentPage={setCurrentPage}/>
+      </div>
+        </>
     )
 }
 

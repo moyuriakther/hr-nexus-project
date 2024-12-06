@@ -10,6 +10,10 @@ const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean}
 
     const [deleteCandidate] = useDeleteCandidateMutation({});
   const [updateModalIsOpen, setIsUpdateModal]=useState(false)
+  const [currentPage, setCurrentPage]=useState(1)
+  const totalPage=Math.round(data.length/10)
+  const startIndex=Number(currentPage)*5-5
+  const lastIndex=startIndex+5
     if (isLoading) {
       return <Loader />;
     }
@@ -36,7 +40,7 @@ const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean}
     return(
         <div>
                <HRTable tableHeader={candidateTableHeader}>
-        {data.slice(0, 10).map((candidate, index) => {
+        {data.slice(startIndex, lastIndex).map((candidate, index) => {
           return (
             <tr
               className={`${
@@ -105,7 +109,7 @@ const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean}
           );
         })}
       </HRTable>
-      <Pagination data={data}/>
+      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} data={data}/>
         </div>
     )
 }

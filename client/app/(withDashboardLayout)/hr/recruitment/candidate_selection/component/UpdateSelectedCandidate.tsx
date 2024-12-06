@@ -2,21 +2,40 @@ import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
 import React from 'react';
-import { useGetSingleCandidateQuery } from "@/app/Redux/api/candidateListApi";
 import Loader from '@/app/components/utils/Loader';
-import { candidateInputFields } from '../fakeData';
+import {  selectionInputFields } from '../fakeData';
 import { TCandidateList } from '../../Type/type';
+import { toast } from 'sonner';
+import { FieldValues } from 'react-hook-form';
+import {  useGetSingleSelectedCandidateQuery, useUpdateSelectedCandidateMutation } from '@/app/Redux/api/selectedListApi';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
+const UpdateSelectedCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
     
-    const {data,isLoading}=useGetSingleCandidateQuery(id)
+    const {data,isLoading}=useGetSingleSelectedCandidateQuery(id)
+    const [updateSelectedCandidate]=useUpdateSelectedCandidateMutation()
     
     
+    const handleSubmit = async (values:FieldValues) => {
+        // const file = values.photograph?.[0];
+
+        const resData = {
+           ...values,
+          // photograph: await uploadImage(file),
+        };
     
-      const handleUpdate=()=>{
-        
-      }
+        console.log(resData);
+  
+    
+        const res = await updateSelectedCandidate(resData)
+     
+    
+        if (res?.data) {
+          toast.success("successfully Update ");
+        } else {
+          toast.error("Didn't Update");
+        }
+      };
       if(isLoading){
         return<Loader/>
       }
@@ -27,8 +46,8 @@ const UpdateCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
         setIsOpen={setIsOpen}
         modalTitle="New Candidate"
       >
-        <HRForm onSubmit={handleUpdate}>
-          {candidateInputFields.map((inputField, index) => {
+        <HRForm onSubmit={handleSubmit}>
+          {selectionInputFields.map((inputField, index) => {
             return (
               <div
                 key={index}
@@ -63,4 +82,4 @@ const UpdateCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
     );
 };
 
-export default UpdateCandidate;
+export default UpdateSelectedCandidate;
