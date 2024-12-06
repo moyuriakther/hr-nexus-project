@@ -14,4 +14,8 @@ export default {
     reset_pass_secret: process.env.RESET_PASS_TOKEN,
     reset_pass_token_expires_in: process.env.RESET_PASS_TOKEN_EXPIRES_IN,
   },
+  admin: {
+    adminEmail: process.env.ADMIN_EMAIL,
+    adminPassword: process.env.ADMIN_PASS,
+  },
 };

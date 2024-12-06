@@ -27,25 +27,29 @@ export const employeeApi = baseApi.injectEndpoints({
     }),
 
     deleteEmployee: build.mutation({
-      query: (data) => ({
-        url: `/employee/${data.id}`,
-        method: "DELETE",
-        data: data.body,
-      }),
+      query: (data) => {
+        return {
+          url: `/employee/${data.id}`,
+          method: "DELETE",
+        };
+      },
       invalidatesTags: [tagTypes.employee],
     }),
 
     updateEmployee: build.mutation({
-      query: (data) => ({
-        url: `/employee/${data.id}`,
-        method: "PATCH",
-        data: data.body,
-      }),
+      query: (data) => {
+        console.log("=============", data);
+
+        return {
+          url: `/employee/${data.id}`,
+          method: "PATCH",
+          data: data,
+        };
+      },
       invalidatesTags: [tagTypes.employee],
     }),
   }),
 });
-
 
 export const {
   useCreateEmployeeMutation,
@@ -54,4 +58,3 @@ export const {
   useDeleteEmployeeMutation,
   useUpdateEmployeeMutation,
 } = employeeApi;
-

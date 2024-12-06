@@ -65,6 +65,7 @@ const EditDepartmentModal = ({ departmentId }: any) => {
               type="text"
               className="lg:w-[560px]"
               placeholder="Department name"
+             
             />
           </div>
           <div className="flex items-center gap-x-20">

@@ -12,6 +12,7 @@ import {
   DropdownTrigger,
   User,
 } from "@nextui-org/react";
+import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { AiOutlineFullscreen } from "react-icons/ai";
@@ -99,12 +100,12 @@ const Header = () => {
 
               {/* Manage Account */}
               <DropdownItem key="settings" className="mt-3">
-                <a
+                <Link
                   href="dashboard/profile"
                   className="text-center block text-[#188753] text-[16px]"
                 >
                   Manage your account
-                </a>
+                </Link>
               </DropdownItem>
 
               {/* Buttons Section */}
