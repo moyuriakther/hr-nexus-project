@@ -3,14 +3,14 @@
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-import CreateCandidate from "./component/CreateCandidate";
 import NoticeData from "./component/NoticeData";
 import { useGetAllNoticeQuery } from "@/app/Redux/api/noticeApi";
 import SearchAndModal from "../../recruitment/component/SearchAndModal";
+import CreateNotice from "./component/CreateNotice";
 
 // Array of Input Fields
 
-const InterviewPage = () => {
+const NoticePage = () => {
   const { isLoading, data } = useGetAllNoticeQuery({});
   const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -41,7 +41,7 @@ const InterviewPage = () => {
         handleSearch={handleSearch}
       ></SearchAndModal>
 
-      <CreateCandidate
+      <CreateNotice
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
       />
@@ -50,4 +50,4 @@ const InterviewPage = () => {
   );
 };
 
-export default InterviewPage;
+export default NoticePage;

@@ -285,6 +285,8 @@ const updateEmployee = async (id: string, payload: any) => {
 };
 
 const deleteEmployee = async (id: string) => {
+  console.log(id);
+
   const result = await prisma.employee.update({
     where: { id },
     data: { isDeleted: true },

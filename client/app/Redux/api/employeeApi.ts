@@ -11,6 +11,7 @@ export const employeeApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.employee],
     }),
+    
     getAllEmployee: build.query({
       query: () => ({
         url: "/employee/get-employees",
@@ -18,6 +19,7 @@ export const employeeApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.employee],
     }),
+
     getSingleEmployee: build.query({
       query: (id) => ({
         url: `/employee/${id}`,
@@ -38,8 +40,6 @@ export const employeeApi = baseApi.injectEndpoints({
 
     updateEmployee: build.mutation({
       query: (data) => {
-        console.log("=============", data);
-
         return {
           url: `/employee/${data.id}`,
           method: "PATCH",

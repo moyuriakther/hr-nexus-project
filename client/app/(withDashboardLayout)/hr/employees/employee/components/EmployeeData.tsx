@@ -19,6 +19,11 @@ const EmployeeData = () => {
   const { data: employees, isLoading } = useGetAllEmployeeQuery({});
   const [deleteEmployee] = useDeleteEmployeeMutation({});
 
+  const handleDelete = async (id: string) => {
+    const res = await deleteEmployee({ id });
+    console.log(res);
+  };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -32,11 +37,6 @@ const EmployeeData = () => {
       </tr>
     );
   }
-
-  const handleDelete = async (id: string) => {
-    const res = await deleteEmployee(id);
-    console.log(res);
-  };
 
   return (
     <React.Fragment>

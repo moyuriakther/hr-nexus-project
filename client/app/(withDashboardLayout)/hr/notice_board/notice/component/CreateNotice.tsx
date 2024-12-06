@@ -2,17 +2,17 @@ import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
 // import { imageUploadIntoImgbb } from '@/app/components/utils/uploadImageIntoImgbb';
-import { useCreateCandidateMutation } from '@/app/Redux/api/candidateListApi';
 import { uploadImage } from '@/app/utils/UploadImage';
 import React from 'react';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
 import { noticeModalInputFiled } from '../fakeData';
+import { useCreateNoticeMutation } from '@/app/Redux/api/noticeApi';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateCandidate = ({setIsOpen,modalIsOpen}:any) => {
+const CreateNotice = ({setIsOpen,modalIsOpen}:any) => {
   
-      const [createCandidate]=useCreateCandidateMutation()
+      const [createNotice]=useCreateNoticeMutation()
       const handleSubmit = async (values:FieldValues) => {
         const file = values.noticeAttachment?.[0];
 
@@ -31,7 +31,7 @@ const CreateCandidate = ({setIsOpen,modalIsOpen}:any) => {
         //   profileImage = await imageUploadIntoImgbb(formData);
         // }
     
-        const res = await createCandidate(resData)
+        const res = await createNotice(resData)
         //   pathname !== "/hr/employees/create"
         //     ? await updateEmployee(userCreatedData)
         //     : await createEmployee(userCreatedData);
@@ -85,4 +85,4 @@ const CreateCandidate = ({setIsOpen,modalIsOpen}:any) => {
     );
 };
 
-export default CreateCandidate;
+export default CreateNotice;
