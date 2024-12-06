@@ -139,30 +139,30 @@
 
 // export default AwardList;
 
-
 "use client";
 
 import React, { useState } from "react";
-import {  FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 
 import HRTable from "@/app/components/Table/HRTable";
 import Pagination from "../components/pagination";
 import TableControls from "../components/TableControls";
 import AddAwardModal from "../components/AddAwardModal"; // Import your modal component
 
+import UpdateAwardModal from "../components/UpdateAwardModal";
+import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
+
 import {
   useDeleteAwardMutation,
   useGetAllAwardQuery,
 } from "@/app/Redux/api/awardApi";
-import UpdateAwardModal from "../components/UpdateAwardModal";
-import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
-
-import { useDeleteAwardMutation, useGetAllAwardQuery } from "@/app/Redux/api/awardApi";
-
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 const AwardList = () => {
-  const {data} = useGetAllAwardQuery({})
-  const [deleteAward] = useDeleteAwardMutation()
+  const { data } = useGetAllAwardQuery({});
+  const [deleteAward] = useDeleteAwardMutation();
+  const user = getUserFromLocalStorage();
 
   const tableHeader = [
     "Sl",
@@ -172,30 +172,9 @@ const AwardList = () => {
     "Date",
     "Employee name",
     "Award by",
-    "Action",
+    `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
   ];
 
-  // Data for awards
-  // const [awards, setAwards] = useState([
-  //   {
-  //     id: 1,
-  //     name: "sat",
-  //     description: "ss",
-  //     gift: "das",
-  //     date: "2024-11-20",
-  //     employee: "Amy Aphrodite Zamora Peck",
-  //     awardedBy: "cx",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "star",
-  //     description: "top performer",
-  //     gift: "medal",
-  //     date: "2024-11-18",
-  //     employee: "Jonathan Ibrahim Shekh",
-  //     awardedBy: "Admin",
-  //   },
-  // ]);
 
   const [entries, setEntries] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
@@ -223,7 +202,7 @@ const AwardList = () => {
   };
 
   const handleDelete = (id: number) => {
-   deleteAward(id)
+    deleteAward(id);
   };
 
   // Modal states for adding new award
@@ -241,12 +220,14 @@ const AwardList = () => {
     <div className="bg-white shadow-sm rounded-md p-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-gray-800">Award list</h2>
-        <button
-          className="bg-[#198754] text-white py-2 px-3 text-sm rounded-lg hover:bg-green-600"
-          onClick={() => setModalIsOpen(true)} // Open modal
-        >
-          + Add new award
-        </button>
+        {user?.role === USER_ROLE.ADMIN && (
+          <button
+            className="bg-[#198754] text-white py-2 px-3 text-sm rounded-lg hover:bg-green-600"
+            onClick={() => setModalIsOpen(true)} // Open modal
+          >
+            + Add new award
+          </button>
+        )}
       </div>
       <div className="border border-t-0 mb-8"></div>
 
@@ -256,7 +237,7 @@ const AwardList = () => {
       />
 
       <HRTable tableHeader={tableHeader}>
-        {data?.data?.map((award:any, index:number) => (
+        {data?.data?.map((award: any, index: number) => (
           <tr key={award.id}>
             <td className="px-4 py-2 border">{index + 1}</td>
             <td className="px-4 py-2 border">{award.awardName}</td>
