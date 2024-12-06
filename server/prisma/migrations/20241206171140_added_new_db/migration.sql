@@ -61,14 +61,14 @@ CREATE TABLE "employees" (
     "phoneNumber" TEXT NOT NULL,
     "country" TEXT,
     "passport" TEXT,
-    "nidNumber" TEXT NOT NULL,
+    "nidNumber" TEXT,
     "alternateNumber" TEXT,
     "city" TEXT,
     "attendanceShift" "Shift",
     "address" TEXT,
     "designation" TEXT,
-    "dateOfBirth" TIMESTAMP(3),
-    "joiningDate" TIMESTAMP(3),
+    "dateOfBirth" TEXT,
+    "joiningDate" TEXT,
     "accountNumber" TEXT,
     "tinNumber" TEXT,
     "branchAddress" TEXT,
@@ -82,11 +82,11 @@ CREATE TABLE "employees" (
     "otherBenefit" DOUBLE PRECISION,
     "departmentId" TEXT NOT NULL,
     "subDepartmentId" TEXT NOT NULL,
-    "position" TEXT NOT NULL,
+    "position" TEXT,
     "dutyType" TEXT,
-    "hireDate" TIMESTAMP(3),
-    "rehireDate" TIMESTAMP(3),
-    "terminationDate" TIMESTAMP(3),
+    "hireDate" TEXT,
+    "rehireDate" TEXT,
+    "terminationDate" TEXT,
     "cardNumber" TEXT,
     "monthlyWorkHours" DOUBLE PRECISION,
     "workPermit" BOOLEAN,
@@ -98,8 +98,8 @@ CREATE TABLE "employees" (
     "terminationReason" TEXT,
     "workInCity" TEXT,
     "employeeType" TEXT NOT NULL,
-    "gender" "Gender" NOT NULL,
-    "maritalStatus" "MaritalStatus" NOT NULL,
+    "gender" "Gender",
+    "maritalStatus" "MaritalStatus",
     "numberOfKids" INTEGER DEFAULT 0,
     "sosNumber" TEXT,
     "religion" TEXT,
@@ -122,7 +122,7 @@ CREATE TABLE "employees" (
     "homePhone" TEXT,
     "status" "Status" NOT NULL DEFAULT 'ACTIVE',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "userRole" "UserRole" NOT NULL DEFAULT 'EMPLOYEE',
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
@@ -132,10 +132,12 @@ CREATE TABLE "employees" (
 -- CreateTable
 CREATE TABLE "departments" (
     "id" TEXT NOT NULL,
+    "departmentName" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "departmentName" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "departments_pkey" PRIMARY KEY ("id")
 );
@@ -144,8 +146,10 @@ CREATE TABLE "departments" (
 CREATE TABLE "sub_departments" (
     "id" TEXT NOT NULL,
     "departmentId" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "subDepartmentName" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -161,7 +165,7 @@ CREATE TABLE "attendances" (
     "checkOut" TIMESTAMP(3),
     "monthName" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "attendanceType" "AttendanceType",
 
     CONSTRAINT "attendances_pkey" PRIMARY KEY ("id")
@@ -201,6 +205,7 @@ CREATE TABLE "leaves" (
     "approvedDays" INTEGER,
     "managerComment" TEXT,
     "status" "LeaveStatus" NOT NULL DEFAULT 'PENDING',
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "employeeId" TEXT,
@@ -234,6 +239,7 @@ CREATE TABLE "clients" (
     "address" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "clients_pkey" PRIMARY KEY ("id")
 );
@@ -250,6 +256,7 @@ CREATE TABLE "projects" (
     "endDate" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "projects_pkey" PRIMARY KEY ("id")
 );
@@ -286,6 +293,7 @@ CREATE TABLE "awards" (
     "awardBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "awards_pkey" PRIMARY KEY ("id")
 );
@@ -301,6 +309,7 @@ CREATE TABLE "loans" (
     "installmentPeriod" INTEGER,
     "installmentCleared" INTEGER,
     "repaymentAmount" DOUBLE PRECISION,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "approvedDate" TIMESTAMP(3),
     "repaymentFrom" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -332,6 +341,58 @@ CREATE TABLE "weekly_holidays" (
     "dayName" TEXT[],
 
     CONSTRAINT "weekly_holidays_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CandidateList" (
+    "id" TEXT NOT NULL,
+    "name" TEXT,
+    "candidateId" TEXT,
+    "photograph" TEXT,
+    "email" TEXT,
+    "ssn" TEXT,
+    "phone" TEXT,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "CandidateList_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CandidateSelection" (
+    "id" TEXT NOT NULL,
+    "name" TEXT,
+    "candidateId" TEXT,
+    "employeeId" TEXT NOT NULL,
+    "position" TEXT,
+    "selectionTerms" TEXT,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "CandidateSelection_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ShortList" (
+    "id" TEXT NOT NULL,
+    "name" TEXT,
+    "candidateId" TEXT,
+    "jobPosition" TEXT,
+    "shortlistDate" TIMESTAMP(3),
+    "interviewDate" TIMESTAMP(3),
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "ShortList_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "NoticeData" (
+    "id" TEXT NOT NULL,
+    "noticeType" TEXT,
+    "description" TEXT,
+    "noticeDate" TIMESTAMP(3),
+    "noticeBy" TEXT,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "NoticeData_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -389,6 +450,9 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "employees_email_key" ON "employees"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "CandidateList_candidateId_key" ON "CandidateList"("candidateId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "recruitment_email_key" ON "recruitment"("email");

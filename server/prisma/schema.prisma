@@ -362,6 +362,72 @@ model WeeklyHolidays {
 //   @@map("notice_boards")
 // }
 
+model CandidateList {
+  id          String  @id @default(uuid())
+  name        String?
+  candidateId String? @unique
+  photograph  String?
+  email       String?
+  ssn         String?
+  phone       String?
+  isDeleted   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  shortList ShortList[]
+
+  @@map("candidate_lists")
+}
+
+model ShortList {
+  id            String    @id @default(uuid())
+  // name          String?
+  candidateId   String
+  // jobPosition   String?
+  shortlistDate DateTime?
+  interviewDate DateTime?
+
+  candidate          CandidateList        @relation(fields: [candidateId], references: [id])
+  isDeleted          Boolean              @default(false)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  candidateSelection CandidateSelection[]
+
+  @@map("short_lists")
+}
+
+model CandidateSelection {
+  id             String  @id @default(uuid())
+  // name           String?
+  // employeeId     String
+  position       String?
+  selectionTerms String?
+
+  candidateId          String
+  candidateShortListed ShortList @relation(fields: [candidateId], references: [id])
+  isDeleted            Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  // CandidateList        CandidateList? @relation(fields: [candidateListId], references: [id])
+  candidateListId      String?
+
+  @@map("candidate_selections")
+}
+
+model NoticeData {
+  id          String    @id @default(uuid())
+  noticeType  String?
+  description String?
+  noticeDate  DateTime?
+  noticeBy    String?
+  isDeleted   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("notice_boards")
+}
+
 model Recruitment {
   id               String  @id @default(uuid())
   firstName        String
