@@ -404,13 +404,13 @@ model CandidateSelection {
   position       String?
   selectionTerms String?
 
-  candidateId          String
-  candidateShortListed ShortList @relation(fields: [candidateId], references: [id])
-  isDeleted            Boolean   @default(false)
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  shortListedCandidateId String
+  candidateShortListed   ShortList @relation(fields: [shortListedCandidateId], references: [id])
+  isDeleted              Boolean   @default(false)
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
   // CandidateList        CandidateList? @relation(fields: [candidateListId], references: [id])
-  candidateListId      String?
+  candidateListId        String?
 
   @@map("candidate_selections")
 }
