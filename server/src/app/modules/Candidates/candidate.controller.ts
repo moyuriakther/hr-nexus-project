@@ -117,6 +117,20 @@ const getSingleShortListedCandidate = catchAsync(
     });
   }
 );
+const getSingleSelectedCandidate = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const result = await CandidateService.getSingleSelectedCandidate(id);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Selected Candidate retrieved successfully!",
+      data: result,
+    });
+  }
+);
 
 // Update a Candidate
 const updateCandidate = catchAsync(async (req: Request, res: Response) => {
@@ -132,6 +146,36 @@ const updateCandidate = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const updateCandidateShortList = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const data = req.body;
+
+    const result = await CandidateService.updateShortListedCandidate(id, data);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Candidate ShortList updated successfully!",
+      data: result,
+    });
+  }
+);
+const updateCandidateSelection = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const data = req.body;
+
+    const result = await CandidateService.updateSelectedCandidate(id, data);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Candidate Selection updated successfully!",
+      data: result,
+    });
+  }
+);
 
 // Delete a Candidate
 const deleteCandidate = catchAsync(async (req: Request, res: Response) => {
@@ -156,6 +200,9 @@ export const CandidateController = {
   getAllSelectedCandidates,
   getSingleCandidate,
   getSingleShortListedCandidate,
+  getSingleSelectedCandidate,
+  updateCandidateShortList,
+  updateCandidateSelection,
   updateCandidate,
   deleteCandidate,
 };
