@@ -15,6 +15,8 @@ const CandidateList = () => {
   // const [data, setData] = useState<TCandidateList[]>(candidates);
   const [modalIsOpen, setIsOpen] = useState(false);
   const { data, isLoading } = useGetAllCandidateQuery({});
+  
+  
   const handleSearch: SubmitHandler<FieldValues> = async (data) => {
     try {
       console.log(data);

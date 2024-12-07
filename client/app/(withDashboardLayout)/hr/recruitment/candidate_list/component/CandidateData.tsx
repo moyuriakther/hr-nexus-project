@@ -116,7 +116,7 @@ const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean}
         </tr>
         }
       </HRTable>
-      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} data={data}/>
+      {/* <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} data={data}/> */}
         </div>
     )
 }
