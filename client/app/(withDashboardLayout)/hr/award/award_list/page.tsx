@@ -139,11 +139,10 @@
 
 // export default AwardList;
 
-
 "use client";
 
 import React, { useState } from "react";
-import {  FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 
 import HRTable from "@/app/components/Table/HRTable";
 import Pagination from "../components/pagination";
@@ -157,12 +156,11 @@ import {
 import UpdateAwardModal from "../components/UpdateAwardModal";
 import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
 
-import { useDeleteAwardMutation, useGetAllAwardQuery } from "@/app/Redux/api/awardApi";
-
+// import { useDeleteAwardMutation, useGetAllAwardQuery } from "@/app/Redux/api/awardApi";
 
 const AwardList = () => {
-  const {data} = useGetAllAwardQuery({})
-  const [deleteAward] = useDeleteAwardMutation()
+  const { data } = useGetAllAwardQuery({});
+  const [deleteAward] = useDeleteAwardMutation();
 
   const tableHeader = [
     "Sl",
@@ -223,7 +221,7 @@ const AwardList = () => {
   };
 
   const handleDelete = (id: number) => {
-   deleteAward(id)
+    deleteAward(id);
   };
 
   // Modal states for adding new award
@@ -256,7 +254,7 @@ const AwardList = () => {
       />
 
       <HRTable tableHeader={tableHeader}>
-        {data?.data?.map((award:any, index:number) => (
+        {data?.data?.map((award: any, index: number) => (
           <tr key={award.id}>
             <td className="px-4 py-2 border">{index + 1}</td>
             <td className="px-4 py-2 border">{award.awardName}</td>
