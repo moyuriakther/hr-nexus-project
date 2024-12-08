@@ -46,7 +46,7 @@ const CreateAwardModal = ({ modalIsOpen, setIsOpen }: any) => {
   };
 
   return (
-    <div>
+      <div>
       <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}

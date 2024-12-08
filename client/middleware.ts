@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { authKey } from "./app/constants";
+import { decodedToken } from "./app/utils/jwt";
+import { TAuthUser } from "./app/types";
 
 const authRoutes = ["/", "/login", "/register"];
 const protectedRoutes = ["/dashboard", "/hr/:page*"];
@@ -9,12 +11,23 @@ const protectedRoutes = ["/dashboard", "/hr/:page*"];
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const accessToken = cookies().get(authKey);
+  const accessToken = cookies().get(authKey)?.value;
 
   if (!accessToken) {
     if (authRoutes.includes(pathname)) {
       return NextResponse.next();
     }
+  }
+
+  let user;
+  if (accessToken) {
+    user = decodedToken(accessToken) as TAuthUser;
+  }
+
+  if (user?.role === "EMPLOYEE" && pathname === "/dashboard") {
+    return NextResponse.redirect(
+      new URL("/hr/attendances/create", request.url)
+    );
   }
 
   if (accessToken) {
