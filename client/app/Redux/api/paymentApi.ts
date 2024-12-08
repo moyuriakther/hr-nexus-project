@@ -1,5 +1,23 @@
+import { Payment } from "@/app/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
+
+interface Meta {
+  page: number;
+  limit: number;
+  total: number;
+}
+
+// Define the structure of the API response for getAllLoan
+interface GetAllPaymentResponse {
+  meta: Meta;
+  data: Payment[]; // The array of loans
+}
+
+interface GetAllPaymentQueryArgs {
+  searchTerm?: string;
+  [key: string]: any;
+}
 
 export const paymentApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -11,11 +29,19 @@ export const paymentApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.payment],
     }),
-    getAllPayment: build.query({
-      query: () => ({
-        url: "/payment",
-        method: "GET",
-      }),
+
+    getAllPayment: build.query<GetAllPaymentResponse, GetAllPaymentQueryArgs>({
+      query: ({ searchTerm = "", ...filters } = {}) => {
+        const queryString = new URLSearchParams({
+          searchTerm,
+          ...filters,
+        }).toString();
+
+        return {
+          url: `/payment?${queryString}`,
+          method: "GET",
+        };
+      },
       providesTags: [tagTypes.payment],
     }),
     getSinglePayment: build.query({

@@ -212,7 +212,7 @@ const DailyAttendance = () => {
                 type="submit"
                 className="bg-[#198754] text-white py-2 px-4 text-sm rounded-md hover:bg-green-600"
               >
-                {isLoading ? "Updating...." : "Update"}
+                {isLoading ? "Creating...." : "Create"}
               </button>
             </div>
           </div>

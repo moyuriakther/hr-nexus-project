@@ -18,7 +18,9 @@ import { toast } from "sonner";
 
 const HolydayPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { data: holidays } = useGetAllHolidayQuery("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: holidays } = useGetAllHolidayQuery({ searchTerm });
   const [deleteHoliday, { isLoading }] = useDeleteHolidayMutation();
 
   const tableHeader = [
@@ -42,7 +44,7 @@ const HolydayPage = () => {
     <div>
       <PageHeader item={pageHeaderData} />
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
-        <CreateHolyday />
+        <CreateHolyday onSearch={setSearchTerm} />
 
         <HRTable tableHeader={tableHeader}>
           {holidays?.data.map((holiday: THoliday, i: number) => (

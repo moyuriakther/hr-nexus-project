@@ -26,7 +26,7 @@ const CreateSalaryAdvanceModal = ({ modalIsOpen, setIsOpen }: TProps) => {
   const [createPayment, { isLoading }] = useCreatePaymentMutation();
 
   const employeeOptions = employees?.map((employee: Employee) => ({
-    label: `${employee.firstName} ${employee.middleName} ${employee.lastName}`,
+    label: `${employee.firstName} ${employee.lastName}`,
     value: employee.id,
   }));
 

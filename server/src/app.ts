@@ -15,6 +15,7 @@ const corsOptions = {
   origin: [
     "http://localhost:3000",
     "https://hr-management-app-nine.vercel.app",
+    "https://hr-nexus-client.vercel.app/",
   ],
   credentials: true,
 };

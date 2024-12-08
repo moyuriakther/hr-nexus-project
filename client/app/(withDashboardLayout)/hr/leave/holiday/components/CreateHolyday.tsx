@@ -7,8 +7,18 @@ import { FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../../employees/position/components/fakeData/limitCount";
 import CreateHolidayModal from "./CreateHolidayModal";
 
-const CreateHolyday = () => {
+interface ComponentHeaderProps {
+  onSearch: (searchTerm: string) => void;
+}
+
+const CreateHolyday = ({ onSearch }: ComponentHeaderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    onSearch(e.target.value); // Trigger search on every change
+  };
 
   return (
     <div className="mb-5">
@@ -34,7 +44,11 @@ const CreateHolyday = () => {
 
         <div className="flex items-center gap-1">
           <p>Search: </p>
-          <input className="border rounded-[4px] py-1 focus:outline-primary outline-1 transition-all duration-200" />
+          <input
+            value={searchInput}
+            onChange={handleSearchChange}
+            className="border px-2 rounded-[4px] py-1 focus:outline-primary outline-1 transition-all duration-200"
+          />
         </div>
       </div>
       <CreateHolidayModal setIsOpen={setIsOpen} modalIsOpen={isOpen} />
