@@ -2,7 +2,6 @@ import { baseApi } from "./api/baseApi";
 import searchSliceReducer from "./api/searchSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import sidebarReducer from "./sidebar/sidebarSlice";
-
 import multiStepperReducer from "./multiStepper/multiStepperSlice";
 
 // Combine reducers
@@ -12,6 +11,7 @@ const reducer = {
   filters: searchSliceReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 };
+
 
 // Configure the store
 
@@ -25,3 +25,4 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
+

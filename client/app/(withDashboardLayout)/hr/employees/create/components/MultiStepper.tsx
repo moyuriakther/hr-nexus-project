@@ -22,8 +22,12 @@ import { stepperData } from "./stepperData";
 import { flattenData } from "@/app/components/utils/flattenData";
 import { useAppSelector } from "@/app/Redux/hook";
 import { imageUploadIntoImgbb } from "@/app/components/utils/uploadImageIntoImgbb";
-import { useCreateEmployeeMutation } from "@/app/Redux/api/employeeApi";
+import {
+  useCreateEmployeeMutation,
+  useUpdateEmployeeMutation,
+} from "@/app/Redux/api/employeeApi";
 import { toast } from "sonner";
+import { usePathname } from "next/navigation";
 
 const MultiStepForm = () => {
   const [step, setStep] = useState<number>(1);
@@ -37,6 +41,8 @@ const MultiStepForm = () => {
   });
   const { file } = useAppSelector((state) => state.multiStepper);
   const [createEmployee] = useCreateEmployeeMutation();
+  const [updateEmployee] = useUpdateEmployeeMutation();
+  const pathname = usePathname();
 
   const nextStep = () =>
     setStep((prevStep) => Math.min(prevStep + 1, stepperData.length));
@@ -84,9 +90,13 @@ const MultiStepForm = () => {
       hourlyRate2: Number(flatData.hourlyRate2),
       numberOfKids: Number(flatData.numberOfKids),
       profileImage,
+      id: pathname.split("/")[4] || "",
     };
 
-    const res = await createEmployee(userCreatedData);
+    const res =
+      pathname !== "/hr/employees/create"
+        ? await updateEmployee(userCreatedData)
+        : await createEmployee(userCreatedData);
 
     if (res?.data) {
       setStep((prevStep) => Math.max(prevStep - 5, 1));

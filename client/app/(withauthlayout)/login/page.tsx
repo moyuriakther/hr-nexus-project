@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 const LoginPage = () => {
   return (
     <div
-      // style={loginBg}
       className={`${style.loginBg} flex items-center justify-center h-screen w-full bg-no-repeat bg-cover bg-unset bg-opacity-5`}
     >
       <div className="lg:w-[370px] w-full mx-4 lg:mx-auto py-7 px-8 border bg-white bg-opacity-75 rounded-[8px] shadow-lg">
