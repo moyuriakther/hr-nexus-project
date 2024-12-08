@@ -12,8 +12,8 @@ export const candidateListApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.candidateList],
     }),
     getAllCandidate: build.query({
-      query: () => ({
-        url: "/candidates", 
+      query: ({ searchTerm }) => ({
+        url: `/candidates${searchTerm ? `?searchTerm=${searchTerm}` : ""}`,
         method: "GET",
       }),
       providesTags: [tagTypes.candidateList],

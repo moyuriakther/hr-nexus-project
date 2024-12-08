@@ -62,11 +62,11 @@ const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,m
         }
         <HRForm onSubmit={handleSearch}>
       <div className=" text-md font-semibold flex gap-1 items-center">
-        <label>Search: </label>
+        <button className="border-none bg-none" type="submit">Search: </button>
         <HRInput
           type="text"
           className="border-gray-400 h-10 rounded-[5px]"
-          placeholder="Search..."
+          placeholder="Search By Candidate ID..."
           name="search"
         />
       </div>

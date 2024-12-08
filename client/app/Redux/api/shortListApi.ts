@@ -12,8 +12,9 @@ export const shortlistCandidateApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.candidateShortlist],
     }),
     getAllShortlistCandidate: build.query({
-      query: () => ({
-        url: "/candidates/short-listed",
+   
+      query: ({ searchTerm }) => ({
+        url: `/candidates/short-listed${searchTerm ? `?searchTerm=${searchTerm}` : ""}`,
         method: "GET",
       }),
       providesTags: [tagTypes.candidateShortlist],

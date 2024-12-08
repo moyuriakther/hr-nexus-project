@@ -370,6 +370,7 @@ model CandidateList {
   email       String?
   ssn         String?
   phone       String?
+  jobPosition   String?
   isDeleted   Boolean @default(false)
 
   createdAt DateTime @default(now())
@@ -475,6 +476,7 @@ model Interview {
   totalMarks    String
   selection     String
   candidateId   String
+  selectedCandidateId String
   candidate     Recruitment @relation(fields: [candidateId], references: [id])
 
   isDeleted Boolean  @default(false)

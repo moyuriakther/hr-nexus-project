@@ -14,12 +14,16 @@ import { toast } from "sonner";
 const CandidateList = () => {
   // const [data, setData] = useState<TCandidateList[]>(candidates);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetAllCandidateQuery({});
+  const [searchTerm, setSearchTerm]=useState('')
+  const { data, isLoading } = useGetAllCandidateQuery({searchTerm});
   const [limit, setLimit]=useState(10)
+
   console.log("data: ",data)
+  console.log(searchTerm)
   const handleSearch: SubmitHandler<FieldValues> = async (data) => {
     try {
       console.log(data);
+      setSearchTerm(data.search)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);

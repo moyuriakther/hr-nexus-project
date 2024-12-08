@@ -11,7 +11,7 @@ export const shortlistTableHeader: string[] = [
     "Action",
   ];
   export   const shortlistInputFields:TShortlistInputField[] = [
-    { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name" ,required:true},
+    // { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name" ,required:true},
     {
       id: 2,
       label: "Candidate ID",
