@@ -1,3 +1,4 @@
+
 export enum tagTypes {
   admin = "admin",
   employee = "employee",
@@ -13,6 +14,12 @@ export enum tagTypes {
   holiday = "holiday",
   user = "user",
   loan = "loan",
+  candidateList="candidate_list",
+  candidateSelection="candidate_selection",
+  candidateShortlist="candidate_shortlist",
+  interview="interview",
+  notice="notice"
+
 }
 
 export const tagTypesList = [
@@ -30,4 +37,9 @@ export const tagTypesList = [
   tagTypes.project,
   tagTypes.user,
   tagTypes.loan,
+  tagTypes.notice,
+  tagTypes.candidateList,
+  tagTypes.candidateSelection,
+  tagTypes.candidateShortlist,
+  tagTypes.interview
 ];

@@ -35,6 +35,7 @@ export const employeesMenu: TSidebarMenus[] = [
       },
     ],
   },
+  
   {
     name: "Leave",
     icon: <FaPlane className="text-[17px] text-gray-700" />,
@@ -53,6 +54,8 @@ export const employeesMenu: TSidebarMenus[] = [
       },
     ],
   },
+
+
   {
     name: "Project management",
     icon: <FaTasks className="text-[17px] text-gray-700" />,

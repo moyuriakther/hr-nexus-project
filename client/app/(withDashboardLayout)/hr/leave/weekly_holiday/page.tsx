@@ -8,7 +8,11 @@ import { TWeekDay } from "@/app/types";
 import { FaEdit } from "react-icons/fa";
 import AddHolyday from "./components/AddHolyday";
 import { pageHeaderData } from "../components/pageHeaderData";
+
 import { useState } from "react";
+
+import Link from "next/link";
+
 
 const WeeklyHolidayPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,11 +37,11 @@ const WeeklyHolidayPage = () => {
 
               <HRTableRow>
                 <div className="flex items-center gap-2">
-                  <a href={`weekly_holiday/edit/${holiday?.id}`}>
+                  <Link href={`weekly_holiday/edit/${holiday?.id}`}>
                     <button className="bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center">
                       <FaEdit className="text-base" />
                     </button>
-                  </a>
+                  </Link>
                 </div>
               </HRTableRow>
             </tr>

@@ -18,7 +18,7 @@ const CreateEmployeePage = () => {
               className="bg-primary rounded-[4px] text-sm text-white"
             >
               <Link
-                href="/hr/employees/create"
+                href="/hr/employees/employee"
                 className="flex items-center gap-2"
               >
                 <FaList /> Employee list
