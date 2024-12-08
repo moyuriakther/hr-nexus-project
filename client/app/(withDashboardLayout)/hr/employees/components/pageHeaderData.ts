@@ -30,14 +30,6 @@ export const loanPageHeaderData: TPageHeader[] = [
     name: "Loan",
     path: "/hr/loan",
   },
-  {
-    name: "Loan Disburse Report",
-    path: "/hr/loan/loan-disburse-report",
-  },
-  {
-    name: "Employee Wise Loan",
-    path: "/hr/loan/employee-wise-loan",
-  },
 ];
 
 export const reportPageHeaderData: TPageHeader[] = [

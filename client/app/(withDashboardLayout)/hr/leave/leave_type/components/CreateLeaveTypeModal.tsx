@@ -48,7 +48,7 @@ const CreateLeaveTypeModal = ({ modalIsOpen, setIsOpen }: TProps) => {
           />
         </div>
 
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <HRInput
             name="leaveCode"
             required
@@ -56,7 +56,7 @@ const CreateLeaveTypeModal = ({ modalIsOpen, setIsOpen }: TProps) => {
             label="Leave code"
             placeholder="Leave code"
           />
-        </div>
+        </div> */}
 
         <div className="mt-4 mb-5">
           <HRInput

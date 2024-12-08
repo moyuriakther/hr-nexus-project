@@ -8,10 +8,16 @@ import { TWeekDay } from "@/app/types";
 import { FaEdit } from "react-icons/fa";
 import AddHolyday from "./components/AddHolyday";
 import { pageHeaderData } from "../components/pageHeaderData";
+
+import { useState } from "react";
+
 import Link from "next/link";
 
+
 const WeeklyHolidayPage = () => {
-  const { data: holidays } = useGetAllWeekDaysQuery("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: holidays } = useGetAllWeekDaysQuery({ searchTerm });
   const tableHeader = ["Sl", "Day Name", "Action"];
 
   return (
@@ -19,9 +25,9 @@ const WeeklyHolidayPage = () => {
       <PageHeader item={pageHeaderData} />
 
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
-        <AddHolyday />
+        <AddHolyday onSearch={setSearchTerm} />
         <HRTable tableHeader={tableHeader}>
-          {holidays?.map((holiday: TWeekDay, i: number) => (
+          {holidays?.data?.map((holiday: TWeekDay, i: number) => (
             <tr
               className={`${i % 2 === 0 ? "bg-gray-100" : ""} hover:bg-gray-50`}
               key={holiday.id}

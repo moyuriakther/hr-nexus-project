@@ -1,5 +1,23 @@
+import { TWeekDay } from "@/app/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
+
+interface Meta {
+  page: number;
+  limit: number;
+  total: number;
+}
+
+// Define the structure of the API response for getAllLoan
+interface GetAllHolidayResponse {
+  meta: Meta;
+  data: TWeekDay[]; // The array of loans
+}
+
+interface GetAllHolidayQueryArgs {
+  searchTerm?: string;
+  [key: string]: any;
+}
 
 export const weekDaysHolidayApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -11,12 +29,20 @@ export const weekDaysHolidayApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.weekdaysHoliday],
     }),
-    getAllWeekDays: build.query({
-      query: () => ({
-        url: "/weekly-holidays",
-        method: "GET",
-      }),
-      providesTags: [tagTypes.weekdaysHoliday],
+
+    getAllWeekDays: build.query<GetAllHolidayResponse, GetAllHolidayQueryArgs>({
+      query: ({ searchTerm = "", ...filters } = {}) => {
+        const queryString = new URLSearchParams({
+          searchTerm,
+          ...filters,
+        }).toString();
+
+        return {
+          url: `/weekly-holidays?${queryString}`,
+          method: "GET",
+        };
+      },
+      providesTags: [tagTypes.holiday],
     }),
     getSingleWeekDays: build.query({
       query: (id) => ({

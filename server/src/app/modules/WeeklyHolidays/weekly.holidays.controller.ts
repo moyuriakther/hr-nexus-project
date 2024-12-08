@@ -21,7 +21,12 @@ const createWeeklyHoliday = catchAsync(async (req: Request, res: Response) => {
 
 // Get all weekly holidays
 const getAllWeeklyHolidays = catchAsync(async (req: Request, res: Response) => {
-  const result = await weeklyHolidayService.getAllWeeklyHolidays();
+  const filters = pick(req.query, weekly_holidaysFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await weeklyHolidayService.getAllWeeklyHolidays(
+    filters,
+    options
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

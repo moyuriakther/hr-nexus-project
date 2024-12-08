@@ -60,7 +60,9 @@ const Header = () => {
                 as="button"
                 avatarProps={{
                   isBordered: true,
-                  src: myProfile?.photo,
+                  src: myProfile?.photo
+                    ? myProfile?.photo
+                    : "https://i.ibb.co.com/nnTfqMb/download-7.jpg",
                 }}
                 className="transition-transform"
                 description={myProfile?.name}
@@ -79,8 +81,9 @@ const Header = () => {
                   <div className="w-[70px] h-[70px] bg-gray-200 rounded-full flex items-center justify-center">
                     <Image
                       src={
-                        myProfile?.photo ||
-                        "https://cdn-icons-png.flaticon.com/512/219/219970.png"
+                        myProfile?.photo
+                          ? myProfile?.photo
+                          : "https://i.ibb.co.com/nnTfqMb/download-7.jpg"
                       }
                       alt="Admin Avatar"
                       className="w-full h-full rounded-full"
@@ -100,8 +103,12 @@ const Header = () => {
 
               {/* Manage Account */}
               <DropdownItem key="settings" className="mt-3">
+
+               
+       
                 <Link
                   href="dashboard/profile"
+
                   className="text-center block text-[#188753] text-[16px]"
                 >
                   Manage your account

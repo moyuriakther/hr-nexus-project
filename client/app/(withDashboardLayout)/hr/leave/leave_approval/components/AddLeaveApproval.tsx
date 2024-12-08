@@ -1,9 +1,18 @@
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
 import { Divider } from "@nextui-org/react";
-import React from "react";
+import React, { useState } from "react";
 import { limitCount } from "../../../employees/position/components/fakeData/limitCount";
 
-const AddLeaveApproval = () => {
+interface ComponentHeaderProps {
+  onSearch: (searchTerm: string) => void;
+}
+const AddLeaveApproval = ({ onSearch }: ComponentHeaderProps) => {
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    onSearch(e.target.value); // Trigger search on every change
+  };
   return (
     <div className="mb-5">
       <div className="flex items-center justify-between flex-wrap pb-4 lg:gap-0 gap-2">
@@ -20,7 +29,11 @@ const AddLeaveApproval = () => {
 
         <div className="flex items-center gap-1">
           <p>Search: </p>
-          <input className="border rounded-[4px] py-1 focus:outline-primary outline-1 transition-all duration-200" />
+          <input
+            value={searchInput}
+            onChange={handleSearchChange}
+            className="border rounded-[4px] px-2 py-1 focus:outline-primary outline-1 transition-all duration-200"
+          />{" "}
         </div>
       </div>
     </div>
