@@ -6,11 +6,11 @@ export const pageHeaderData: TPageHeader[] = [
     path: "/hr/payroll/salary_advance",
   },
   {
-    name: "Salary generate",
+    name: "Salary list",
     path: "/hr/payroll/salary_generate",
   },
-  {
-    name: "Manage employee salary",
-    path: "/hr/payroll/manage_employee_salary",
-  },
+  // {
+  //   name: "Manage employee salary",
+  //   path: "/hr/payroll/manage_employee_salary",
+  // },
 ];

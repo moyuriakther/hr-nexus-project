@@ -16,9 +16,12 @@ import { tableHeader } from "./components/tableHeader";
 import { TLeave } from "@/app/types";
 import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
 import { FaTrash } from "react-icons/fa";
+import { useState } from "react";
 
 const LeaveApplicationPage = () => {
-  const { data: leaveTypes, isLoading } = useGetAllLeaveQuery("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: leaveTypes, isLoading } = useGetAllLeaveQuery({ searchTerm });
   const [deleteLeaveType] = useDeleteLeaveMutation();
 
   const handleDelete = async (id: string) => {
@@ -34,7 +37,7 @@ const LeaveApplicationPage = () => {
       <PageHeader item={pageHeaderData} />
 
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
-        <CreateLeaveApplication />
+        <CreateLeaveApplication onSearch={setSearchTerm} />
 
         <HRTable tableHeader={tableHeader}>
           {isLoading

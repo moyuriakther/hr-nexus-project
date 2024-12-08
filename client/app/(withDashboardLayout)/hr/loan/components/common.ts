@@ -7,9 +7,9 @@ export const tableHeader = [
   "Interest rate",
   "Installment period",
   "Installment cleared",
-  "Repayment amount",
-  "Approved date",
-  "Repayment from",
-  "Status",
+  // "Repayment amount",
+  // "Approved date",
+  // "Repayment from",
+  // "Status",
   "Action",
 ];

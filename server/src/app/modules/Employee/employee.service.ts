@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
 import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import { employeeSearchableFields } from "./employee.utils";
+import sendMail from "../../../shared/sendEmail";
 
 const createEmployee = async (payload: any) => {
   // Hash the password
@@ -96,10 +97,16 @@ const createEmployee = async (payload: any) => {
       },
     });
 
-    return employee; // Return the created employee information
+    // const send = sendMail({
+    //   email: employee.email,
+    //   subject: "Employee Registration",
+    //   message: `Hello ${employee.firstName} ${employee.lastName}, your employee registration has been successful. You can now login using your email and password.`,
+    // });
+
+    return employee;
   });
 
-  return employeeInfo; // Return the employee information to the caller
+  return employeeInfo;
 };
 
 const getEmployees = async (params: any, options: IPaginationOptions) => {

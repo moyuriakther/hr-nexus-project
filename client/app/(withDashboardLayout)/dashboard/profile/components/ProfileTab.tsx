@@ -66,7 +66,7 @@ const ProfileTab = () => {
                       </h1>
                       <div className="mt-2">
                         <Image
-                          src={myProfile?.signature}
+                          src={myProfile?.signature || "/default-signature.png"}
                           alt="signature"
                           className="w-[132px] h-[111px]"
                           height={100}

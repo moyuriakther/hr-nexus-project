@@ -21,7 +21,9 @@ const tableHeader = ["SL", "Leave Type", "Days", "Action"];
 
 const LeaveTypePage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { data: leaveTypes } = useGetAllLeaveQuery("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: leaveTypes } = useGetAllLeaveQuery({ searchTerm });
   const [deleteLeaveType] = useDeleteLeaveMutation();
 
   const handleDelete = async (id: string) => {
@@ -37,7 +39,7 @@ const LeaveTypePage = () => {
       <PageHeader item={pageHeaderData} />
 
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
-        <CreateLeaveType />
+        <CreateLeaveType onSearch={setSearchTerm} />
         <HRTable tableHeader={tableHeader}>
           {leaveTypes?.data.map((leave: TLeave, i: number) => (
             <tr

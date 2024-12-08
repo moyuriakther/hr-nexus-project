@@ -190,13 +190,13 @@ export const Menus: TSidebarMenus[] = [
         path: "/hr/payroll/salary_advance",
       },
       {
-        title: "Salary generate",
+        title: "Salary list",
         path: "/hr/payroll/salary_generate",
       },
-      {
-        title: "Manage employee salary",
-        path: "/hr/payroll/manage_employee_salary",
-      },
+      // {
+      //   title: "Manage employee salary",
+      //   path: "/hr/payroll/manage_employee_salary",
+      // },
     ],
   },
   {

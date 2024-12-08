@@ -4,6 +4,8 @@ import { CSVLink } from "react-csv";
 import Loader from "@/app/components/utils/Loader";
 import React from "react";
 import * as XLSX from "xlsx";
+import { Button } from "@nextui-org/react";
+import { FaFileCsv, FaFileExcel } from "react-icons/fa";
 
 interface ExcelExportProps {
   data: any[];
@@ -49,7 +51,7 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
 
   return (
     <div className="text-2xl">
-      {displayField && (
+      {/* {displayField && (
         <div className="mb-4">
           <h3 className="text-lg font-semibold mb-2">List View:</h3>
           {data.length > 0 ? (
@@ -62,23 +64,30 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
             <p>No data available</p>
           )}
         </div>
-      )}
-      <div className="flex gap-4">
+      )} */}
+      <div className="flex items-center">
         <CSVLink
           data={data}
           headers={headers}
           filename={generateFileName("csv")}
-          className="bg-primary text-white py-2 px-4 rounded-md"
+          className="bg-primary rounded-none text-sm mx-2 text-white px-4 "
         >
-          Export to CSV
+         <Button
+           size="sm"
+            className="bg-primary text-white"
+          >
+            <FaFileCsv /> CSV
+          </Button>
         </CSVLink>
         {/* XLSX Export Button */}
-        <button
-          onClick={handleXLSXDownload}
-          className="bg-secondary text-white py-2 px-4 rounded-md"
-        >
-          Export to XLSX
-        </button>
+        <Button
+            onClick={handleXLSXDownload}
+            size="sm"
+            className="bg-primary rounded-none text-sm text-white px-4"
+          >
+            <FaFileExcel/> Excel
+            
+          </Button>
       </div>
     </div>
   );

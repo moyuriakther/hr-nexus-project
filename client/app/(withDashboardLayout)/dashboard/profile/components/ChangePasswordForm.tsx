@@ -3,6 +3,7 @@
 import { useChangePasswordMutation } from "@/app/Redux/api/userApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
+import { logoutUser } from "@/app/services/actions/logoutUser";
 import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
@@ -26,7 +27,7 @@ const ChangePasswordForm = () => {
 
     if (res?.message) {
       toast.success("Changed password successfully!!");
-      router.push("/login");
+      logoutUser(router);
     }
   };
 
@@ -44,19 +45,23 @@ const ChangePasswordForm = () => {
               <HRInput
                 name="oldPassword"
                 label="Current password"
-                type="text"
+                type="password"
               />
             </div>
 
             <div className="w-[50%]">
-              <HRInput name="newPassword" label="New password" type="text" />
+              <HRInput
+                name="newPassword"
+                label="New password"
+                type="password"
+              />
             </div>
           </div>
           <div className="w-[50%] mt-6">
             <HRInput
               name="confirmPassword"
               label="Confirm new password"
-              type="text"
+              type="password"
             />
           </div>
           <div className="flex justify-end items-center mt-2">

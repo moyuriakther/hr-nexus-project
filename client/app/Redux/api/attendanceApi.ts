@@ -1,5 +1,23 @@
+import { TAttendance } from "@/app/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
+
+interface Meta {
+  page: number;
+  limit: number;
+  total: number;
+}
+
+// Define the structure of the API response for getAllLoan
+interface GetAllPAttendanceResponse {
+  meta: Meta;
+  data: TAttendance[]; // The array of loans
+}
+
+interface GetAllAttendanceQueryArgs {
+  searchTerm?: string;
+  [key: string]: any;
+}
 
 export const attendanceApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -11,11 +29,22 @@ export const attendanceApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.attendance],
     }),
-    getAllAttendance: build.query({
-      query: () => ({
-        url: "/attendance",
-        method: "GET",
-      }),
+
+    getAllAttendance: build.query<
+      GetAllPAttendanceResponse,
+      GetAllAttendanceQueryArgs
+    >({
+      query: ({ searchTerm = "", ...filters } = {}) => {
+        const queryString = new URLSearchParams({
+          searchTerm,
+          ...filters,
+        }).toString();
+
+        return {
+          url: `/attendance?${queryString}`,
+          method: "GET",
+        };
+      },
       providesTags: [tagTypes.attendance],
     }),
     updateAttendance: build.mutation({

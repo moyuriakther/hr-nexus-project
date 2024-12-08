@@ -9,11 +9,14 @@ import { FaChartBar } from "react-icons/fa6";
 import { useGetAllPaymentQuery } from "@/app/Redux/api/paymentApi";
 import { Payment } from "@/app/types";
 import { getMonthAndYear } from "@/app/utils/getYearAndMonth";
+
+import Loader from "@/app/components/utils/Loader";
+
 import Link from "next/link";
 
 
 const SalaryList = () => {
-  const { data: payments, isLoading } = useGetAllPaymentQuery("");
+  const { data: payments, isLoading } = useGetAllPaymentQuery({});
   const tableHeader = [
     "Sl",
     "Employee name",
@@ -21,7 +24,6 @@ const SalaryList = () => {
     "Release amount",
     "Salary month",
     "Status",
-    "Action",
   ];
 
   return (
@@ -33,7 +35,7 @@ const SalaryList = () => {
       <div className="px-6">
         <HRTable tableHeader={tableHeader}>
           {isLoading
-            ? "loading..."
+            ?<div className="flex justify-center items-center w-64 h-64"><Loader/></div>
             : payments?.data.map((payroll: Payment, i: number) => (
                 <tr
                   className={`${
@@ -63,7 +65,7 @@ const SalaryList = () => {
                     </Button>
                   </HRTableRow>
 
-                  <HRTableRow>
+                  {/* <HRTableRow>
                     <div className="flex items-center gap-2">
                       <Link
                         href={`salary_generate/salary-approval/${payroll?.id}`}
@@ -81,7 +83,7 @@ const SalaryList = () => {
                         </HRIconsButton>
                       </Link>
                     </div>
-                  </HRTableRow>
+                  </HRTableRow> */}
                 </tr>
               ))}
         </HRTable>
