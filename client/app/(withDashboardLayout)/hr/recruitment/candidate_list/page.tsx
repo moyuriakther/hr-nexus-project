@@ -15,8 +15,8 @@ const CandidateList = () => {
   // const [data, setData] = useState<TCandidateList[]>(candidates);
   const [modalIsOpen, setIsOpen] = useState(false);
   const { data, isLoading } = useGetAllCandidateQuery({});
-  
-  
+  const [limit, setLimit]=useState(10)
+  console.log("data: ",data)
   const handleSearch: SubmitHandler<FieldValues> = async (data) => {
     try {
       console.log(data);
@@ -33,7 +33,8 @@ const CandidateList = () => {
     isLoading: false,
     displayField: "CandidateList",
   };
-
+  console.log(limit)
+const paginatedData=data?.data.slice(0,Number(limit))
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
       <SearchAndModal
@@ -42,10 +43,11 @@ const CandidateList = () => {
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         handleSearch={handleSearch}
+        setLimit={setLimit}
       ></SearchAndModal>
       {/* Add New  Modal */}
       <CreateCandidate setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} />
-        <CandidateData data={data} isLoading={isLoading}/>
+        <CandidateData data={paginatedData}  isLoading={isLoading}/>
     </div>
   );
 };
