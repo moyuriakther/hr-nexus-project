@@ -12,7 +12,8 @@ import { useGetAllSelectedCandidateQuery } from "@/app/Redux/api/selectedListApi
 
 const CandidateSelectionPage = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const { data } = useGetAllSelectedCandidateQuery({});
+  const { data, isLoading } = useGetAllSelectedCandidateQuery({});
+  const [limit, setLimit]=useState(10)
   const handleSearch: SubmitHandler<FieldValues> = async (data) => {
     try {
       console.log(data);
@@ -29,7 +30,7 @@ const CandidateSelectionPage = () => {
     isLoading: false,
     displayField: "CandidateSelectionList",
   };
-
+  const paginatedData=data?.data.slice(0,Number(limit))
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
       <SearchAndModal
@@ -38,8 +39,9 @@ const CandidateSelectionPage = () => {
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         handleSearch={handleSearch}
+        setLimit={setLimit}
       ></SearchAndModal>
-      <SelectedCandidate data={data} />
+      <SelectedCandidate data={paginatedData} isLoading={isLoading}/>
     </div>
   );
 };

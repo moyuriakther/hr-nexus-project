@@ -256,10 +256,38 @@ const getSingleShortListedCandidate = async (id: string) => {
   });
   return result;
 };
+const getSingleSelectedCandidate = async (id: string) => {
+  const result = await prisma.candidateSelection.findUniqueOrThrow({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
 
 // Update a Candidate by ID
 const updateCandidate = async (id: string, data: any) => {
   const result = await prisma.candidateList.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return result;
+};
+// Update a Candidate by ID
+const updateShortListedCandidate = async (id: string, data: any) => {
+  const result = await prisma.shortList.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return result;
+};
+// Update a Candidate by ID
+const updateSelectedCandidate = async (id: string, data: any) => {
+  const result = await prisma.candidateSelection.update({
     where: {
       id,
     },
@@ -286,7 +314,10 @@ export const CandidateService = {
   getAllSelectedCandidates,
   getSingleCandidate,
   getSingleShortListedCandidate,
+  getSingleSelectedCandidate,
   updateCandidate,
+  updateShortListedCandidate,
+  updateSelectedCandidate,
   deleteCandidate,
   createCandidateShortList,
 };

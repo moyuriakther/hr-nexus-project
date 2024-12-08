@@ -23,9 +23,12 @@ router.get(
   "/short-listed/:id",
   CandidateController.getSingleShortListedCandidate
 );
-// router.get("/selected/:id", CandidateController.getSingleSelectedCandidate);
+router.get("/selected/:id", CandidateController.getSingleSelectedCandidate);
 
 router.patch("/:id", CandidateController.updateCandidate);
+router.patch("/short-listed/:id", CandidateController.updateCandidateShortList);
+router.patch("/selected/:id", CandidateController.updateCandidateSelection);
+
 router.delete("/:id", CandidateController.deleteCandidate);
 
 export const CandidateRoutes = router;

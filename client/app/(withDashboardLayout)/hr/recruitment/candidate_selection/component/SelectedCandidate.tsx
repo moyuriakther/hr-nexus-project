@@ -7,16 +7,12 @@ import { selectionTableHeader } from "../fakeData";
 import { TCandidateSelection } from "../../Type/type";
 import UpdateSelectedCandidate from "./UpdateSelectedCandidate";
 
-const SelectedCandidate=({data}:{data:TCandidateSelection[]})=>{
+const SelectedCandidate=({data, isLoading}:{data:TCandidateSelection[],isLoading:boolean})=>{
 
-    const { isLoading } = useGetAllCandidateQuery({});
     const [deleteCandidate] = useDeleteCandidateMutation({});
     const [id, setId]=useState<SetStateAction<string|number>>('')
   const [updateModalIsOpen, setIsUpdateModal]=useState(false)
-  const [currentPage, setCurrentPage]=useState(1)
-  const totalPage=Math.round(data?.length/5)
-  const startIndex=Number(currentPage)*5-5
-  const lastIndex=startIndex+5
+
     if (isLoading) {
       return <Loader />;
     }
@@ -45,7 +41,7 @@ const SelectedCandidate=({data}:{data:TCandidateSelection[]})=>{
         <div>
           <UpdateSelectedCandidate setIsOpen={setIsUpdateModal} modalIsOpen={updateModalIsOpen} id={id}/>
                 <HRTable tableHeader={selectionTableHeader}>
-        {data?.slice(startIndex, lastIndex).map((candidate, index) => {
+        {data?.map((candidate, index) => {
           return (
             <tr
               className={`${
@@ -109,7 +105,7 @@ const SelectedCandidate=({data}:{data:TCandidateSelection[]})=>{
           );
         })}
       </HRTable>
-      <Pagination currentPage={currentPage} totalPage={totalPage} setCurrentPage={setCurrentPage} data={data}/>
+      {/* <Pagination currentPage={currentPage} totalPage={totalPage} setCurrentPage={setCurrentPage} data={data}/> */}
         </div>
     )
 }

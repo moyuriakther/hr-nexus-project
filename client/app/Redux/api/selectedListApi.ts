@@ -5,7 +5,7 @@ export const selectedCandidateApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createSelectedCandidate: build.mutation({
       query: (data) => ({
-        url: "/selectedCandidate/create-selection",
+        url: "/candidates/create-candidate-selection",
         method: "POST",
         data,
       }),
@@ -13,14 +13,14 @@ export const selectedCandidateApi = baseApi.injectEndpoints({
     }),
     getAllSelectedCandidate: build.query({
       query: () => ({
-        url: "/selectedCandidate",
+        url: "/candidates/selected",
         method: "GET",
       }),
       providesTags: [tagTypes.candidateSelection],
     }),
     getSingleSelectedCandidate: build.query({
       query: (id) => ({
-        url: `/selectedCandidate/${id}`,
+        url: `/candidates/selected/${id}`,
         method: "GET",
       }),
       providesTags: [tagTypes.candidateSelection],
@@ -28,7 +28,7 @@ export const selectedCandidateApi = baseApi.injectEndpoints({
 
     deleteSelectedCandidate: build.mutation({
       query: (id) => ({
-        url: `/selectedCandidate/${id}`,
+        url: `/candidates/selected/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [tagTypes.candidateSelection],
@@ -36,7 +36,7 @@ export const selectedCandidateApi = baseApi.injectEndpoints({
 
     updateSelectedCandidate: build.mutation({
       query: (data) => ({
-        url: `/selectedCandidate/${data.id}`,
+        url: `/candidates/selected/${data.id}`,
         method: "PATCH",
         data: data.body,
       }),
