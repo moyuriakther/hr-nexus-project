@@ -12,8 +12,9 @@ export const interview = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.interview],
     }),
     getAllInterview: build.query({
-      query: () => ({
-        url: "/interview",
+     
+      query: ({ searchTerm }) => ({
+        url: `/interview${searchTerm ? `?searchTerm=${searchTerm}` : ""}`,
         method: "GET",
       }),
       providesTags: [tagTypes.interview],

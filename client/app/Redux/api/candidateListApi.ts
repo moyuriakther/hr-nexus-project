@@ -5,22 +5,22 @@ export const candidateListApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createCandidate: build.mutation({
       query: (data) => ({
-        url: "candidateList/create-leave",
+        url: "/candidates/create-candidate",
         method: "POST",
         data,
       }),
       invalidatesTags: [tagTypes.candidateList],
     }),
     getAllCandidate: build.query({
-      query: () => ({
-        url: "candidateList", 
+      query: ({ searchTerm }) => ({
+        url: `/candidates${searchTerm ? `?searchTerm=${searchTerm}` : ""}`,
         method: "GET",
       }),
       providesTags: [tagTypes.candidateList],
     }),
     getSingleCandidate: build.query({
       query: (id) => ({
-        url: `candidateList/${id}`,
+        url: `/candidates/${id}`,
         method: "GET",
       }),
       providesTags: [tagTypes.candidateList],
@@ -28,7 +28,7 @@ export const candidateListApi = baseApi.injectEndpoints({
 
     deleteCandidate: build.mutation({
       query: (id) => ({
-        url: `candidateList/${id}`,
+        url: `candidates/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [tagTypes.candidateList],
@@ -36,7 +36,7 @@ export const candidateListApi = baseApi.injectEndpoints({
 
     updateCandidate: build.mutation({
       query: (data) => ({
-        url: `candidateList/${data.id}`,
+        url: `candidates/${data.id}`,
         method: "PATCH",
         data: data.body,
       }),

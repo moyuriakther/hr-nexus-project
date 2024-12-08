@@ -15,7 +15,7 @@ import { useGetAllInterviewQuery } from "@/app/Redux/api/interviewListApi";
 const InterviewPage = () => {
 const {isLoading, data}=useGetAllInterviewQuery({})
   const [modalIsOpen, setIsOpen] = useState(false);
-
+const [limit, setLimit]=useState(10)
 
 
   const handleSearch: SubmitHandler<FieldValues> = async (data) => {
@@ -28,14 +28,14 @@ const {isLoading, data}=useGetAllInterviewQuery({})
   };
 
   const excelExportParamsData={data,headers:interviewTableHeader,baseFileName:"candidate_interview_list",isLoading:false, displayField:"CandidateInterviewList"}
-
+  const paginatedData=data?.data.slice(0,Number(limit))
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
      
     
-        <SearchAndModal excelExportParamsData={excelExportParamsData} menuName={"Candidate Interview "} modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} handleSearch={handleSearch} ></SearchAndModal>
+        <SearchAndModal excelExportParamsData={excelExportParamsData} setLimit={setLimit} menuName={"Candidate Interview "} modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} handleSearch={handleSearch} ></SearchAndModal>
         <CreateInterviewCandidate modalIsOpen={modalIsOpen} setIsOpen={setIsOpen}/>
-        <InterviewCandidate data={data} isLoading={isLoading}/>
+        <InterviewCandidate data={paginatedData} isLoading={isLoading}/>
     </div>
   );
 };

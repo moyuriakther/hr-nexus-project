@@ -5,22 +5,23 @@ export const shortlistCandidateApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createShortlistCandidate: build.mutation({
       query: (data) => ({
-        url: "shortlistCandidate/create-shortlistCandidate",
+        url: "/candidates/create-candidate-short-list",
         method: "POST",
         data,
       }),
       invalidatesTags: [tagTypes.candidateShortlist],
     }),
     getAllShortlistCandidate: build.query({
-      query: () => ({
-        url: "shortlistCandidate",
+   
+      query: ({ searchTerm }) => ({
+        url: `/candidates/short-listed${searchTerm ? `?searchTerm=${searchTerm}` : ""}`,
         method: "GET",
       }),
       providesTags: [tagTypes.candidateShortlist],
     }),
     getSingleShortlistCandidate: build.query({
       query: (id) => ({
-        url: `shortlistCandidate/${id}`,
+        url: `/candidates/short-listed/${id}`,
         method: "GET",
       }),
       providesTags: [tagTypes.candidateShortlist],
@@ -28,7 +29,7 @@ export const shortlistCandidateApi = baseApi.injectEndpoints({
 
     deleteShortlistCandidate: build.mutation({
       query: (id) => ({
-        url: `shortlistCandidate/${id}`,
+        url: `/candidates/short-listed/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [tagTypes.candidateShortlist],
@@ -36,7 +37,7 @@ export const shortlistCandidateApi = baseApi.injectEndpoints({
 
     updateShortlistCandidate: build.mutation({
       query: (data) => ({
-        url: `shortlistCandidate/${data.id}`,
+        url: `/candidates/short-listed/${data.id}`,
         method: "PATCH",
         data: data.body,
       }),

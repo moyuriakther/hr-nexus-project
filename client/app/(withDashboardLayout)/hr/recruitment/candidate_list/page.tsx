@@ -14,10 +14,16 @@ import { toast } from "sonner";
 const CandidateList = () => {
   // const [data, setData] = useState<TCandidateList[]>(candidates);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetAllCandidateQuery({});
+  const [searchTerm, setSearchTerm]=useState('')
+  const { data, isLoading } = useGetAllCandidateQuery({searchTerm});
+  const [limit, setLimit]=useState(10)
+
+  console.log("data: ",data)
+  console.log(searchTerm)
   const handleSearch: SubmitHandler<FieldValues> = async (data) => {
     try {
       console.log(data);
+      setSearchTerm(data.search)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);
@@ -31,19 +37,21 @@ const CandidateList = () => {
     isLoading: false,
     displayField: "CandidateList",
   };
-
+  console.log(limit)
+const paginatedData=data?.data.slice(0,Number(limit))
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
       <SearchAndModal
-        menuName={"Candidate List"}
+        menuName={"Candidate "}
         excelExportParamsData={excelExportParamsData}
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         handleSearch={handleSearch}
+        setLimit={setLimit}
       ></SearchAndModal>
       {/* Add New  Modal */}
       <CreateCandidate setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} />
-        <CandidateData data={data} isLoading={isLoading}/>
+        <CandidateData data={paginatedData}  isLoading={isLoading}/>
     </div>
   );
 };
