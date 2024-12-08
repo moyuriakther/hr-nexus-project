@@ -1,17 +1,17 @@
 "use client";
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
-import HRForm from "@/app/components/Form/HRForm";
-import HRInput from "@/app/components/Form/HRInput";
-import { Button, Divider } from "@nextui-org/react";
-import { FieldValues } from "react-hook-form";
+// import HRForm from "@/app/components/Form/HRForm";
+// import HRInput from "@/app/components/Form/HRInput";
+// import { Button, Divider } from "@nextui-org/react";
+// import { FieldValues } from "react-hook-form";
 import { pageHeaderData } from "../components/pageHeaderData";
 import SalaryList from "./components/SalaryList";
 
 const SalaryGeneratePage = () => {
-  const handleSubmit = (values: FieldValues) => {
-    console.log(values);
-  };
+  // const handleSubmit = (values: FieldValues) => {
+  //   console.log(values);
+  // };
 
   return (
     <div className="min-h-[89vh]">

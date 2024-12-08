@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
+import { useParams } from "next/navigation"; // Correct hook import
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import { pageHeaderData } from "../../../components/pageHeaderData";
 import Image from "next/image";
@@ -7,9 +9,12 @@ import logo from "../../../../../../assets/images/logo.png";
 import SalaryPayslipTable from "../components/SalaryPayslipTable";
 import { Divider } from "@nextui-org/react";
 import { FaPrint } from "react-icons/fa";
-import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
 
-const PayslipPage = ({ useParams }: { useParams: { id: string } }) => {
+const PayslipPage = () => {
+  // Use useParams hook to get the dynamic route parameter
+  const params = useParams();
+  const { id } = params;
+
   const headers = ["Header 1", "Header 2", "Header 3", "Header 4"];
 
   // Define your row data
@@ -28,11 +33,11 @@ const PayslipPage = ({ useParams }: { useParams: { id: string } }) => {
             <Image src={logo} alt="logo" height={50} width={145} />
           </div>
           <h2 className="text-2xl px-6 text-center text-black font-[500] mt-1">
-            HrNexus HRM (PAYSLIP)
+            HrNexus HRM (PAYSLIP) - ID: {id}
           </h2>
         </div>
 
-        {/* table-1 */}
+        {/* Table 1 */}
         <div className="px-12 mt-10">
           <div className="overflow-x-auto">
             <table className="table-auto w-full border-collapse border border-gray-300 text-sm text-left">
@@ -113,7 +118,7 @@ const PayslipPage = ({ useParams }: { useParams: { id: string } }) => {
           </div>
         </div>
 
-        {/* table-2 */}
+        {/* Table 2 */}
         <div className="mt-6 px-12">
           <SalaryPayslipTable />
         </div>

@@ -16,20 +16,21 @@ import { toast } from "sonner";
 const CreateSubDepartmentModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [createSubDepartment] = useCreateSubDepartmentMutation();
-  const {data} = useGetAllDepartmentsQuery({})
-  const departments= data?.data;
+  const { data } = useGetAllDepartmentsQuery({});
+  const departments = data?.data;
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-      const departmentId =await departments?.find((dep:any) =>dep.departmentName === values.department);
-      
-      const subDepData = {
-        ...values,
-        departmentId: departmentId?.id,
-        description: "Responsible for recruitment"
+    const departmentId = await departments?.find(
+      (dep: any) => dep.departmentName === values.department
+    );
 
-      }
-      console.log(subDepData)
-   try {
+    const subDepData = {
+      ...values,
+      departmentId: departmentId?.id,
+      description: "Responsible for recruitment",
+    };
+    console.log(subDepData);
+    try {
       const res = await createSubDepartment(subDepData).unwrap();
       if (res?.id) {
         toast.success("Sub Department Created Successfully");
@@ -39,16 +40,17 @@ const CreateSubDepartmentModal = () => {
       console.log(error);
     }
   };
-  const deptOptions = departments?.map((dep:any) =>(
-    ({ value: dep.departmentName, label: dep.departmentName})
-  ));
+  const deptOptions = departments?.map((dep: any) => ({
+    value: dep.departmentName,
+    label: dep.departmentName,
+  }));
   const radioOptions = [
     {
-      value: true,
+      value: "true",
       label: "Active",
     },
     {
-      value: false,
+      value: "false",
       label: "Inactive",
     },
   ];
@@ -60,10 +62,10 @@ const CreateSubDepartmentModal = () => {
         size="sm"
         className="bg-primary rounded-[4px] text-sm text-white"
       >
-        <FaPlusCircle />Add Sub department
+        <FaPlusCircle />
+        Add Sub department
       </Button>
 
-      
       <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setModalIsOpen}
@@ -82,10 +84,10 @@ const CreateSubDepartmentModal = () => {
           <div className="flex items-center gap-x-20">
             <p className="font-medium">Department</p>
             <HRSelect
-            name="department"
-            placeholder="Choose a department"
-            options={deptOptions}
-          />
+              name="department"
+              placeholder="Choose a department"
+              options={deptOptions}
+            />
           </div>
           <div className="flex items-center gap-x-20">
             <p className="font-medium mr-6">Is Active</p>

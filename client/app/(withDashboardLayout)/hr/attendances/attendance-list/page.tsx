@@ -3,6 +3,7 @@
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import {
   useDeleteAttendanceMutation,
+  // useDeleteAttendanceMutation,
   useGetAllAttendanceQuery,
 } from "@/app/Redux/api/attendanceApi";
 import HRTable from "@/app/components/Table/HRTable";
@@ -12,16 +13,21 @@ import {
   getDayMonthAndYear,
   getTimeFromDate,
 } from "@/app/utils/getYearAndMonth";
-import { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import { toast } from "sonner";
+// import { useState } from "react";
+// import { FaEdit, FaTrash } from "react-icons/fa";
+// import { toast } from "sonner";
 import { attendancePageHeaderData } from "../../employees/components/pageHeaderData";
 import ComponentHeader from "./components/ComponentHeader";
+import { toast } from "sonner";
+import { FaTrash } from "react-icons/fa";
+import { useState } from "react";
 
 const AttendancePage = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { data: attendances } = useGetAllAttendanceQuery("");
-  // const [deleteAttendance, { isLoading }] = useDeleteAttendanceMutation();
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: attendances } = useGetAllAttendanceQuery({ searchTerm });
+  const [deleteAttendance, { isLoading }] = useDeleteAttendanceMutation();
 
   const tableHeader = [
     "Sl",
@@ -32,18 +38,18 @@ const AttendancePage = () => {
     "Check out",
   ];
 
-  // const handleDelete = async (id: string) => {
-  //   const res = await deleteAttendance(id).unwrap();
-  //   if (res?.id) {
-  //     toast.success("Attendance delete successful!");
-  //   }
-  // };
+  const handleDelete = async (id: string) => {
+    const res = await deleteAttendance(id).unwrap();
+    if (res?.id) {
+      toast.success("Attendance delete successful!");
+    }
+  };
 
   return (
     <div>
       <PageHeader item={attendancePageHeaderData} />
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
-        <ComponentHeader />
+        <ComponentHeader onSearch={setSearchTerm} />
 
         <HRTable tableHeader={tableHeader}>
           {attendances?.data.map((attendance: TAttendance, i: number) => (
@@ -58,14 +64,14 @@ const AttendancePage = () => {
               <HRTableRow>{getTimeFromDate(attendance.checkIn)}</HRTableRow>
               <HRTableRow>{getTimeFromDate(attendance.checkOut)}</HRTableRow>
 
-              {/* <HRTableRow>
+              <HRTableRow>
                 <div className="flex items-center gap-2">
-                  <button
+                  {/* <button
                     onClick={() => setIsOpen(true)}
                     className=" bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
                   >
                     <FaEdit className="text-base" />
-                  </button>
+                  </button> */}
                   <button
                     disabled={isLoading}
                     onClick={() => handleDelete(attendance?.id)}
@@ -74,7 +80,7 @@ const AttendancePage = () => {
                     <FaTrash className="text-base" />
                   </button>
                 </div>
-              </HRTableRow> */}
+              </HRTableRow>
               {/* <UpdateHolidayModal
                 attendance={attendance}
                 setIsOpen={setIsOpen}

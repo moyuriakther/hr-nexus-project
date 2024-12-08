@@ -3,6 +3,7 @@
 import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import { useAppDispatch, useAppSelector } from "@/app/Redux/hook";
 import { setOpen } from "@/app/Redux/sidebar/sidebarSlice";
+import { logoutUser } from "@/app/services/actions/logoutUser";
 import {
   Button,
   Dropdown,
@@ -11,6 +12,8 @@ import {
   DropdownTrigger,
   User,
 } from "@nextui-org/react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { CgMenuRight } from "react-icons/cg";
 import { MdCleaningServices } from "react-icons/md";
@@ -19,7 +22,10 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.sidebar);
   const { data: myProfile } = useGetMyProfileQuery("");
-
+  const router = useRouter();
+  const handleLogOut = () => {
+    logoutUser(router);
+  };
   return (
     <div className="px-4 py-3 shadow-md sticky top-0 bg-white z-[9]">
       <div className="flex items-center justify-between">
@@ -53,7 +59,9 @@ const Header = () => {
                 as="button"
                 avatarProps={{
                   isBordered: true,
-                  src: myProfile?.photo,
+                  src: myProfile?.photo
+                    ? myProfile?.photo
+                    : "https://i.ibb.co.com/nnTfqMb/download-7.jpg",
                 }}
                 className="transition-transform"
                 description={myProfile?.name}
@@ -70,10 +78,16 @@ const Header = () => {
                 <div className="flex flex-col items-center">
                   {/* Avatar */}
                   <div className="w-[70px] h-[70px] bg-gray-200 rounded-full flex items-center justify-center">
-                    <img
-                      src={myProfile?.photo}
+                    <Image
+                      src={
+                        myProfile?.photo
+                          ? myProfile?.photo
+                          : "https://i.ibb.co.com/nnTfqMb/download-7.jpg"
+                      }
                       alt="Admin Avatar"
                       className="w-full h-full rounded-full"
+                      width={50}
+                      height={50}
                     />
                   </div>
                   {/* Name and Email */}
@@ -89,7 +103,7 @@ const Header = () => {
               {/* Manage Account */}
               <DropdownItem key="settings" className="mt-3">
                 <a
-                  href="dashboard/profile"
+                  href="/dashboard/profile"
                   className="text-center block text-[#188753] text-[16px]"
                 >
                   Manage your account
@@ -99,7 +113,10 @@ const Header = () => {
               {/* Buttons Section */}
               <DropdownItem key="buttons" className="mt-4">
                 <div className="flex justify-center gap-4">
-                  <button className="py-2 px-4 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200">
+                  <button
+                    onClick={handleLogOut}
+                    className="py-2 px-4 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200"
+                  >
                     Sign out
                   </button>
                   <button className="py-2 px-4 bg-gray-100 text-red-600 rounded-lg hover:bg-gray-200">

@@ -1,16 +1,12 @@
 "use client";
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
-import React, { useState } from "react";
 import { pageHeaderData } from "../components/pageHeaderData";
 import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
-import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import CreateLeaveApplication from "./components/CreateLeaveApplication";
 import { Button } from "@nextui-org/react";
-import ApplicationApprovedModal from "./components/ApplicationApprovedModal";
-import UpdateLeaveApplicationModal from "./components/UpdateLeaveApplicationModal";
+
 import {
   useDeleteLeaveMutation,
   useGetAllLeaveQuery,
@@ -19,9 +15,13 @@ import { toast } from "sonner";
 import { tableHeader } from "./components/tableHeader";
 import { TLeave } from "@/app/types";
 import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
+import { FaTrash } from "react-icons/fa";
+import { useState } from "react";
 
 const LeaveApplicationPage = () => {
-  const { data: leaveTypes, isLoading } = useGetAllLeaveQuery("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: leaveTypes, isLoading } = useGetAllLeaveQuery({ searchTerm });
   const [deleteLeaveType] = useDeleteLeaveMutation();
 
   const handleDelete = async (id: string) => {
@@ -37,7 +37,7 @@ const LeaveApplicationPage = () => {
       <PageHeader item={pageHeaderData} />
 
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
-        <CreateLeaveApplication />
+        <CreateLeaveApplication onSearch={setSearchTerm} />
 
         <HRTable tableHeader={tableHeader}>
           {isLoading

@@ -17,11 +17,12 @@ const CreateDepartmentModal = () => {
   const [createDepartment] = useCreateDepartmentMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-      const depData = {
-        ...values,
-        description: "Responsible for recruitment"
-      }
-   try {
+    const depData = {
+      ...values,
+      description: "Responsible for recruitment",
+    };
+    console.log(depData);
+    try {
       const res = await createDepartment(depData).unwrap();
       if (res?.id) {
         toast.success("Department Created Successfully");
@@ -33,11 +34,11 @@ const CreateDepartmentModal = () => {
   };
   const radioOptions = [
     {
-      value: true,
+      value: "true",
       label: "Active",
     },
     {
-      value: false,
+      value: "false",
       label: "Inactive",
     },
   ];
@@ -49,10 +50,10 @@ const CreateDepartmentModal = () => {
         size="sm"
         className="bg-primary rounded-[4px] text-sm text-white"
       >
-        <FaPlusCircle />Add department
+        <FaPlusCircle />
+        Add department
       </Button>
 
-      
       <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setModalIsOpen}

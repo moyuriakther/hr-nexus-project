@@ -1,5 +1,23 @@
+import { TLoan } from "../../types/loan";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
+
+interface Meta {
+  page: number;
+  limit: number;
+  total: number;
+}
+
+// Define the structure of the API response for getAllLoan
+interface GetAllLoanResponse {
+  meta: Meta;
+  data: TLoan[]; // The array of loans
+}
+
+interface GetAllLoanQueryArgs {
+  searchTerm?: string;
+  [key: string]: any;
+}
 
 export const loanApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -11,11 +29,19 @@ export const loanApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.loan],
     }),
-    getAllLoan: build.query({
-      query: () => ({
-        url: "/loan",
-        method: "GET",
-      }),
+    getAllLoan: build.query<GetAllLoanResponse, GetAllLoanQueryArgs>({
+      query: ({ searchTerm = "", ...filters } = {}) => {
+        // Build query string for filters and search term
+        const queryString = new URLSearchParams({
+          searchTerm,
+          ...filters,
+        }).toString();
+
+        return {
+          url: `/loan?${queryString}`, // Include query string in the URL
+          method: "GET",
+        };
+      },
       providesTags: [tagTypes.loan],
     }),
     getSingleLoan: build.query({

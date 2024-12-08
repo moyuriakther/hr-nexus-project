@@ -1,7 +1,6 @@
 "use client";
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
-import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
 import {
   useDeleteHolidayMutation,
   useGetAllHolidayQuery,
@@ -10,7 +9,6 @@ import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
 import { THoliday } from "@/app/types";
 import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
-import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { pageHeaderData } from "../components/pageHeaderData";
@@ -20,7 +18,9 @@ import { toast } from "sonner";
 
 const HolydayPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { data: holidays } = useGetAllHolidayQuery("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: holidays } = useGetAllHolidayQuery({ searchTerm });
   const [deleteHoliday, { isLoading }] = useDeleteHolidayMutation();
 
   const tableHeader = [
@@ -44,7 +44,7 @@ const HolydayPage = () => {
     <div>
       <PageHeader item={pageHeaderData} />
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
-        <CreateHolyday />
+        <CreateHolyday onSearch={setSearchTerm} />
 
         <HRTable tableHeader={tableHeader}>
           {holidays?.data.map((holiday: THoliday, i: number) => (

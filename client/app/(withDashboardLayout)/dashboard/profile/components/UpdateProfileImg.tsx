@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   useGetMyProfileQuery,
   useUpdateMyProfileMutation,
 } from "@/app/Redux/api/userApi";
 import { uploadImage } from "@/app/utils/UploadImage";
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
@@ -10,7 +12,7 @@ import { toast } from "sonner";
 
 const UpdateProfileImg = () => {
   const { data: myProfile } = useGetMyProfileQuery("");
-  const [updateProfile] = useUpdateMyProfileMutation();
+  const [updateProfile, { isLoading }] = useUpdateMyProfileMutation();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -79,22 +81,23 @@ const UpdateProfileImg = () => {
   return (
     <div>
       <div className="relative w-full overflow-visible rounded-lg">
-        <div
-          className={`${
-            myProfile?.coverPhoto
-              ? "rounded-[10px] h-[250px]"
-              : "bg-gradient-to-r rounded-[10px] from-blue-900 via-blue-600 to-blue-500 h-[250px]"
-          }`}
-        >
-          <img
-            src={myProfile?.coverPhoto}
-            alt=""
+        <div className="rounded-[10px] h-[250px]">
+          <Image
+            src={
+              myProfile?.coverPhoto
+                ? myProfile?.coverPhoto
+                : "https://i.ibb.co.com/djfNFB9/technology-background-connection-abstract-blue-600nw-1652094658.webp"
+            }
+            alt="cover"
             className="rounded-[10px] h-[250px] w-full"
+            width={120}
+            height={120}
           />
         </div>
 
         <button
           type="button"
+          disabled={isLoading}
           onClick={handleButtonClick}
           className="absolute flex items-center gap-2 bottom-2 right-2 bg-black bg-opacity-25 text-white px-[15px] py-[8px] rounded-[15px]"
         >
@@ -116,10 +119,16 @@ const UpdateProfileImg = () => {
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className="absolute -bottom-[60px] left-8 w-[120px] h-[120px] bg-gray-900 text-white rounded-full flex items-center justify-center border-[5px] border-white overflow-visible">
-            <img
-              src={myProfile?.photo}
-              alt=""
+            <Image
+              src={
+                myProfile?.photo
+                  ? myProfile?.photo
+                  : "https://i.ibb.co.com/nnTfqMb/download-7.jpg"
+              }
+              alt="myProfile"
               className="w-full h-full object-cover rounded-full"
+              width={120}
+              height={120}
             />
           </div>
 

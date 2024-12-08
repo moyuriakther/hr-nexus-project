@@ -25,6 +25,12 @@ CREATE TYPE "AttendanceType" AS ENUM ('DAILY', 'WEEKLY', 'MONTHLY');
 -- CreateEnum
 CREATE TYPE "PaymentStatus" AS ENUM ('PENDING', 'PAID', 'REJECTED');
 
+-- CreateEnum
+CREATE TYPE "TaskStatus" AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED', 'TODO');
+
+-- CreateEnum
+CREATE TYPE "PriorityStatus" AS ENUM ('HIGH', 'MEDIUM', 'LOW');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
@@ -34,6 +40,7 @@ CREATE TABLE "users" (
     "password" TEXT NOT NULL,
     "photo" TEXT,
     "coverPhoto" TEXT,
+    "signature" TEXT,
     "phoneNumber" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -54,14 +61,14 @@ CREATE TABLE "employees" (
     "phoneNumber" TEXT NOT NULL,
     "country" TEXT,
     "passport" TEXT,
-    "nidNumber" TEXT NOT NULL,
+    "nidNumber" TEXT,
     "alternateNumber" TEXT,
     "city" TEXT,
     "attendanceShift" "Shift",
     "address" TEXT,
     "designation" TEXT,
-    "dateOfBirth" TIMESTAMP(3),
-    "joiningDate" TIMESTAMP(3),
+    "dateOfBirth" TEXT,
+    "joiningDate" TEXT,
     "accountNumber" TEXT,
     "tinNumber" TEXT,
     "branchAddress" TEXT,
@@ -75,11 +82,11 @@ CREATE TABLE "employees" (
     "otherBenefit" DOUBLE PRECISION,
     "departmentId" TEXT NOT NULL,
     "subDepartmentId" TEXT NOT NULL,
-    "position" TEXT NOT NULL,
+    "position" TEXT,
     "dutyType" TEXT,
-    "hireDate" TIMESTAMP(3),
-    "rehireDate" TIMESTAMP(3),
-    "terminationDate" TIMESTAMP(3),
+    "hireDate" TEXT,
+    "rehireDate" TEXT,
+    "terminationDate" TEXT,
     "cardNumber" TEXT,
     "monthlyWorkHours" DOUBLE PRECISION,
     "workPermit" BOOLEAN,
@@ -91,8 +98,8 @@ CREATE TABLE "employees" (
     "terminationReason" TEXT,
     "workInCity" TEXT,
     "employeeType" TEXT NOT NULL,
-    "gender" "Gender" NOT NULL,
-    "maritalStatus" "MaritalStatus" NOT NULL,
+    "gender" "Gender",
+    "maritalStatus" "MaritalStatus",
     "numberOfKids" INTEGER DEFAULT 0,
     "sosNumber" TEXT,
     "religion" TEXT,
@@ -115,7 +122,9 @@ CREATE TABLE "employees" (
     "homePhone" TEXT,
     "status" "Status" NOT NULL DEFAULT 'ACTIVE',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userRole" "UserRole" NOT NULL DEFAULT 'EMPLOYEE',
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "employees_pkey" PRIMARY KEY ("id")
 );
@@ -123,10 +132,12 @@ CREATE TABLE "employees" (
 -- CreateTable
 CREATE TABLE "departments" (
     "id" TEXT NOT NULL,
+    "departmentName" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "departmentName" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "departments_pkey" PRIMARY KEY ("id")
 );
@@ -135,8 +146,10 @@ CREATE TABLE "departments" (
 CREATE TABLE "sub_departments" (
     "id" TEXT NOT NULL,
     "departmentId" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "subDepartmentName" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -152,7 +165,7 @@ CREATE TABLE "attendances" (
     "checkOut" TIMESTAMP(3),
     "monthName" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "attendanceType" "AttendanceType",
 
     CONSTRAINT "attendances_pkey" PRIMARY KEY ("id")
@@ -192,6 +205,7 @@ CREATE TABLE "leaves" (
     "approvedDays" INTEGER,
     "managerComment" TEXT,
     "status" "LeaveStatus" NOT NULL DEFAULT 'PENDING',
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "employeeId" TEXT,
@@ -225,6 +239,7 @@ CREATE TABLE "clients" (
     "address" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "clients_pkey" PRIMARY KEY ("id")
 );
@@ -241,8 +256,30 @@ CREATE TABLE "projects" (
     "endDate" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "projects_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ProjectTask" (
+    "id" TEXT NOT NULL,
+    "projectId" TEXT NOT NULL,
+    "employeeIds" TEXT[],
+    "taskName" TEXT,
+    "taskDescription" TEXT,
+    "taskType" TEXT,
+    "taskStatus" "TaskStatus",
+    "taskStartDate" TIMESTAMP(3),
+    "taskEndDate" TIMESTAMP(3),
+    "taskPriority" TEXT,
+    "priority" "PriorityStatus",
+    "createdBy" TEXT,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ProjectTask_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -256,6 +293,7 @@ CREATE TABLE "awards" (
     "awardBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "awards_pkey" PRIMARY KEY ("id")
 );
@@ -271,11 +309,12 @@ CREATE TABLE "loans" (
     "installmentPeriod" INTEGER,
     "installmentCleared" INTEGER,
     "repaymentAmount" DOUBLE PRECISION,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "approvedDate" TIMESTAMP(3),
     "repaymentFrom" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "status" "LeaveStatus" NOT NULL,
+    "status" "LeaveStatus" NOT NULL DEFAULT 'PENDING',
 
     CONSTRAINT "loans_pkey" PRIMARY KEY ("id")
 );
@@ -304,11 +343,64 @@ CREATE TABLE "weekly_holidays" (
     CONSTRAINT "weekly_holidays_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "recruitment" (
+    "id" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT,
+    "email" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "alternativePhone" TEXT,
+    "ssn" TEXT,
+    "presentAddress" TEXT,
+    "permanentAddress" TEXT,
+    "country" TEXT,
+    "city" TEXT,
+    "zipCode" TEXT,
+    "picture" TEXT,
+    "obtainedDegree" TEXT,
+    "university" TEXT,
+    "cgpa" TEXT,
+    "comments" TEXT,
+    "companyName" TEXT,
+    "workingPeriod" TEXT,
+    "duties" TEXT,
+    "supervisor" TEXT,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "recruitment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "interview" (
+    "id" TEXT NOT NULL,
+    "candidateName" TEXT NOT NULL,
+    "interviewer" TEXT NOT NULL,
+    "jobPosition" TEXT NOT NULL,
+    "interviewDate" TEXT NOT NULL,
+    "vivaMarks" TEXT NOT NULL,
+    "writtenMarks" TEXT NOT NULL,
+    "mcqTotalMarks" TEXT NOT NULL,
+    "totalMarks" TEXT NOT NULL,
+    "selection" TEXT NOT NULL,
+    "candidateId" TEXT NOT NULL,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "interview_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "employees_email_key" ON "employees"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "recruitment_email_key" ON "recruitment"("email");
 
 -- AddForeignKey
 ALTER TABLE "employees" ADD CONSTRAINT "employees_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "departments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -335,7 +427,13 @@ ALTER TABLE "Payment" ADD CONSTRAINT "Payment_employeeId_fkey" FOREIGN KEY ("emp
 ALTER TABLE "projects" ADD CONSTRAINT "projects_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "clients"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "ProjectTask" ADD CONSTRAINT "ProjectTask_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "projects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "awards" ADD CONSTRAINT "awards_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "employees"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "loans" ADD CONSTRAINT "loans_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "employees"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "interview" ADD CONSTRAINT "interview_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "recruitment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

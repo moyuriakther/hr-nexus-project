@@ -1,13 +1,10 @@
 "use client";
 
-import {
-  useCreateLeaveMutation,
-  useUpdateLeaveMutation,
-} from "@/app/Redux/api/leaveApi";
+import { useCreateLeaveMutation } from "@/app/Redux/api/leaveApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import HRModal from "@/app/components/Modal/HRModal";
-import { TLeave } from "@/app/types";
+
 import { Button, Divider } from "@nextui-org/react";
 import React from "react";
 import { FieldValues } from "react-hook-form";
@@ -51,7 +48,7 @@ const CreateLeaveTypeModal = ({ modalIsOpen, setIsOpen }: TProps) => {
           />
         </div>
 
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <HRInput
             name="leaveCode"
             required
@@ -59,7 +56,7 @@ const CreateLeaveTypeModal = ({ modalIsOpen, setIsOpen }: TProps) => {
             label="Leave code"
             placeholder="Leave code"
           />
-        </div>
+        </div> */}
 
         <div className="mt-4 mb-5">
           <HRInput

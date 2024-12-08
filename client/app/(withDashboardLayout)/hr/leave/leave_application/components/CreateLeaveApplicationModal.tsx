@@ -23,8 +23,7 @@ type TProps = {
 const CreateLeaveApplicationModal = ({ modalIsOpen, setIsOpen }: TProps) => {
   const { data: employees, isLoading: isEmployeeLoading } =
     useGetAllEmployeeQuery("");
-  const { data: holidayType, isLoading: isHolidayTypeLoading } =
-    useGetAllLeaveQuery("");
+  const { data: holidayType } = useGetAllLeaveQuery("");
   const [createHoliday, { isLoading }] = useCreateLeaveMutation();
 
   const employeeOptions = employees?.map((employee: Employee) => ({

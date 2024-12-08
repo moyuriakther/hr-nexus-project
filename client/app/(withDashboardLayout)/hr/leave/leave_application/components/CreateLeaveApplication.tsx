@@ -7,8 +7,18 @@ import { FaFileCsv, FaFileExcel, FaFilter, FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../../employees/position/components/fakeData/limitCount";
 import CreateLeaveApplicationModal from "./CreateLeaveApplicationModal";
 
-const CreateLeaveApplication = () => {
+interface ComponentHeaderProps {
+  onSearch: (searchTerm: string) => void;
+}
+
+const CreateLeaveApplication = ({ onSearch }: ComponentHeaderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    onSearch(e.target.value); // Trigger search on every change
+  };
 
   return (
     <div className="mb-5">
@@ -56,7 +66,11 @@ const CreateLeaveApplication = () => {
 
         <div className="flex items-center gap-1">
           <p>Search: </p>
-          <input className="border rounded-[4px] py-1 focus:outline-primary outline-1 transition-all duration-200" />
+          <input
+            value={searchInput}
+            onChange={handleSearchChange}
+            className="border rounded-[4px] px-2 py-1 focus:outline-primary outline-1 transition-all duration-200"
+          />{" "}
         </div>
       </div>
       <CreateLeaveApplicationModal setIsOpen={setIsOpen} modalIsOpen={isOpen} />

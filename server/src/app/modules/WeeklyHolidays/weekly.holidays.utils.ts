@@ -7,4 +7,9 @@ export const weekly_holidaysFilterableFields = [
   "subDepartment",
   "name",
 ];
-export const weekly_holidaysSearchableFields = ["email", "name", "phoneNumber"];
+export const weekly_holidaysSearchableFields = [
+  "email",
+  "name",
+  "dayName",
+  "phoneNumber",
+];

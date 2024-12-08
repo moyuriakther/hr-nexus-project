@@ -1,5 +1,23 @@
+import { THoliday } from "@/app/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
+
+interface Meta {
+  page: number;
+  limit: number;
+  total: number;
+}
+
+// Define the structure of the API response for getAllLoan
+interface GetAllPHolidayResponse {
+  meta: Meta;
+  data: THoliday[]; // The array of loans
+}
+
+interface GetAllHolidayQueryArgs {
+  searchTerm?: string;
+  [key: string]: any;
+}
 
 export const holidayApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -11,11 +29,18 @@ export const holidayApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.holiday],
     }),
-    getAllHoliday: build.query({
-      query: () => ({
-        url: "/holidays",
-        method: "GET",
-      }),
+    getAllHoliday: build.query<GetAllPHolidayResponse, GetAllHolidayQueryArgs>({
+      query: ({ searchTerm = "", ...filters } = {}) => {
+        const queryString = new URLSearchParams({
+          searchTerm,
+          ...filters,
+        }).toString();
+
+        return {
+          url: `/holidays?${queryString}`,
+          method: "GET",
+        };
+      },
       providesTags: [tagTypes.holiday],
     }),
     getSingleHoliday: build.query({

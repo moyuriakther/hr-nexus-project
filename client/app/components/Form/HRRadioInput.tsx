@@ -8,6 +8,7 @@ type TRadioOption = {
 
 type TRadioInputProps = {
   name: string;
+  checked?: boolean;
   options: TRadioOption[];
   required?: boolean;
   label?: string;

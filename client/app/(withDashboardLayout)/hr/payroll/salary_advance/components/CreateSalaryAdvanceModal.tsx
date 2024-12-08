@@ -4,7 +4,7 @@ import { useGetAllEmployeeQuery } from "@/app/Redux/api/employeeApi";
 import { useCreatePaymentMutation } from "@/app/Redux/api/paymentApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
-import HRMultipleSelect from "@/app/components/Form/HRMultipleSelect";
+// import HRMultipleSelect from "@/app/components/Form/HRMultipleSelect";
 import HRRadioInput from "@/app/components/Form/HRRadioInput";
 import HRSelectDropdown from "@/app/components/Form/HRSelectDropdown";
 import HRModal from "@/app/components/Modal/HRModal";
@@ -26,7 +26,7 @@ const CreateSalaryAdvanceModal = ({ modalIsOpen, setIsOpen }: TProps) => {
   const [createPayment, { isLoading }] = useCreatePaymentMutation();
 
   const employeeOptions = employees?.map((employee: Employee) => ({
-    label: `${employee.firstName} ${employee.middleName} ${employee.lastName}`,
+    label: `${employee.firstName} ${employee.lastName}`,
     value: employee.id,
   }));
 

@@ -2,6 +2,7 @@ import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { FiEdit } from "react-icons/fi";
 import ChangePasswordForm from "./ChangePasswordForm";
+import Image from "next/image";
 
 const ProfileTab = () => {
   const { data: myProfile } = useGetMyProfileQuery("");
@@ -63,10 +64,12 @@ const ProfileTab = () => {
                         Signature
                       </h1>
                       <div className="mt-2">
-                        <img
-                          src={myProfile?.signature}
+                        <Image
+                          src={myProfile?.signature || "/default-signature.png"}
                           alt="signature"
                           className="w-[132px] h-[111px]"
+                          height={100}
+                          width={100}
                         />
                       </div>
                     </div>

@@ -187,12 +187,38 @@ export const Menus: TSidebarMenus[] = [
         path: "/hr/payroll/salary_advance",
       },
       {
-        title: "Salary generate",
+        title: "Salary list",
         path: "/hr/payroll/salary_generate",
       },
+      // {
+      //   title: "Manage employee salary",
+      //   path: "/hr/payroll/manage_employee_salary",
+      // },
+    ],
+  },
+  {
+    name: "Project management",
+    icon: <FaTasks className="text-[17px] text-gray-700" />,
+    children: [
       {
-        title: "Manage employee salary",
-        path: "/hr/payroll/manage_employee_salary",
+        title: "Client",
+        path: "/hr/Project_management/client",
+      },
+      {
+        title: "Projects",
+        path: "/hr/Project_management/projects",
+      },
+      {
+        title: "Manage tasks",
+        path: "/hr/Project_management/manage_tasks",
+      },
+      {
+        title: "Reports",
+        path: "/hr/Project_management/reports",
+      },
+      {
+        title: "Team members",
+        path: "/hr/Project_management/team_members",
       },
     ],
   },

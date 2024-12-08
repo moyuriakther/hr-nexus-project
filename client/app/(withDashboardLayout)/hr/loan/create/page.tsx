@@ -1,23 +1,25 @@
 "use client";
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
-import { useGetAllEmployeeQuery } from "@/app/Redux/api/employeeApi";
 import { useCreateLoanMutation } from "@/app/Redux/api/loanApi";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
-import HRRadioInput from "@/app/components/Form/HRRadioInput";
-import HRSelectDropdown from "@/app/components/Form/HRSelectDropdown";
-import { Employee } from "@/app/types";
+import { generateNumber } from "@/app/utils/createRandomNumber";
 import { Button, Divider } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { loanPageHeaderData } from "../../employees/components/pageHeaderData";
+import { useGetAllEmployeeQuery } from "@/app/Redux/api/employeeApi";
+import { Employee } from "@/app/types";
+import HRMultipleSelect from "@/app/components/Form/HRMultipleSelect";
+import HRSelectDropdown from "@/app/components/Form/HRSelectDropdown";
 
 const CreateLoanPage = () => {
   const router = useRouter();
+  const { data: employees } = useGetAllEmployeeQuery({});
 
-  const { data: employees } = useGetAllEmployeeQuery("");
   const [createLoan, { isLoading }] = useCreateLoanMutation();
 
   const employeeOptions = employees?.map((employee: Employee) => ({
@@ -29,16 +31,18 @@ const CreateLoanPage = () => {
     const resData = {
       employeeId: values?.employee,
       permittedBy: values?.permittedBy,
-      loanNo: values?.loanNo,
+      loanNo: String(generateNumber()),
       amount: Number(values?.amount),
-      interestRate: Number(values?.interestRate),
+      interestRate: Number("25"),
       installmentPeriod: Number(values?.installmentPeriod),
       installmentCleared: Number(values?.installmentCleared),
       repaymentAmount: Number(values?.repaymentAmount),
-      approvedDate: new Date(values?.approvedDate).toISOString(),
-      repaymentFrom: new Date(values?.repaymentFrom).toISOString(),
-      status: values?.status,
+      // approvedDate: new Date(values?.approvedDate).toISOString(),
+      // repaymentFrom: new Date(values?.repaymentFrom).toISOString(),
+      // status: values?.status,
     };
+
+    console.log(resData);
 
     const res = await createLoan(resData).unwrap();
 
@@ -57,7 +61,6 @@ const CreateLoanPage = () => {
             <HRSelectDropdown
               name="employee"
               options={employeeOptions}
-              placeholder="Employee"
               label="Employee"
             />
           </div>
@@ -69,14 +72,14 @@ const CreateLoanPage = () => {
               placeholder="Permitted by"
             />
           </div>
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <HRInput
               name="loanNo"
               type="text"
               label="Loan no"
               placeholder="Loan no"
             />
-          </div>
+          </div> */}
           <div className="mt-4">
             <HRInput
               name="amount"
@@ -89,6 +92,7 @@ const CreateLoanPage = () => {
             <HRInput
               name="interestRate"
               type="text"
+              defaultValue={"25%"}
               label="Interest rate"
               placeholder="Interest rate"
             />
@@ -109,7 +113,7 @@ const CreateLoanPage = () => {
               placeholder="Installment cleared"
             />
           </div>
-          <div className="mt-4">
+          <div className="mt-4 mb-5">
             <HRInput
               name="repaymentAmount"
               type="text"
@@ -117,7 +121,7 @@ const CreateLoanPage = () => {
               placeholder="Repayment amount"
             />
           </div>
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <HRInput
               name="approvedDate"
               type="date"
@@ -144,7 +148,7 @@ const CreateLoanPage = () => {
                 { value: "REJECTED", label: "Rejected" },
               ]}
             />
-          </div>
+          </div> */}
           <Divider />
           <div className="flex gap-4 justify-end">
             <Button
