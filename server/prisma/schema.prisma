@@ -389,12 +389,11 @@ model ShortList {
   shortlistDate DateTime?
   interviewDate DateTime?
 
-  candidate          CandidateList        @relation(fields: [candidateId], references: [id])
-  isDeleted          Boolean              @default(false)
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
-  candidateSelection CandidateSelection[]
-  interview          Interview[]
+  candidate CandidateList @relation(fields: [candidateId], references: [id])
+  isDeleted Boolean       @default(false)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  interview Interview[]
 
   @@map("short_lists")
 }
@@ -406,13 +405,14 @@ model CandidateSelection {
   position       String?
   selectionTerms String?
 
-  shortListedCandidateId String
-  candidateShortListed   ShortList @relation(fields: [shortListedCandidateId], references: [id])
-  isDeleted              Boolean   @default(false)
-  createdAt              DateTime  @default(now())
-  updatedAt              DateTime  @updatedAt
+  interviewId String
+  interview   Interview @relation(fields: [interviewId], references: [id])
+
+  isDeleted       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   // CandidateList        CandidateList? @relation(fields: [candidateListId], references: [id])
-  candidateListId        String?
+  candidateListId String?
 
   @@map("candidate_selections")
 }
@@ -479,9 +479,10 @@ model Interview {
   shortListedCandidateId String
   shortListedCandidate   ShortList @relation(fields: [shortListedCandidateId], references: [id])
 
-  isDeleted Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isDeleted          Boolean              @default(false)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  CandidateSelection CandidateSelection[]
 
   @@map("interview")
 }

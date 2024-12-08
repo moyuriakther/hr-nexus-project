@@ -314,7 +314,7 @@ CREATE TABLE "loans" (
     "repaymentFrom" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "status" "LeaveStatus" NOT NULL,
+    "status" "LeaveStatus" NOT NULL DEFAULT 'PENDING',
 
     CONSTRAINT "loans_pkey" PRIMARY KEY ("id")
 );
@@ -352,6 +352,7 @@ CREATE TABLE "candidate_lists" (
     "email" TEXT,
     "ssn" TEXT,
     "phone" TEXT,
+    "jobPosition" TEXT,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -401,48 +402,17 @@ CREATE TABLE "notice_boards" (
 );
 
 -- CreateTable
-CREATE TABLE "recruitment" (
-    "id" TEXT NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "lastName" TEXT,
-    "email" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
-    "alternativePhone" TEXT,
-    "ssn" TEXT,
-    "presentAddress" TEXT,
-    "permanentAddress" TEXT,
-    "country" TEXT,
-    "city" TEXT,
-    "zipCode" TEXT,
-    "picture" TEXT,
-    "obtainedDegree" TEXT,
-    "university" TEXT,
-    "cgpa" TEXT,
-    "comments" TEXT,
-    "companyName" TEXT,
-    "workingPeriod" TEXT,
-    "duties" TEXT,
-    "supervisor" TEXT,
-    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "recruitment_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "interview" (
     "id" TEXT NOT NULL,
-    "candidateName" TEXT NOT NULL,
-    "interviewer" TEXT NOT NULL,
-    "jobPosition" TEXT NOT NULL,
+    "interviewer" TEXT,
     "interviewDate" TEXT NOT NULL,
-    "vivaMarks" TEXT NOT NULL,
-    "writtenMarks" TEXT NOT NULL,
-    "mcqTotalMarks" TEXT NOT NULL,
-    "totalMarks" TEXT NOT NULL,
-    "selection" TEXT NOT NULL,
-    "candidateId" TEXT NOT NULL,
+    "vivaMarks" TEXT,
+    "writtenMarks" TEXT,
+    "mcqTotalMarks" TEXT,
+    "totalMarks" TEXT,
+    "meetingLink" TEXT,
+    "isSelected" BOOLEAN NOT NULL DEFAULT false,
+    "shortListedCandidateId" TEXT NOT NULL,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -458,9 +428,6 @@ CREATE UNIQUE INDEX "employees_email_key" ON "employees"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "candidate_lists_candidateId_key" ON "candidate_lists"("candidateId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "recruitment_email_key" ON "recruitment"("email");
 
 -- AddForeignKey
 ALTER TABLE "employees" ADD CONSTRAINT "employees_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "departments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -502,4 +469,4 @@ ALTER TABLE "short_lists" ADD CONSTRAINT "short_lists_candidateId_fkey" FOREIGN 
 ALTER TABLE "candidate_selections" ADD CONSTRAINT "candidate_selections_shortListedCandidateId_fkey" FOREIGN KEY ("shortListedCandidateId") REFERENCES "short_lists"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "interview" ADD CONSTRAINT "interview_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "recruitment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "interview" ADD CONSTRAINT "interview_shortListedCandidateId_fkey" FOREIGN KEY ("shortListedCandidateId") REFERENCES "short_lists"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

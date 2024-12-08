@@ -15,7 +15,7 @@ const createCandidate = async (data: any) => {
   return result;
 };
 const createCandidateInterview = async (data: any) => {
-  const result = await prisma.candidateInterview.create({
+  const result = await prisma.interview.create({
     data: {
       ...data,
     },
@@ -172,6 +172,7 @@ const getAllShortListedCandidates = async (
     data: result,
   };
 };
+
 const getCandidateInterviewResults = async (
   params: any,
   options: IPaginationOptions
@@ -180,9 +181,10 @@ const getCandidateInterviewResults = async (
   const { searchTerm, ...filterData } = params;
   console.log(searchTerm); // Debug log for searchTerm
 
-  const andConditions: Prisma.CandidateSelectionWhereInput[] = [
+  const andConditions: Prisma.InterviewWhereInput[] = [
     {
-      isDeleted: false, // Ensure only non-deleted records are fetched
+      isDeleted: false,
+      // isSelected: true,
     },
   ];
 
@@ -210,11 +212,11 @@ const getCandidateInterviewResults = async (
   }
 
   // Combine conditions
-  const whereConditions: Prisma.CandidateSelectionWhereInput =
+  const whereConditions: Prisma.InterviewWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
   // Fetch data with pagination and sorting
-  const result = await prisma.candidateSelection.findMany({
+  const result = await prisma.interview.findMany({
     where: whereConditions,
     skip,
     take: limit,
@@ -222,13 +224,20 @@ const getCandidateInterviewResults = async (
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
         : { createdAt: "desc" },
+    include: {
+      shortListedCandidate: {
+        include: {
+          candidate: true,
+        },
+      },
+    },
     // include: {
     //   project: true,
     // },
   });
 
   // Get total count
-  const total = await prisma.candidateSelection.count({
+  const total = await prisma.interview.count({
     where: whereConditions,
   });
 
@@ -373,6 +382,15 @@ const updateSelectedCandidate = async (id: string, data: any) => {
   });
   return result;
 };
+const updateCandidateInterview = async (id: string, data: any) => {
+  const result = await prisma.interview.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return result;
+};
 
 // Delete a Candidate by ID
 const deleteCandidate = async (id: string) => {
@@ -388,14 +406,17 @@ export const CandidateService = {
   createCandidate,
   createCandidateSelection,
   getAllCandidates,
+  createCandidateShortList,
+  createCandidateInterview,
   getAllShortListedCandidates,
   getAllSelectedCandidates,
+  getCandidateInterviewResults,
   getSingleCandidate,
   getSingleShortListedCandidate,
   getSingleSelectedCandidate,
   updateCandidate,
   updateShortListedCandidate,
   updateSelectedCandidate,
+  updateCandidateInterview,
   deleteCandidate,
-  createCandidateShortList,
 };

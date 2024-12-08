@@ -41,6 +41,18 @@ const createCandidateShortList = catchAsync(
     });
   }
 );
+const createCandidateInterview = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await CandidateService.createCandidateInterview(req.body);
+
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      success: true,
+      message: "Candidate Interview is  created successfully!",
+      data: result,
+    });
+  }
+);
 
 // Get all Candidates
 const getAllCandidates = catchAsync(async (req: Request, res: Response) => {
@@ -85,6 +97,23 @@ const getAllSelectedCandidates = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: "Selected Candidates retrieved successfully!",
+      data: result,
+    });
+  }
+);
+const getCandidatesInterviews = catchAsync(
+  async (req: Request, res: Response) => {
+    const filters = pick(req.query, CandidateFilterableFields);
+    const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+    const result = await CandidateService.getCandidateInterviewResults(
+      filters,
+      options
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: " Candidates Interview retrieved successfully!",
       data: result,
     });
   }
@@ -176,6 +205,21 @@ const updateCandidateSelection = catchAsync(
     });
   }
 );
+const updateCandidateInterview = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const data = req.body;
+
+    const result = await CandidateService.updateCandidateInterview(id, data);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Candidate Selection updated successfully!",
+      data: result,
+    });
+  }
+);
 
 // Delete a Candidate
 const deleteCandidate = catchAsync(async (req: Request, res: Response) => {
@@ -195,14 +239,17 @@ export const CandidateController = {
   createCandidate,
   createCandidateSelection,
   createCandidateShortList,
+  createCandidateInterview,
   getAllCandidates,
   getAllShortListedCandidates,
   getAllSelectedCandidates,
+  getCandidatesInterviews,
   getSingleCandidate,
   getSingleShortListedCandidate,
   getSingleSelectedCandidate,
   updateCandidateShortList,
   updateCandidateSelection,
   updateCandidate,
+  updateCandidateInterview,
   deleteCandidate,
 };

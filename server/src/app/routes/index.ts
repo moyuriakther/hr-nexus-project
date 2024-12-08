@@ -16,7 +16,6 @@ import { HolidaysRoutes } from "../modules/Holidays/holidays.route";
 import { weeklyHolidayRoutes } from "../modules/WeeklyHolidays/weekly.holidays.route";
 import { NoticeboardRoutes } from "../modules/NoticeBoard/noticeboard.route";
 // import { ReportRoutes } from "../modules/Report/report.route";
-import { RecruitmentRoutes } from "../modules/recruitment/recruitment.routes";
 import { CandidateRoutes } from "../modules/Candidates/candidate.route";
 import { ReportRoutes } from "../modules/Report/report.route";
 import { PositionRoutes } from "../modules/Position/position.routes";
@@ -92,10 +91,7 @@ const moduleRoutes = [
     path: "/reports",
     route: ReportRoutes,
   },
-  {
-    path: "/candidate",
-    route: RecruitmentRoutes,
-  },
+
   {
     path: "/candidates",
     route: CandidateRoutes,

@@ -13,10 +13,16 @@ router.post(
   "/create-candidate-selection",
   CandidateController.createCandidateSelection
 );
+router.post(
+  "/create-candidate-interview",
+  CandidateController.createCandidateInterview
+);
+
 // gets
 router.get("/", CandidateController.getAllCandidates);
 router.get("/short-listed", CandidateController.getAllShortListedCandidates);
 router.get("/selected", CandidateController.getAllSelectedCandidates);
+router.get("/interviews", CandidateController.getCandidatesInterviews);
 // get by ids
 router.get("/:id", CandidateController.getSingleCandidate);
 router.get(
@@ -24,9 +30,10 @@ router.get(
   CandidateController.getSingleShortListedCandidate
 );
 router.get("/selected/:id", CandidateController.getSingleSelectedCandidate);
-
+// edit
 router.patch("/:id", CandidateController.updateCandidate);
 router.patch("/short-listed/:id", CandidateController.updateCandidateShortList);
+router.patch("/interview/:id", CandidateController.updateCandidateInterview);
 router.patch("/selected/:id", CandidateController.updateCandidateSelection);
 
 router.delete("/:id", CandidateController.deleteCandidate);
