@@ -14,7 +14,7 @@ import { PaymentRoutes } from "../modules/Payment/payment.route";
 import { SalaryRoutes } from "../modules/Salary/salary.route";
 import { HolidaysRoutes } from "../modules/Holidays/holidays.route";
 import { weeklyHolidayRoutes } from "../modules/WeeklyHolidays/weekly.holidays.route";
-// import { NoticeboardRoutes } from "../modules/NoticeBoard/noticeboard.route";
+import { NoticeboardRoutes } from "../modules/NoticeBoard/noticeboard.route";
 // import { ReportRoutes } from "../modules/Report/report.route";
 import { RecruitmentRoutes } from "../modules/recruitment/recruitment.routes";
 import { CandidateRoutes } from "../modules/Candidates/candidate.route";
@@ -83,10 +83,10 @@ const moduleRoutes = [
     path: "/weekly-holidays",
     route: weeklyHolidayRoutes,
   },
-  // {
-  //   path: "/noticeboard",
-  //   route: NoticeboardRoutes,
-  // },
+  {
+    path: "/noticeboard",
+    route: NoticeboardRoutes,
+  },
   {
     path: "/reports",
     route: ReportRoutes,

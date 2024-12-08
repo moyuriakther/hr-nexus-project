@@ -4,15 +4,15 @@ import { CandidateController } from "./candidate.controller";
 const router = express.Router();
 
 router.post("/create-candidate", CandidateController.createCandidate);
-router.post(
-  "/create-candidate-selection",
-  CandidateController.createCandidateSelection
-);
+
 router.post(
   "/create-candidate-short-list",
   CandidateController.createCandidateShortList
 );
-
+router.post(
+  "/create-candidate-selection",
+  CandidateController.createCandidateSelection
+);
 // gets
 router.get("/", CandidateController.getAllCandidates);
 router.get("/short-listed", CandidateController.getAllShortListedCandidates);
