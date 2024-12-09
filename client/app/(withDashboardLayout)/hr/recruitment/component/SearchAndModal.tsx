@@ -1,11 +1,10 @@
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
 import { Button, Divider } from "@nextui-org/react";
-import { FaFileCsv, FaFileExcel, FaPlusCircle } from "react-icons/fa";
+import {  FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../fakeData/limitCount";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import ExcelExport from "@/app/(withauthlayout)/test/ExcelExport";
-import { SetStateAction } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,modalIsOpen,setLimit}:{menuName:string,excelExportParamsData:any, handleSearch:any,setIsOpen:any,modalIsOpen:any,setLimit:any}) => {
@@ -66,7 +65,7 @@ const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,m
         <HRInput
           type="text"
           className="border-gray-400 h-10 rounded-[5px]"
-          placeholder="Search By Candidate ID..."
+          placeholder= {`${menuName=="Notice Board"?"Search By Date":" Search By Candidate ID..."}`}
           name="search"
         />
       </div>

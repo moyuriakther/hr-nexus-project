@@ -9,7 +9,7 @@ import Image from "next/image";
 
 const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean})=>{
 
-    const [deleteCandidate] = useDeleteCandidateMutation({});
+    const [deleteCandidate] = ({});
   const [updateModalIsOpen, setIsUpdateModal]=useState(false)
 
     if (isLoading) {

@@ -34,7 +34,7 @@ const NoticePage = () => {
     isLoading: false,
     displayField: "NoticeList",
   };
-  const paginatedData=data?.slice(0,limit)
+  const paginatedData=data?.data.slice(0,Number(limit))
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
       <SearchAndModal
@@ -44,6 +44,7 @@ const NoticePage = () => {
         setIsOpen={setIsOpen}
         handleSearch={handleSearch}
         setLimit={setLimit}
+        
       ></SearchAndModal>
 
       <CreateNotice

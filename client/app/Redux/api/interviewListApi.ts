@@ -5,7 +5,7 @@ export const interview = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createInterview: build.mutation({
       query: (data) => ({
-        url: "/interview/create-interview",
+        url: "candidates/create-candidate-interview",
         method: "POST",
         data,
       }),
@@ -14,7 +14,7 @@ export const interview = baseApi.injectEndpoints({
     getAllInterview: build.query({
      
       query: ({ searchTerm }) => ({
-        url: `/interview${searchTerm ? `?searchTerm=${searchTerm}` : ""}`,
+        url: `/interviews${searchTerm ? `?searchTerm=${searchTerm}` : ""}`,
         method: "GET",
       }),
       providesTags: [tagTypes.interview],

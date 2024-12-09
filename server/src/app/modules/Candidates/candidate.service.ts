@@ -14,30 +14,108 @@ const createCandidate = async (data: any) => {
   });
   return result;
 };
+const createCandidateShortList = async (data: any) => {
+  // Check if the candidate exists
+  const candidate = await prisma.candidateList.findUnique({
+    where: { candidateId: data.candidateId ,isDeleted: false},
+  });
+  console.log(data,candidate)
+
+  if (!candidate) {
+    throw new Error("Candidate with the given ID does not exist.");
+  }
+
+  // Proceed to create the shortlist
+  const shortList = await prisma.shortList.create({
+    data: {
+      ...data,
+    },
+  });
+
+  return shortList;
+};
+
 const createCandidateInterview = async (data: any) => {
+  const { candidateId} = data;
+
+  //  Validate candidateId exists in the ShortList
+  const shortListedCandidate = await prisma.shortList.findFirst({
+    where: {
+      candidateId, 
+      isDeleted: false,
+    },
+  });
+
+  if (!shortListedCandidate) {
+    throw new Error("Invalid candidateId. No matching candidate found in the shortlist.");
+  }
+
+  //  Create Interview
   const result = await prisma.interview.create({
     data: {
-      ...data,
+      ...data
     },
   });
+
   return result;
 };
+
+
+// const createCandidateSelection = async (data: any) => {
+//   const result = await prisma.candidateSelection.create({
+//     data: {
+//       ...data,
+//     },
+//   });
+//   return result;
+// };
 const createCandidateSelection = async (data: any) => {
+  const { candidateId, interviewId, position, selectionTerms } = data;
+
+  // Step 1: Validate candidateId and interviewId
+  const interview = await prisma.interview.findFirst({
+    where: {
+      id: interviewId, // Check if interview ID matches
+      candidateId, // Check if candidate ID matches
+      isDeleted: false, // Ensure the record is not deleted
+    },
+  });
+
+  if (!interview) {
+    throw new Error(
+      "Invalid candidateId or interviewId. No matching interview found."
+    );
+  }
+
+  // Step 2: Create CandidateSelection
   const result = await prisma.candidateSelection.create({
     data: {
-      ...data,
+      candidateId, // Candidate ID linked with selection
+      interviewId: interview.id, // Link the interview ID
+      position, // Job position for the candidate
+      selectionTerms, // Additional terms or notes
     },
   });
+
   return result;
 };
-const createCandidateShortList = async (data: any) => {
-  const result = await prisma.shortList.create({
-    data: {
-      ...data,
-    },
-  });
-  return result;
-};
+
+
+
+// const createCandidateShortList = async (data: any) => {
+//   const result = await prisma.shortList.create({
+//     data: {
+//       ...data,
+//     },
+//   });
+//   return result;
+// };
+
+
+
+
+
+
 
 // Get all Candidates
 const getAllCandidates = async (params: any, options: IPaginationOptions) => {
@@ -105,17 +183,83 @@ const getAllCandidates = async (params: any, options: IPaginationOptions) => {
   };
 };
 
+// const getAllShortListedCandidates = async (
+//   params: any,
+//   options: IPaginationOptions
+// ) => {
+//   const { page, limit, skip } = paginationHelper.calculatePagination(options);
+//   const { searchTerm, ...filterData } = params;
+//   console.log(searchTerm); // Debug log for searchTerm
+
+//   const andConditions: Prisma.ShortListWhereInput[] = [
+//     {
+//       isDeleted: false, // Ensure only non-deleted records are fetched
+//     },
+//   ];
+
+//   // Handle search term
+//   if (searchTerm) {
+//     andConditions.push({
+//       OR: CandidateSearchableFields.map((field) => ({
+//         [field]: {
+//           contains: searchTerm,
+//           mode: "insensitive",
+//         },
+//       })),
+//     });
+//   }
+
+//   // Handle filter conditions
+//   if (Object.keys(filterData).length > 0) {
+//     andConditions.push({
+//       AND: Object.keys(filterData).map((key) => ({
+//         [key]: {
+//           equals: (filterData as any)[key],
+//         },
+//       })),
+//     });
+//   }
+
+//   // Combine conditions
+//   const whereConditions: Prisma.ShortListWhereInput =
+//     andConditions.length > 0 ? { AND: andConditions } : {};
+
+//   // Fetch data with pagination and sorting
+//   const result = await prisma.shortList.findMany({
+//     where: whereConditions,
+//     skip,
+//     take: limit,
+//     orderBy:
+//       options.sortBy && options.sortOrder
+//         ? { [options.sortBy]: options.sortOrder }
+//         : { createdAt: "desc" },
+//     // include: {
+//     //   project: true,
+//     // },
+//   });
+
+//   // Get total count
+//   const total = await prisma.shortList.count({ where: whereConditions });
+
+//   return {
+//     meta: {
+//       page,
+//       limit,
+//       total,
+//     },
+//     data: result,
+//   };
+// };
 const getAllShortListedCandidates = async (
   params: any,
   options: IPaginationOptions
 ) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
-  console.log(searchTerm); // Debug log for searchTerm
 
   const andConditions: Prisma.ShortListWhereInput[] = [
     {
-      isDeleted: false, // Ensure only non-deleted records are fetched
+      isDeleted: false,
     },
   ];
 
@@ -142,11 +286,10 @@ const getAllShortListedCandidates = async (
     });
   }
 
-  // Combine conditions
   const whereConditions: Prisma.ShortListWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  // Fetch data with pagination and sorting
+  // Fetch shortlisted candidates with flattened fields
   const result = await prisma.shortList.findMany({
     where: whereConditions,
     skip,
@@ -155,10 +298,41 @@ const getAllShortListedCandidates = async (
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
         : { createdAt: "desc" },
-    // include: {
-    //   project: true,
-    // },
+    select: {
+      id: true,
+      candidateId: true,
+      shortlistDate: true,
+      interviewDate: true,
+      isDeleted: true,
+      createdAt: true,
+      updatedAt: true,
+      candidate: {
+        select: {
+          name: true,
+          photograph: true,
+          email: true,
+          ssn: true,
+          phone: true,
+          jobPosition: true,
+          isDeleted: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+    },
   });
+
+  // Flatten the result
+  const flattenedResult = result.map((shortlist) => ({
+    id: shortlist.id,
+    candidateId: shortlist.candidateId,
+    shortlistDate: shortlist.shortlistDate,
+    interviewDate: shortlist.interviewDate,
+    isDeleted: shortlist.isDeleted,
+    createdAt: shortlist.createdAt,
+    updatedAt: shortlist.updatedAt,
+    ...shortlist.candidate, // Merge candidate fields
+  }));
 
   // Get total count
   const total = await prisma.shortList.count({ where: whereConditions });
@@ -169,9 +343,87 @@ const getAllShortListedCandidates = async (
       limit,
       total,
     },
-    data: result,
+    data: flattenedResult,
   };
 };
+
+// const getCandidateInterviewResults = async (
+//   params: any,
+//   options: IPaginationOptions
+// ) => {
+//   const { page, limit, skip } = paginationHelper.calculatePagination(options);
+//   const { searchTerm, ...filterData } = params;
+//   console.log(searchTerm); // Debug log for searchTerm
+
+//   const andConditions: Prisma.InterviewWhereInput[] = [
+//     {
+//       isDeleted: false,
+//       // isSelected: true,
+//     },
+//   ];
+
+//   // Handle search term
+//   if (searchTerm) {
+//     andConditions.push({
+//       OR: CandidateSearchableFields.map((field) => ({
+//         [field]: {
+//           contains: searchTerm,
+//           mode: "insensitive",
+//         },
+//       })),
+//     });
+//   }
+
+//   // Handle filter conditions
+//   if (Object.keys(filterData).length > 0) {
+//     andConditions.push({
+//       AND: Object.keys(filterData).map((key) => ({
+//         [key]: {
+//           equals: (filterData as any)[key],
+//         },
+//       })),
+//     });
+//   }
+
+//   // Combine conditions
+//   const whereConditions: Prisma.InterviewWhereInput =
+//     andConditions.length > 0 ? { AND: andConditions } : {};
+
+//   // Fetch data with pagination and sorting
+//   const result = await prisma.interview.findMany({
+//     where: whereConditions,
+//     skip,
+//     take: limit,
+//     orderBy:
+//       options.sortBy && options.sortOrder
+//         ? { [options.sortBy]: options.sortOrder }
+//         : { createdAt: "desc" },
+//     include: {
+//       shortListedCandidate: {
+//         include: {
+//           candidate: true,
+//         },
+//       },
+//     },
+//     // include: {
+//     //   project: true,
+//     // },
+//   });
+ 
+//   // Get total count
+//   const total = await prisma.interview.count({
+//     where: whereConditions,
+//   });
+
+//   return {
+//     meta: {
+//       page,
+//       limit,
+//       total,
+//     },
+//     data: result,
+//   };
+// };
 
 const getCandidateInterviewResults = async (
   params: any,
@@ -184,7 +436,7 @@ const getCandidateInterviewResults = async (
   const andConditions: Prisma.InterviewWhereInput[] = [
     {
       isDeleted: false,
-      // isSelected: true,
+      // isSelected: true, // Uncomment if you want to filter based on isSelected
     },
   ];
 
@@ -227,13 +479,10 @@ const getCandidateInterviewResults = async (
     include: {
       shortListedCandidate: {
         include: {
-          candidate: true,
+          candidate: true, // Include all candidate fields
         },
       },
     },
-    // include: {
-    //   project: true,
-    // },
   });
 
   // Get total count
@@ -241,15 +490,110 @@ const getCandidateInterviewResults = async (
     where: whereConditions,
   });
 
+  // Prepare the result structure
+  const formattedResult = result.map(interview => ({
+    id: interview.id,
+    interviewer: interview.interviewer,
+    interviewDate: interview.interviewDate,
+    vivaMarks: interview.vivaMarks,
+    writtenMarks: interview.writtenMarks,
+    mcqTotalMarks: interview.mcqTotalMarks,
+    totalMarks: interview.totalMarks,
+    meetingLink: interview?.meetingLink,
+    isSelected: interview?.isSelected,
+    isDeleted: interview.isDeleted,
+    createdAt: interview.createdAt,
+    updatedAt: interview.updatedAt,
+    candidateId: interview?.shortListedCandidate?.candidateId,
+    name: interview?.shortListedCandidate?.candidate?.name,
+    photograph: interview?.shortListedCandidate?.candidate?.photograph,
+    email: interview?.shortListedCandidate?.candidate?.email,
+    phone: interview?.shortListedCandidate?.candidate?.phone,
+    jobPosition: interview?.shortListedCandidate?.candidate?.jobPosition,
+    ssn: interview?.shortListedCandidate?.candidate?.ssn,
+  }));
+
   return {
     meta: {
       page,
       limit,
       total,
     },
-    data: result,
+    data: formattedResult,
   };
 };
+
+
+// const getAllSelectedCandidates = async (
+//   params: any,
+//   options: IPaginationOptions
+// ) => {
+//   const { page, limit, skip } = paginationHelper.calculatePagination(options);
+//   const { searchTerm, ...filterData } = params;
+//   console.log(searchTerm); // Debug log for searchTerm
+
+//   const andConditions: Prisma.CandidateSelectionWhereInput[] = [
+//     {
+//       isDeleted: false, // Ensure only non-deleted records are fetched
+//     },
+//   ];
+
+//   // Handle search term
+//   if (searchTerm) {
+//     andConditions.push({
+//       OR: CandidateSearchableFields.map((field) => ({
+//         [field]: {
+//           contains: searchTerm,
+//           mode: "insensitive",
+//         },
+//       })),
+//     });
+//   }
+
+//   // Handle filter conditions
+//   if (Object.keys(filterData).length > 0) {
+//     andConditions.push({
+//       AND: Object.keys(filterData).map((key) => ({
+//         [key]: {
+//           equals: (filterData as any)[key],
+//         },
+//       })),
+//     });
+//   }
+
+//   // Combine conditions
+//   const whereConditions: Prisma.CandidateSelectionWhereInput =
+//     andConditions.length > 0 ? { AND: andConditions } : {};
+
+//   // Fetch data with pagination and sorting
+//   const result = await prisma.candidateSelection.findMany({
+//     where: whereConditions,
+//     skip,
+//     take: limit,
+//     orderBy:
+//       options.sortBy && options.sortOrder
+//         ? { [options.sortBy]: options.sortOrder }
+//         : { createdAt: "desc" },
+//     // include: {
+//     //   project: true,
+//     // },
+//   });
+
+//   // Get total count
+//   const total = await prisma.candidateSelection.count({
+//     where: whereConditions,
+//   });
+
+//   return {
+//     meta: {
+//       page,
+//       limit,
+//       total,
+//     },
+//     data: result,
+//   };
+// };
+// Get a single Candidate by ID
 
 const getAllSelectedCandidates = async (
   params: any,
@@ -257,11 +601,14 @@ const getAllSelectedCandidates = async (
 ) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
-  console.log(searchTerm); // Debug log for searchTerm
 
   const andConditions: Prisma.CandidateSelectionWhereInput[] = [
     {
       isDeleted: false, // Ensure only non-deleted records are fetched
+      interview: {
+        isSelected: true, // Fetch only selected candidates
+        isDeleted: false, // Ensure the interview record is not deleted
+      },
     },
   ];
 
@@ -269,7 +616,7 @@ const getAllSelectedCandidates = async (
   if (searchTerm) {
     andConditions.push({
       OR: CandidateSearchableFields.map((field) => ({
-        [field]: {
+        [`interview.shortListedCandidate.candidate.${field}`]: {
           contains: searchTerm,
           mode: "insensitive",
         },
@@ -281,7 +628,7 @@ const getAllSelectedCandidates = async (
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
       AND: Object.keys(filterData).map((key) => ({
-        [key]: {
+        [`interview.shortListedCandidate.candidate.${key}`]: {
           equals: (filterData as any)[key],
         },
       })),
@@ -301,9 +648,41 @@ const getAllSelectedCandidates = async (
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
         : { createdAt: "desc" },
-    // include: {
-    //   project: true,
-    // },
+    include: {
+      interview: {
+        include: {
+          shortListedCandidate: {
+            include: {
+              candidate: true, // Include candidate details
+            },
+          },
+        },
+      },
+    },
+  });
+
+  // Transform the result to return only the required fields
+  const formattedResult = result.map((selection) => {
+    const { interview } = selection;
+    const { shortListedCandidate } = interview ?? {};
+    const { candidate } = shortListedCandidate ?? {};
+    return {
+      id: selection.id,
+      candidateId: candidate?.candidateId,
+      name: candidate?.name,
+      email: candidate?.email,
+      phone: candidate?.phone,
+      jobPosition: candidate?.jobPosition,
+      interviewDate: interview?.interviewDate,
+      vivaMarks: interview?.vivaMarks,
+      writtenMarks: interview?.writtenMarks,
+      totalMarks: interview?.totalMarks,
+      selectionTerms: selection.selectionTerms,
+      interviewId: selection.interviewId, // Added interviewId from CandidateSelection
+      isDeleted: selection.isDeleted, // Added isDeleted from CandidateSelection
+      createdAt: selection.createdAt,
+      updatedAt: selection.updatedAt,
+    };
   });
 
   // Get total count
@@ -317,10 +696,11 @@ const getAllSelectedCandidates = async (
       limit,
       total,
     },
-    data: result,
+    data: formattedResult,
   };
 };
-// Get a single Candidate by ID
+
+
 const getSingleCandidate = async (id: string) => {
   const result = await prisma.candidateList.findUniqueOrThrow({
     where: {

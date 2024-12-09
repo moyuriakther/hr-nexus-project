@@ -16,30 +16,30 @@ export   const interviewTableHeader: string[] = [
   ];
 
   export   const interviewInputFiled: TInterviewInputField[] = [
-    { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name" ,required:true},
+    { id: 1, label: "Interviewer Name", key: "interviewer", type: "text", placeholder: "Enter Interviewer name" ,required:true},
     {
       id: 2,
-      label: "Candidate ID (Shortlisted Candidate)",
-      key: "candidateId",
+      label: "Candidate ID",
+      key: "shortListedCandidateId",
       type: "text",
-      placeholder: "Enter candidate ID",
+      placeholder: "Enter Shortlisted Candidate ID",
       required:true
     },
-    {
-      id: 3,
-      label: "Job Position",
-      key: "jobPosition",
-      type: "text",
-      placeholder: "Enter Job Position",
-      required:true
-    },
+    // {
+    //   id: 3,
+    //   label: "Job Position",
+    //   key: "jobPosition",
+    //   type: "text",
+    //   placeholder: "Enter Job Position",
+    //   required:true
+    // },
    
     {
       id: 4,
-      label: "Interview Date",
-      key: "interviewDate",
+      label: "Meet Link",
+      key: "meetingLink",
       type: "text",
-      placeholder: "Enter Interview Date",
+      placeholder: "Enter Meet Link",
       required:true
     },
     {
@@ -77,7 +77,7 @@ export   const interviewTableHeader: string[] = [
       {
         id: 10,
         label: "Selection",
-        key: "selection",
+        key: "isSelected",
         type: "text",
         placeholder: "Enter selection status",
         required:true
