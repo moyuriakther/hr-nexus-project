@@ -14,11 +14,11 @@ export enum tagTypes {
   holiday = "holiday",
   user = "user",
   loan = "loan",
-  candidateList="candidate_list",
+  candidateList="candidates",
   candidateSelection="candidate_selection",
   candidateShortlist="candidate_shortlist",
   interview="interview",
-  notice="notice"
+  notice="noticeboard"
 
 }
 

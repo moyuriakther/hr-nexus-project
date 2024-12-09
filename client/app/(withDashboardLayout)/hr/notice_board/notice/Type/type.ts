@@ -3,5 +3,6 @@ export type TNoticeData = {
     noticeType: string;
     description: string;
     noticeDate: string;
+    createdAt: string;
     noticeBy: string;isDeleted:false
   };

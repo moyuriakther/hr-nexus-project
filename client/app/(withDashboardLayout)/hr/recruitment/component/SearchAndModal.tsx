@@ -4,11 +4,11 @@ import {  FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../fakeData/limitCount";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
-import ExcelExport from "@/app/(withauthlayout)/test/ExcelExport";
+import ExcelCSVExport from "@/app/utils/ExcelAndCSV";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,modalIsOpen,setLimit}:{menuName:string,excelExportParamsData:any, handleSearch:any,setIsOpen:any,modalIsOpen:any,setLimit:any}) => {
-  const {data,headers,baseFileName,isLoading,displayField}=excelExportParamsData
+const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,modalIsOpen,setLimit,searchTerm}:{menuName:string,excelExportParamsData:any, handleSearch:any,setIsOpen:any,modalIsOpen:boolean,setLimit:any,searchTerm:string}) => {
+  const {data,baseFileName,isLoading}=excelExportParamsData
   return (
     <div className="mb-5">
       <div className="flex items-center justify-between flex-wrap pb-4 lg:gap-0 gap-2">
@@ -41,19 +41,18 @@ const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,m
           <p>entries</p>
         </div>
 
-        {headers&&<div>
+        {data&&<div className="flex items-center">
           {/* <Button
             size="sm"
             className="bg-primary rounded-none text-sm mx-2 text-white"
           >
             <FaFileCsv /> CSV
           </Button> */}
-          <ExcelExport
-      data={data?.data || []}
-      headers={headers}
+          
+          <ExcelCSVExport
+      data={data?.data|| []}
       baseFileName={baseFileName}
       isLoading={isLoading}
-      displayField={displayField}
     />
          
 
@@ -65,6 +64,7 @@ const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,m
         <HRInput
           type="text"
           className="border-gray-400 h-10 rounded-[5px]"
+          defaultValue={searchTerm}
           placeholder= {`${menuName=="Notice Board"?"Search By Date":" Search By Candidate ID..."}`}
           name="search"
         />

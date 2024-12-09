@@ -2,46 +2,47 @@ import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
 import React from 'react';
-import { useGetSingleCandidateQuery, useUpdateCandidateMutation } from "@/app/Redux/api/candidateListApi";
 import Loader from '@/app/components/utils/Loader';
 import { noticeModalInputFiled } from '../fakeData';
 import { toast } from 'sonner';
-import { FieldValues } from 'react-hook-form';
-import { uploadImage } from '@/app/utils/UploadImage';
-import { TInterview } from '../../../recruitment/Type/type';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
+import {  useGetSingleNoticeQuery, useUpdateNoticeMutation } from '@/app/Redux/api/noticeApi';
+import { TNoticeData } from '../Type/type';
+import HRFileInput from '@/app/components/Form/HRFileInput';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateNotice = ({setIsOpen,modalIsOpen,id}:any) => {
+const UpdateNotice = ({setIsOpen,modalIsOpen,id}:{setIsOpen:any, modalIsOpen:boolean,id:string}) => {
     
-    const {data,isLoading}=useGetSingleCandidateQuery(id)
-    const [updateCandidate]=useUpdateCandidateMutation()
+    const {data,isLoading}=useGetSingleNoticeQuery(id)
+    const [UpdateNotice]=useUpdateNoticeMutation()
     
     
-    const handleSubmit = async (values:FieldValues) => {
-        const file = values.noticeAttachment?.[0];
-
-        const resData = {
-           ...values,
-           noticeAttachment: await uploadImage(file),
-        };
-    
-        console.log(resData);
-  
-    
-        const res = await updateCandidate(resData)
-     
-    
-        if (res?.data) {
-          toast.success("successfully Update ");
-        } else {
-          toast.error("Didn't Update");
+    const handleSubmit: SubmitHandler<FieldValues> = async (values) => {
+        // const file = values.noticeAttachment?.[0];
+      
+        try {
+          const res = await UpdateNotice({
+            id: id,
+            body: { ...values },
+          }).unwrap();
+          if (res?.id) {
+            toast.success("Updated Successfully");
+            setIsOpen(false);
+          }
+          else{
+            toast.error("Something Error. Try again")
+          }
+        } catch (error) {
+          console.log(error);
         }
       };
-      if(isLoading){
-        return<Loader/>
-      }
+    
     return (
         <div>
+
+          {
+            isLoading&&<Loader/>
+          }
              <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
@@ -55,14 +56,18 @@ const UpdateNotice = ({setIsOpen,modalIsOpen,id}:any) => {
                 className="mb-5 text-md font-semibold flex  gap-1 items-center"
               >
                 <label className="col-span-1 w-[200px]">{inputField?.label}</label>
-                <HRInput
-                  type={inputField?.type}
-                  className="border-primary h-10 rounded-[5px]  min-w-[340px]"
-                  placeholder={inputField?.placeholder}
-                  name={`${inputField?.name}`}
-                  required={inputField?.required}
-                  defaultValue={data[inputField?.name as keyof TInterview]||""}
-                />
+                {inputField?.type == "file" ? (
+                  <HRFileInput name={`${inputField?.name}`} label="" />
+                ) : (
+                  <HRInput
+                    type={inputField?.type}
+                    className="border-primary h-10 rounded-[5px]  min-w-[340px]"
+                    placeholder={inputField?.placeholder}
+                    name={`${inputField?.name}`}
+                    required={inputField?.required}
+                    defaultValue={data&&data[inputField?.name as keyof TNoticeData]||""}
+                  />
+                )}
               </div>
             );
           })}
