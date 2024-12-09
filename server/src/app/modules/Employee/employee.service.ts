@@ -5,6 +5,7 @@ import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
 import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import { employeeSearchableFields } from "./employee.utils";
 import sendMail from "../../../shared/sendEmail";
+import sendEmailResponse from "../../../shared/sendEmailResponse";
 
 const createEmployee = async (payload: any) => {
   // Hash the password
@@ -96,13 +97,11 @@ const createEmployee = async (payload: any) => {
         password: hashPassword,
       },
     });
-
-    // const send = sendMail({
-    //   email: employee.email,
-    //   subject: "Employee Registration",
-    //   message: `Hello ${employee.firstName} ${employee.lastName}, your employee registration has been successful. You can now login using your email and password.`,
-    // });
-
+    await sendEmailResponse({
+      to: payload.email,
+      subject: "Employee Registration",
+      html: `Hello ${employee.firstName} ${employee.lastName}, your employee registration has been successful. You can now log in using your email and password.`,
+    });
     return employee;
   });
 
