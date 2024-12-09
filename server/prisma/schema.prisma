@@ -341,7 +341,7 @@ model CandidateList {
 
 model ShortList {
   id            String         @id @default(uuid())
-  candidateId   String
+  candidateId   String        @unique
   shortlistDate DateTime?
   interviewDate DateTime?
 
@@ -356,9 +356,9 @@ model ShortList {
 }
 model Interview {
   id                     String               @id @default(uuid())
+  interviewId            String               @default(uuid()) @unique
   interviewer            String?
   interviewDate          String
-  interviewId            String               @id @default(uuid())
   vivaMarks              String?
   writtenMarks           String?
   mcqTotalMarks          String?
@@ -370,7 +370,7 @@ model Interview {
   createdAt              DateTime             @default(now())
   updatedAt              DateTime             @updatedAt
   CandidateSelection     CandidateSelection[]
-  shortListedCandidate   ShortList            @relation(fields: [candidateId], references: [id])
+  shortListedCandidate   ShortList            @relation(fields: [candidateId], references: [candidateId])
 
   @@map("interview")
 }
@@ -378,7 +378,7 @@ model Interview {
 model CandidateSelection {
   id              String    @id @default(uuid())
   selectionTerms  String?
-  interviewId     String?
+  interviewId     String
   isDeleted       Boolean   @default(false)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt

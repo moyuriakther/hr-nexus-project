@@ -1,3 +1,4 @@
+import { TQueryParams } from "@/app/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
