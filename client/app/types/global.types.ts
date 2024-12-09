@@ -58,3 +58,7 @@ export type TAuthUser = {
   name: string;
   role: string;
 };
+export type TQueryParams = {
+  name: string;
+  value: boolean | React.Key;
+};

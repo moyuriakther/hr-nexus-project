@@ -1,7 +1,6 @@
 "use client";
 
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
-import ExcelExport from "@/app/(withauthlayout)/test/ExcelExport";
 import { USER_ROLE } from "@/app/constants";
 import { TLeave } from "@/app/types";
 import { getUserFromLocalStorage } from "@/app/utils/localStorage";
@@ -11,6 +10,7 @@ import { FaFilter, FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../../employees/position/components/fakeData/limitCount";
 import CreateLeaveApplicationModal from "./CreateLeaveApplicationModal";
 import { headers } from "./tableHeader";
+import ExcelCSVExport from "@/app/utils/ExcelAndCSV";
 
 interface ComponentHeaderProps {
   onSearch: (searchTerm: string) => void;
@@ -77,13 +77,7 @@ const CreateLeaveApplication = ({
           >
             <FaFileExcel /> Excel
           </Button> */}
-          <ExcelExport
-            data={data}
-            headers={headers}
-            baseFileName="Holiday_Data"
-            isLoading={loading}
-            // displayField="name"
-          />
+          <ExcelCSVExport data={data} baseFileName="Holiday_Data" />
         </div>
 
         <div className="flex items-center gap-1">

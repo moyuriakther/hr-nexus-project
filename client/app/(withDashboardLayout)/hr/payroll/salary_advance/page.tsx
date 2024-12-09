@@ -55,7 +55,10 @@ const SalaryAdvancePage = () => {
       <PageHeader item={pageHeaderData} />
 
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
-        <AddSalaryAdvancePage onSearch={setSearchTerm} />
+        <AddSalaryAdvancePage
+          data={payments?.data ?? []}
+          onSearch={setSearchTerm}
+        />
         <HRTable tableHeader={tableHeader}>
           {isLoading ? (
             <div className="flex justify-center items-center w-16 h-16">

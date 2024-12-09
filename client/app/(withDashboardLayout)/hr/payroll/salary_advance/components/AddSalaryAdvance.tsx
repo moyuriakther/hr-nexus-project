@@ -8,12 +8,15 @@ import { limitCount } from "../../../employees/position/components/fakeData/limi
 import CreateSalaryAdvanceModal from "./CreateSalaryAdvanceModal";
 import { USER_ROLE } from "@/app/constants";
 import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import ExcelCSVExport from "@/app/utils/ExcelAndCSV";
+import { Payment } from "@/app/types";
 
 interface ComponentHeaderProps {
   onSearch: (searchTerm: string) => void;
+  data: Payment[];
 }
 
-const AddSalaryAdvancePage = ({ onSearch }: ComponentHeaderProps) => {
+const AddSalaryAdvancePage = ({ onSearch, data }: ComponentHeaderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState("");
   const [limit, setLimit] = useState<string>("10");
@@ -51,7 +54,8 @@ const AddSalaryAdvancePage = ({ onSearch }: ComponentHeaderProps) => {
         </div>
 
         <div className="flex items-center">
-          <Button
+          <ExcelCSVExport data={data} baseFileName="Payment_Data" />
+          {/* <Button
             size="sm"
             className="bg-primary rounded-[4px] text-sm text-white"
           >
@@ -62,7 +66,7 @@ const AddSalaryAdvancePage = ({ onSearch }: ComponentHeaderProps) => {
             className="bg-primary rounded-[4px] text-sm text-white"
           >
             <FaFileExcel /> Excel
-          </Button>
+          </Button> */}
         </div>
 
         <div className="flex items-center gap-1">

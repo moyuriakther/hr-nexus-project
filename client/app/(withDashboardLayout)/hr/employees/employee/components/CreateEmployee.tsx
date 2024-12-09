@@ -2,36 +2,15 @@
 
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
 import { Button, Divider } from "@nextui-org/react";
-import { FaFileCsv, FaFileExcel, FaFilter, FaPlusCircle } from "react-icons/fa";
+import { FaFilter, FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../position/components/fakeData/limitCount";
 import Link from "next/link";
 import { useGetAllEmployeeQuery } from "@/app/Redux/api/employeeApi";
-import { CSVLink } from "react-csv";
 import Loader from "@/app/components/utils/Loader";
+import ExcelCSVExport from "@/app/utils/ExcelAndCSV";
 
 const CreateEmployee = () => {
   const { data: employee, isLoading } = useGetAllEmployeeQuery({});
-  const tableHeader = [
-    "Sl",
-    // "Employee id",
-    "Name of employee",
-    "Email",
-    "Mobile no",
-    "Date of birth",
-    "Designation",
-    "Joining data",
-    "Status",
-    "Action",
-  ];
-
-  const generateFileName = (extension: string) => {
-    const timestamp = new Date();
-    const formattedTimestamp = `${timestamp.getDate()}-${
-      timestamp.getMonth() + 1
-    }-${timestamp.getFullYear()}`;
-
-    return `${"exported_data"}_${formattedTimestamp}.${extension}`;
-  };
 
   if (isLoading) {
     return <Loader />;
@@ -71,27 +50,7 @@ const CreateEmployee = () => {
         </div>
 
         <div className="flex items-center">
-          <Button
-            size="sm"
-            className="bg-primary rounded-[4px] text-sm text-white"
-          >
-            <CSVLink
-              data={employee}
-              headers={tableHeader.map((item) => ({ label: item, key: item }))}
-              // headers={tableHeader}
-              filename={generateFileName("csv")}
-              className="flex items-center gap-2"
-            >
-              <FaFileCsv /> CSV
-            </CSVLink>
-          </Button>
-
-          <Button
-            size="sm"
-            className="bg-primary rounded-[4px] text-sm text-white"
-          >
-            <FaFileExcel /> Excel
-          </Button>
+          <ExcelCSVExport data={employee} baseFileName="employees_data" />
         </div>
 
         <div className="flex items-center gap-1">
