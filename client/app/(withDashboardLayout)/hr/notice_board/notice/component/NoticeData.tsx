@@ -13,7 +13,7 @@ const NoticeData=({data, isLoading}:{data:TNoticeData[],isLoading:boolean})=>{
   const [updateModalIsOpen, setIsUpdateModal]=useState(false)
 
   const [currentPage, setCurrentPage]=useState(1)
-  const totalPage=Math.round(data.length/10)
+  const totalPage=Math.round(data?.length/5)
   const startIndex=Number(currentPage)*5-5
   const lastIndex=startIndex+5
     if (isLoading) {
@@ -42,7 +42,7 @@ const NoticeData=({data, isLoading}:{data:TNoticeData[],isLoading:boolean})=>{
     return(
         <>
              <HRTable tableHeader={noticeTableHeader}>
-       {data.slice(startIndex,lastIndex).map((notice, index) => {
+       {data?.slice(startIndex,lastIndex).map((notice, index) => {
           return (
             <tr
               className={`${

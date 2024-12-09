@@ -5,9 +5,10 @@ import { limitCount } from "../fakeData/limitCount";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import ExcelExport from "@/app/(withauthlayout)/test/ExcelExport";
+import { SetStateAction } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,modalIsOpen}:{menuName:string,excelExportParamsData:any, handleSearch:any,setIsOpen:any,modalIsOpen:any}) => {
+const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,modalIsOpen,setLimit}:{menuName:string,excelExportParamsData:any, handleSearch:any,setIsOpen:any,modalIsOpen:any,setLimit:any}) => {
   const {data,headers,baseFileName,isLoading,displayField}=excelExportParamsData
   return (
     <div className="mb-5">
@@ -34,42 +35,38 @@ const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,m
       </div>
       <Divider />
 
-      <div className="mt-6 flex items-center justify-between flex-wrap lg:gap-0 gap-2">
+      <div className=" mt-5 flex items-center justify-between flex-wrap lg:gap-0 gap-2">
         <div className="flex items-center gap-1">
           <p>Show</p>
-          <HRSelect data={limitCount} />
+          <HRSelect data={limitCount} setLimit={setLimit} />
           <p>entries</p>
         </div>
 
-        {headers&&<div className="flex items-center">
-          <Button
+        {headers&&<div>
+          {/* <Button
             size="sm"
             className="bg-primary rounded-none text-sm mx-2 text-white"
           >
             <FaFileCsv /> CSV
-          </Button>
-          <Button
-            size="sm"
-            className="bg-primary rounded-none text-sm text-white"
-          >
-            {/* <FaFileExcel /> Excel */}
-            <ExcelExport
+          </Button> */}
+          <ExcelExport
       data={data?.data || []}
       headers={headers}
       baseFileName={baseFileName}
       isLoading={isLoading}
       displayField={displayField}
     />
-          </Button>
+         
+
         </div>
         }
         <HRForm onSubmit={handleSearch}>
-      <div className="mb-5 text-md font-semibold flex gap-1 items-center">
-        <label>Search: </label>
+      <div className=" text-md font-semibold flex gap-1 items-center">
+        <button className="border-none bg-none" type="submit">Search: </button>
         <HRInput
           type="text"
-          className="border-primary h-10 rounded-[5px]"
-          placeholder="Notice Search..."
+          className="border-gray-400 h-10 rounded-[5px]"
+          placeholder="Search By Candidate ID..."
           name="search"
         />
       </div>

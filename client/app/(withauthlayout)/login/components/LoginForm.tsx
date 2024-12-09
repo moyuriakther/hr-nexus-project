@@ -17,12 +17,28 @@ import { useState } from "react";
 import { signInUser } from "@/app/services/actions/userLogin";
 import { storeUserInfo } from "@/app/services/actions/auth.services";
 
+const predefinedUsers = [
+  {
+    email: "admin@admin.com",
+    password: "123456",
+    role: "Admin",
+  },
+  {
+    email: "user@user.com",
+    password: "1234567",
+    role: "User",
+  },
+];
+
 const LoginForm = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false); // State for loading
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  console.log(email, password);
 
   const handleLogin: SubmitHandler<FieldValues> = async (data) => {
-    setLoading(true); // Set loading to true
+    setLoading(true);
     try {
       const res = await signInUser(data);
       if (res?.data?.accessToken) {
@@ -38,51 +54,86 @@ const LoginForm = () => {
         "Account does not exist. Please register first!";
       toast.error(errorMessage);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
+  const handleAutofill = (user: (typeof predefinedUsers)[0]) => {
+    setEmail(user.email);
+    setPassword(user.password);
+  };
+
   return (
-    <HRForm
-      onSubmit={handleLogin}
-      defaultValues={loginDefaultValues}
-      resolver={zodResolver(loginValidationSchema)}
-    >
-      <div className="mb-5">
-        <HRInput
-          label="Email Address"
-          type="email"
-          placeholder="Enter Email Address"
-          name="email"
-        />
-      </div>
-      <div className="pb-2 relative">
-        <HRInput
-          label="Password"
-          name="password"
-          type="password"
-          placeholder="Enter Password"
-        />
-      </div>
-      <div className="flex justify-end pb-3">
-        <p
-          className="cursor-pointer font-medium text-primary hover:underline"
-          onClick={() => router.push("/forgot-password")}
-        >
-          Forgot Password?
-        </p>
-      </div>
-      <Button
-        type="submit"
-        fullWidth
-        className={`font-semibold text-white rounded-none w-full ${
-          loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary"
-        }`}
-        isDisabled={loading} // Disable button when loading
+    <div>
+      <HRForm
+        onSubmit={handleLogin}
+        defaultValues={loginDefaultValues}
+        resolver={zodResolver(loginValidationSchema)}
       >
-        {loading ? "Logging in..." : "Sign In"}
-      </Button>
-    </HRForm>
+        <div className="mb-5">
+          <HRInput
+            label="Email Address"
+            type="email"
+            placeholder="Enter Email Address"
+            name="email"
+            // value={email}
+            // onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="pb-2 relative">
+          <HRInput
+            label="Password"
+            name="password"
+            type="password"
+            placeholder="Enter Password"
+            // value={password}
+            // onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="mt-5">
+          <table className="w-full border border-gray-200 bg-gray-50">
+            <thead>
+              <tr className="border-b ">
+                <th className="p-2 border-r">Email</th>
+                <th className="p-2 border-r">Password</th>
+                <th className="p-2">Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {predefinedUsers.map((user, index) => (
+                <tr
+                  key={index}
+                  className="cursor-pointer hover:bg-gray-100 text-sm text-center"
+                  onClick={() => handleAutofill(user)}
+                >
+                  <td className="p-2 border-b border-r">{user.email}</td>
+                  <td className="p-2 border-b border-r">{user.password}</td>
+                  <td className="p-2 border-b ">{user.role}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="flex justify-end py-3">
+          <p
+            className="cursor-pointer text-sm text-primary hover:underline"
+            onClick={() => router.push("/forgot-password")}
+          >
+            Forgot Password?
+          </p>
+        </div>
+        <Button
+          type="submit"
+          fullWidth
+          className={`font-semibold text-white rounded-none w-full ${
+            loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary"
+          }`}
+          isDisabled={loading}
+        >
+          {loading ? "Logging in..." : "Sign In"}
+        </Button>
+      </HRForm>
+    </div>
   );
 };
 

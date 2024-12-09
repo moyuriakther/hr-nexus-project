@@ -6,6 +6,8 @@ import { FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../employees/position/components/fakeData/limitCount";
 import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import { useState } from "react";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 interface ComponentHeaderProps {
   onSearch: (searchTerm: string) => void;
@@ -15,6 +17,9 @@ const ComponentHeader = ({ onSearch }: ComponentHeaderProps) => {
   // const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data: myProfile } = useGetMyProfileQuery({});
   const [searchInput, setSearchInput] = useState("");
+  const [limit, setLimit] = useState<string>("10");
+
+  const user = getUserFromLocalStorage();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -26,7 +31,7 @@ const ComponentHeader = ({ onSearch }: ComponentHeaderProps) => {
       <div className="flex items-center justify-between flex-wrap pb-4 lg:gap-0 gap-2">
         <h2 className="font-semibold text-lg">Loan list</h2>
         <div className="flex items-center gap-1">
-          {myProfile?.role === "ADMIN" && (
+          {user?.role === USER_ROLE.ADMIN && (
             <a href={`/hr/loan/create`}>
               <Button
                 // onClick={() => setIsOpen(true)}
@@ -43,7 +48,7 @@ const ComponentHeader = ({ onSearch }: ComponentHeaderProps) => {
       <div className="mt-6 flex items-center justify-between flex-wrap lg:gap-0 gap-2">
         <div className="flex items-center gap-1">
           <p>Show</p>
-          <HRSelect data={limitCount} />
+          <HRSelect setLimit={setLimit} data={limitCount} />
           <p>entries</p>
         </div>
 

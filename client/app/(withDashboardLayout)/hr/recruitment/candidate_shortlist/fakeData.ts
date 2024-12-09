@@ -1,3 +1,4 @@
+import { TShortlistInputField } from "../Type/type";
 
 
 export const shortlistTableHeader: string[] = [
@@ -9,8 +10,8 @@ export const shortlistTableHeader: string[] = [
     "Interview Date",
     "Action",
   ];
-  export   const shortlistInputFields = [
-    { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name" ,required:true},
+  export   const shortlistInputFields:TShortlistInputField[] = [
+    // { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name" ,required:true},
     {
       id: 2,
       label: "Candidate ID",

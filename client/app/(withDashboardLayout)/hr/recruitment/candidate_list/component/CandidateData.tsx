@@ -5,23 +5,21 @@ import Pagination from "../../component/Pagination";
 import { useState } from "react";
 import { candidateTableHeader } from "../fakeData";
 import { TCandidateList } from "../../Type/type";
+import Image from "next/image";
 
 const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean})=>{
 
     const [deleteCandidate] = useDeleteCandidateMutation({});
   const [updateModalIsOpen, setIsUpdateModal]=useState(false)
-  const [currentPage, setCurrentPage]=useState(1)
-  const totalPage=Math.round(data.length/10)
-  const startIndex=Number(currentPage)*5-5
-  const lastIndex=startIndex+5
+
     if (isLoading) {
       return <Loader />;
     }
   
-    if (data?.length === 0) {
+    if (Number(data?.length) < 1) {
       return (
         <tr>
-          <td colSpan={9} className="text-center">
+          <td className="text-center">
             No Data Found
           </td>
         </tr>
@@ -40,7 +38,7 @@ const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean}
     return(
         <div>
                <HRTable tableHeader={candidateTableHeader}>
-        {data.slice(startIndex, lastIndex).map((candidate, index) => {
+        {data?.map((candidate, index) => {
           return (
             <tr
               className={`${
@@ -58,7 +56,8 @@ const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean}
                 {candidate?.candidateId}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {candidate?.photograph}
+                
+                <Image src={candidate?.photograph} alt={`${candidate?.name} Photo`}width={50} height={50} className="mx-auto"/>
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
                 {candidate?.email}
@@ -108,8 +107,15 @@ const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean}
             </tr>
           );
         })}
+        {
+          data?.length==0&& <tr>
+          <td className="text-center">
+            No Data Found
+          </td>
+        </tr>
+        }
       </HRTable>
-      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} data={data}/>
+      {/* <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} data={data}/> */}
         </div>
     )
 }

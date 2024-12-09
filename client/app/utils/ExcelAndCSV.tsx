@@ -4,21 +4,19 @@ import { CSVLink } from "react-csv";
 import Loader from "@/app/components/utils/Loader";
 import React from "react";
 import * as XLSX from "xlsx";
+import { Button } from "@nextui-org/react";
+import { FaFileCsv, FaFileExcel } from "react-icons/fa";
 
-interface ExcelExportProps {
+interface ExcelCSVExportProps {
   data: any[];
-  headers: { label: string; key: string }[];
   baseFileName?: string;
   isLoading?: boolean;
-  displayField?: string;
 }
 
-const ExcelExport: React.FC<ExcelExportProps> = ({
+const ExcelCSVExport: React.FC<ExcelCSVExportProps> = ({
   data = [],
-  headers,
   baseFileName = "exported_data",
   isLoading = false,
-  displayField,
 }) => {
   const generateFileName = (extension: string) => {
     const timestamp = new Date();
@@ -47,41 +45,39 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
     return <Loader />;
   }
 
+  // Automatically generate headers for CSV by extracting keys from the data
+  const csvHeaders = data.length > 0 ? Object.keys(data[0]) : [];
+  const csvData = data.map((item) =>
+    csvHeaders.reduce((acc: any, key) => {
+      acc[key] = item[key] || ""; // Ensure every key exists in each row
+      return acc;
+    }, {})
+  );
+
   return (
     <div className="text-2xl">
-      {displayField && (
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">List View:</h3>
-          {data.length > 0 ? (
-            data.map((item: any, index: number) => (
-              <p key={index} className="text-sm">
-                {item[displayField] || "N/A"}
-              </p>
-            ))
-          ) : (
-            <p>No data available</p>
-          )}
-        </div>
-      )}
-      <div className="flex gap-4">
+      <div className="flex items-center">
+        {/* CSV Export */}
         <CSVLink
-          data={data}
-          headers={headers}
+          data={csvData}
           filename={generateFileName("csv")}
-          className="bg-primary text-white py-2 px-4 rounded-md"
+          className="bg-primary rounded-md text-sm mx-2 text-white px-4"
         >
-          Export to CSV
+          <Button size="sm" className="bg-primary text-white">
+            <FaFileCsv /> CSV
+          </Button>
         </CSVLink>
         {/* XLSX Export Button */}
-        <button
+        <Button
           onClick={handleXLSXDownload}
-          className="bg-secondary text-white py-2 px-4 rounded-md"
+          size="sm"
+          className="bg-primary rounded-none text-sm text-white px-4"
         >
-          Export to XLSX
-        </button>
+          <FaFileExcel /> Excel
+        </Button>
       </div>
     </div>
   );
 };
 
-export default ExcelExport;
+export default ExcelCSVExport;

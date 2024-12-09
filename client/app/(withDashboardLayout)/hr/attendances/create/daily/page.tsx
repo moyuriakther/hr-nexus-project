@@ -11,6 +11,7 @@ import { FormValues, monthOptions } from "../common";
 import { useCreateAttendanceMutation } from "@/app/Redux/api/attendanceApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Loader from "@/app/components/utils/Loader";
 
 const DailyAttendance = () => {
   const router = useRouter();
@@ -70,7 +71,9 @@ const DailyAttendance = () => {
         </h2>
         <div className="border border-t-0 mb-5"></div>
         {isEmployeeLoading ? (
-          "Loading....."
+          <div className="flex justify-center items-center w-16 h-16 p-6">
+            <Loader />
+          </div>
         ) : (
           <div className="p-6 space-y-4">
             {/* Employee Select */}

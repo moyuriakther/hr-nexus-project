@@ -1,3 +1,8 @@
+import { USER_ROLE } from "@/app/constants";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+
+const user = getUserFromLocalStorage();
+
 export const tableHeader = [
   "Sl",
   "Employee name",
@@ -11,5 +16,5 @@ export const tableHeader = [
   // "Approved date",
   // "Repayment from",
   // "Status",
-  "Action",
+  `${user?.role === USER_ROLE.ADMIN && "Action"}`,
 ];

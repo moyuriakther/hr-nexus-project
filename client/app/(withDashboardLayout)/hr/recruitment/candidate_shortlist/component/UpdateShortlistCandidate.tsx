@@ -3,7 +3,7 @@ import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
 import React from 'react';
 import Loader from '@/app/components/utils/Loader';
-import { TCandidateList } from '../../Type/type';
+import {  TShortList } from '../../Type/type';
 import { toast } from 'sonner';
 import { FieldValues } from 'react-hook-form';
 import { useGetSingleShortlistCandidateQuery, useUpdateShortlistCandidateMutation } from '@/app/Redux/api/shortListApi';
@@ -60,7 +60,7 @@ const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
                   placeholder={inputField?.placeholder}
                   name={`${inputField?.key}`}
                   required={inputField?.required}
-                  defaultValue={data[inputField?.key as keyof TCandidateList]||""}
+                  defaultValue={data?.[inputField?.key as keyof TShortList]||""}
                 />
               </div>
             );

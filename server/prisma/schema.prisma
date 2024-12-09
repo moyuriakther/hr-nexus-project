@@ -113,19 +113,6 @@ model Employee {
   @@map("employees")
 }
 
-model Position {
-  id              String @id @default(uuid())
-  positionName    String
-  PositionDetails String
-  status          Status @default(ACTIVE)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isDeleted Boolean  @default(false)
-
-  @@map("positions")
-}
-
 model Department {
   id             String          @id @default(uuid())
   departmentName String
@@ -375,77 +362,129 @@ model WeeklyHolidays {
 //   @@map("notice_boards")
 // }
 
-model Recruitment {
-  id               String  @id @default(uuid())
-  firstName        String
-  lastName         String?
-  email            String  @unique
-  phone            String
-  alternativePhone String?
-  ssn              String?
-  presentAddress   String?
-  permanentAddress String?
-  country          String?
-  city             String?
-  zipCode          String?
-  picture          String?
+model CandidateList {
+  id          String  @id @default(uuid())
+  name        String?
+  candidateId String? @unique
+  photograph  String?
+  email       String?
+  ssn         String?
+  phone       String?
+  jobPosition String?
+  isDeleted   Boolean @default(false)
 
-  // Educational Info
-  obtainedDegree String?
-  university     String?
-  cgpa           String?
-  comments       String?
-
-  // past companies 
-  companyName   String?
-  workingPeriod String?
-  duties        String?
-  supervisor    String?
-  interviews    Interview[]
-
-  isDeleted Boolean     @default(false)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  shortList ShortList[]
-
-  @@map("recruitment")
-}
-
-model Interview {
-  id            String      @id @default(uuid())
-  candidateName String
-  interviewer   String
-  jobPosition   String
-  interviewDate String
-  vivaMarks     String
-  writtenMarks  String
-  mcqTotalMarks String
-  totalMarks    String
-  selection     String
-  candidateId   String
-  candidate     Recruitment @relation(fields: [candidateId], references: [id])
-
-  isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("interview")
+  shortList ShortList[]
+
+  @@map("candidate_lists")
 }
 
 model ShortList {
-  id String @id @default(uuid())
-
-  name          String
-  jobPosition   String
-  interviewDate String
+  id            String    @id @default(uuid())
+  // name          String?
   candidateId   String
-  candidate     Recruitment @relation(fields: [candidateId], references: [id])
+  // jobPosition   String?
+  shortlistDate DateTime?
+  interviewDate DateTime?
 
-  isDeleted Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  candidate CandidateList @relation(fields: [candidateId], references: [id])
+  isDeleted Boolean       @default(false)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  interview Interview[]
 
-  @@map("shortlist")
+  @@map("short_lists")
+}
+
+model CandidateSelection {
+  id             String  @id @default(uuid())
+  // name           String?
+  // employeeId     String
+  position       String?
+  selectionTerms String?
+
+  interviewId String
+  interview   Interview @relation(fields: [interviewId], references: [id])
+
+  isDeleted       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  // CandidateList        CandidateList? @relation(fields: [candidateListId], references: [id])
+  candidateListId String?
+
+  @@map("candidate_selections")
+}
+
+model NoticeData {
+  id          String    @id @default(uuid())
+  noticeType  String?
+  description String?
+  noticeDate  DateTime?
+  noticeBy    String?
+  isDeleted   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("notice_boards")
+}
+
+// model Recruitment {
+//   id               String  @id @default(uuid())
+//   firstName        String
+//   lastName         String?
+//   email            String  @unique
+//   phone            String
+//   alternativePhone String?
+//   ssn              String?
+//   presentAddress   String?
+//   permanentAddress String?
+//   country          String?
+//   city             String?
+//   zipCode          String?
+//   picture          String?
+
+//   // Educational Info
+//   obtainedDegree String?
+//   university     String?
+//   cgpa           String?
+//   comments       String?
+
+//   // past companies 
+//   companyName   String?
+//   workingPeriod String?
+//   duties        String?
+//   supervisor    String?
+//   interviews    Interview[]
+
+//   isDeleted Boolean  @default(false)
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@map("recruitment")
+// }
+
+model Interview {
+  id            String  @id @default(uuid())
+  interviewer   String?
+  interviewDate String
+  vivaMarks     String?
+  writtenMarks  String?
+  mcqTotalMarks String?
+  totalMarks    String?
+  meetingLink   String?
+  isSelected    Boolean @default(false)
+
+  shortListedCandidateId String
+  shortListedCandidate   ShortList @relation(fields: [shortListedCandidateId], references: [id])
+
+  isDeleted          Boolean              @default(false)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  CandidateSelection CandidateSelection[]
+
+  @@map("interview")
 }
 
 // model ProjectManagement {

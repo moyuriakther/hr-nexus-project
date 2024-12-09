@@ -15,7 +15,7 @@ const CandidateShortlist = () => {
   
   const {data, isLoading}=useGetAllShortlistCandidateQuery({})
   const [modalIsOpen, setIsOpen] = useState(false);
-
+  const [limit, setLimit]=useState(10)
 
   const handleSearch: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -27,14 +27,14 @@ const CandidateShortlist = () => {
   };
 
   const excelExportParamsData={data,headers:shortlistTableHeader,baseFileName:"candidate_short_list",isLoading:false, displayField:"CandidateShortList"}
-
+  const paginatedData=data?.data.slice(0,Number(limit))
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
      
      
-        <SearchAndModal excelExportParamsData={excelExportParamsData} menuName={"Candidate Shortlist "} modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} handleSearch={handleSearch} ></SearchAndModal>
+        <SearchAndModal excelExportParamsData={excelExportParamsData} setLimit={setLimit} menuName={"Candidate Shortlist "} modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} handleSearch={handleSearch} ></SearchAndModal>
       <CreateShortlistCandidate modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
-      <ShortlistCandidate data={data} isLoading={isLoading}/>
+      <ShortlistCandidate data={paginatedData} isLoading={isLoading}/>
 
      
 

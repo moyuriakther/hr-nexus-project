@@ -8,6 +8,7 @@ interface ComponentHeaderProps {
 }
 const AddLeaveApproval = ({ onSearch }: ComponentHeaderProps) => {
   const [searchInput, setSearchInput] = useState("");
+  const [limit, setLimit] = useState<string>("10");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -23,7 +24,7 @@ const AddLeaveApproval = ({ onSearch }: ComponentHeaderProps) => {
       <div className="mt-6 flex items-center justify-between flex-wrap lg:gap-0 gap-2">
         <div className="flex items-center gap-1">
           <p>Show</p>
-          <HRSelect data={limitCount} />
+          <HRSelect setLimit={setLimit} data={limitCount} />
           <p>entries</p>
         </div>
 

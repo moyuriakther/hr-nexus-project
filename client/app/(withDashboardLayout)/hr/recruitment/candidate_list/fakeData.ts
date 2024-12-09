@@ -27,12 +27,21 @@ export const candidateInputFields = [
     placeholder: "Enter photograph URL",
     required:true
   },
+
   {
     id: 4,
     label: "Email Address",
     key: "email",
     type: "email",
     placeholder: "Enter email address",
+    required:true
+  },
+  {
+    id: 3,
+    label: "Job Position",
+    key: "jobPosition",
+    type: "text",
+    placeholder: "Enter Job Position",
     required:true
   },
   {

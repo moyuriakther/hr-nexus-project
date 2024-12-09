@@ -19,7 +19,7 @@ export   const interviewTableHeader: string[] = [
     { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name" ,required:true},
     {
       id: 2,
-      label: "Candidate ID",
+      label: "Candidate ID (Shortlisted Candidate)",
       key: "candidateId",
       type: "text",
       placeholder: "Enter candidate ID",
