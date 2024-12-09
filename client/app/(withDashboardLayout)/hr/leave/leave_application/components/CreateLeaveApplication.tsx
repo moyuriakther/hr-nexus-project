@@ -1,19 +1,32 @@
 "use client";
 
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
+import ExcelExport from "@/app/(withauthlayout)/test/ExcelExport";
+import { USER_ROLE } from "@/app/constants";
+import { TLeave } from "@/app/types";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { Button, Divider } from "@nextui-org/react";
 import React, { useState } from "react";
-import { FaFileCsv, FaFileExcel, FaFilter, FaPlusCircle } from "react-icons/fa";
+import { FaFilter, FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../../employees/position/components/fakeData/limitCount";
 import CreateLeaveApplicationModal from "./CreateLeaveApplicationModal";
+import { headers } from "./tableHeader";
 
 interface ComponentHeaderProps {
   onSearch: (searchTerm: string) => void;
+  data: TLeave[];
+  loading: boolean;
 }
 
-const CreateLeaveApplication = ({ onSearch }: ComponentHeaderProps) => {
+const CreateLeaveApplication = ({
+  onSearch,
+  data,
+  loading,
+}: ComponentHeaderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState("");
+  const [limit, setLimit] = useState<string>("10");
+  const user = getUserFromLocalStorage();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -31,13 +44,15 @@ const CreateLeaveApplication = ({ onSearch }: ComponentHeaderProps) => {
           >
             <FaFilter /> Filter
           </Button>
-          <Button
-            onClick={() => setIsOpen(true)}
-            size="sm"
-            className="bg-primary rounded-[4px] text-sm text-white"
-          >
-            <FaPlusCircle /> Add Leave Application
-          </Button>
+          {user?.role === USER_ROLE.ADMIN && (
+            <Button
+              onClick={() => setIsOpen(true)}
+              size="sm"
+              className="bg-primary rounded-[4px] text-sm text-white"
+            >
+              <FaPlusCircle /> Add Leave Application
+            </Button>
+          )}
         </div>
       </div>
       <Divider />
@@ -45,12 +60,12 @@ const CreateLeaveApplication = ({ onSearch }: ComponentHeaderProps) => {
       <div className="mt-6 flex items-center justify-between flex-wrap lg:gap-0 gap-2">
         <div className="flex items-center gap-1">
           <p>Show</p>
-          <HRSelect data={limitCount} />
+          <HRSelect setLimit={setLimit} data={limitCount} />
           <p>entries</p>
         </div>
 
         <div className="flex items-center">
-          <Button
+          {/* <Button
             size="sm"
             className="bg-primary rounded-[4px] text-sm text-white"
           >
@@ -61,7 +76,14 @@ const CreateLeaveApplication = ({ onSearch }: ComponentHeaderProps) => {
             className="bg-primary rounded-[4px] text-sm text-white"
           >
             <FaFileExcel /> Excel
-          </Button>
+          </Button> */}
+          <ExcelExport
+            data={data}
+            headers={headers}
+            baseFileName="Holiday_Data"
+            isLoading={loading}
+            // displayField="name"
+          />
         </div>
 
         <div className="flex items-center gap-1">

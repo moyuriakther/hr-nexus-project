@@ -18,11 +18,14 @@ import AddSalaryAdvancePage from "./components/AddSalaryAdvance";
 import UpdateSalaryAdvanceModal from "./components/UpdateSalaryAdvanceModal";
 import { toast } from "sonner";
 import Loader from "@/app/components/utils/Loader";
+import { USER_ROLE } from "@/app/constants";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 
 const SalaryAdvancePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const user = getUserFromLocalStorage();
 
   const { data: payments, isLoading } = useGetAllPaymentQuery({ searchTerm });
   const [deletePayment, { isLoading: isDeleteLoading }] =
@@ -35,7 +38,7 @@ const SalaryAdvancePage = () => {
     "Release amount",
     "Salary month",
     "Status",
-    "Action",
+    `${user?.role === USER_ROLE.ADMIN && "Action"}`,
   ];
 
   const handleDelete = async (id: string) => {
@@ -55,7 +58,7 @@ const SalaryAdvancePage = () => {
         <AddSalaryAdvancePage onSearch={setSearchTerm} />
         <HRTable tableHeader={tableHeader}>
           {isLoading ? (
-            <div className="flex justify-center items-center w-64 h-64">
+            <div className="flex justify-center items-center w-16 h-16">
               <Loader />
             </div>
           ) : (
@@ -90,23 +93,25 @@ const SalaryAdvancePage = () => {
                   </Button>
                 </HRTableRow>
 
-                <HRTableRow>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setIsOpen(true)}
-                      className="bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
-                    >
-                      <FaEdit className="text-base" />
-                    </button>
-                    <button
-                      disabled={isDeleteLoading}
-                      onClick={() => handleDelete(payroll?.id)}
-                      className="bg-red-100  text-red-500 border border-red-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
-                    >
-                      <FaTrash className="text-base" />
-                    </button>
-                  </div>
-                </HRTableRow>
+                {user?.role === USER_ROLE.ADMIN && (
+                  <HRTableRow>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setIsOpen(true)}
+                        className="bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
+                      >
+                        <FaEdit className="text-base" />
+                      </button>
+                      <button
+                        disabled={isDeleteLoading}
+                        onClick={() => handleDelete(payroll?.id)}
+                        className="bg-red-100  text-red-500 border border-red-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
+                      >
+                        <FaTrash className="text-base" />
+                      </button>
+                    </div>
+                  </HRTableRow>
+                )}
                 <UpdateSalaryAdvanceModal
                   payment={payroll}
                   setIsOpen={setIsOpen}

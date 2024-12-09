@@ -6,6 +6,8 @@ import { useState } from "react";
 import { FaFileCsv, FaFileExcel, FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../../employees/position/components/fakeData/limitCount";
 import CreateSalaryAdvanceModal from "./CreateSalaryAdvanceModal";
+import { USER_ROLE } from "@/app/constants";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 
 interface ComponentHeaderProps {
   onSearch: (searchTerm: string) => void;
@@ -14,6 +16,8 @@ interface ComponentHeaderProps {
 const AddSalaryAdvancePage = ({ onSearch }: ComponentHeaderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState("");
+  const [limit, setLimit] = useState<string>("10");
+  const user = getUserFromLocalStorage();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -25,14 +29,16 @@ const AddSalaryAdvancePage = ({ onSearch }: ComponentHeaderProps) => {
       <div className="flex items-center justify-between flex-wrap pb-4 lg:gap-0 gap-2">
         <h2 className="font-semibold text-lg">Salary advanced list</h2>
         <div className="flex items-center gap-1">
-          <Button
-            onClick={() => setIsOpen(true)}
-            size="sm"
-            className="bg-primary rounded-[4px] text-sm text-white"
-          >
-            <FaPlusCircle />
-            Add salary advanced
-          </Button>
+          {user?.role === USER_ROLE.ADMIN && (
+            <Button
+              onClick={() => setIsOpen(true)}
+              size="sm"
+              className="bg-primary rounded-[4px] text-sm text-white"
+            >
+              <FaPlusCircle />
+              Add salary advanced
+            </Button>
+          )}
         </div>
       </div>
       <Divider />
@@ -40,7 +46,7 @@ const AddSalaryAdvancePage = ({ onSearch }: ComponentHeaderProps) => {
       <div className="mt-6 flex items-center justify-between flex-wrap lg:gap-0 gap-2">
         <div className="flex items-center gap-1">
           <p>Show</p>
-          <HRSelect data={limitCount} />
+          <HRSelect setLimit={setLimit} data={limitCount} />
           <p>entries</p>
         </div>
 

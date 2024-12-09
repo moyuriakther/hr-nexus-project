@@ -72,22 +72,18 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
           filename={generateFileName("csv")}
           className="bg-primary rounded-none text-sm mx-2 text-white px-4 "
         >
-         <Button
-           size="sm"
-            className="bg-primary text-white"
-          >
+          <Button size="sm" className="bg-primary text-white">
             <FaFileCsv /> CSV
           </Button>
         </CSVLink>
         {/* XLSX Export Button */}
         <Button
-            onClick={handleXLSXDownload}
-            size="sm"
-            className="bg-primary rounded-none text-sm text-white px-4"
-          >
-            <FaFileExcel/> Excel
-            
-          </Button>
+          onClick={handleXLSXDownload}
+          size="sm"
+          className="bg-primary rounded-none text-sm text-white px-4"
+        >
+          <FaFileExcel /> Excel
+        </Button>
       </div>
     </div>
   );

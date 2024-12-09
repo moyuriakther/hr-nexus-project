@@ -20,6 +20,8 @@ import { tableHeader } from "./components/common";
 import { useState } from "react";
 import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import Loader from "@/app/components/utils/Loader";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 const LoanPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,6 +30,7 @@ const LoanPage = () => {
   });
   const [deleteAttendance, { isLoading }] = useDeleteLoanMutation();
   const { data: myProfile } = useGetMyProfileQuery({});
+  const user = getUserFromLocalStorage();
 
   const handleDelete = async (id: string) => {
     const res = await deleteAttendance(id).unwrap();
@@ -44,7 +47,9 @@ const LoanPage = () => {
 
         <HRTable tableHeader={tableHeader}>
           {isLoanLoading ? (
-            <Loader />
+            <div className="flex items-center justify-center w-16 h-16">
+              <Loader />
+            </div>
           ) : (
             loans?.data.map((loan: TLoan, i: number) => (
               <tr className={`hover:bg-gray-100`} key={i}>
@@ -78,25 +83,27 @@ const LoanPage = () => {
                   </Button>
                 </HRTableRow> */}
 
-                <HRTableRow>
-                  <div className="flex items-center gap-2">
-                    {myProfile?.role === "ADMIN" && (
-                      <a href={`/hr/loan/update/${loan?.id}`}>
-                        <button className=" bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center">
-                          <FaEdit className="text-base" />
-                        </button>
-                      </a>
-                    )}
+                {user?.role === USER_ROLE.ADMIN && (
+                  <HRTableRow>
+                    <div className="flex items-center gap-2">
+                      {myProfile?.role === "ADMIN" && (
+                        <a href={`/hr/loan/update/${loan?.id}`}>
+                          <button className=" bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center">
+                            <FaEdit className="text-base" />
+                          </button>
+                        </a>
+                      )}
 
-                    <button
-                      disabled={isLoading}
-                      onClick={() => handleDelete(loan?.id)}
-                      className="bg-red-100 border border-red-500 text-red-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
-                    >
-                      <FaTrash className="text-base" />
-                    </button>
-                  </div>
-                </HRTableRow>
+                      <button
+                        disabled={isLoading}
+                        onClick={() => handleDelete(loan?.id)}
+                        className="bg-red-100 border border-red-500 text-red-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
+                      >
+                        <FaTrash className="text-base" />
+                      </button>
+                    </div>
+                  </HRTableRow>
+                )}
               </tr>
             ))
           )}

@@ -18,6 +18,8 @@ import AddLeaveApproval from "./components/AddLeaveApproval";
 import ApprovedApplicationModal from "./components/ApprovedApplicationModal";
 import { tableHeader } from "./components/tableHeader";
 import Loader from "@/app/components/utils/Loader";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 const LeaveApproval = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -25,6 +27,7 @@ const LeaveApproval = () => {
 
   const { data: leaveTypes, isLoading } = useGetAllLeaveQuery({ searchTerm });
   const [deleteLeaveType] = useDeleteLeaveMutation();
+  const user = getUserFromLocalStorage();
 
   const handleDelete = async (id: string) => {
     const res = await deleteLeaveType(id).unwrap();
@@ -43,7 +46,7 @@ const LeaveApproval = () => {
 
         <HRTable tableHeader={tableHeader}>
           {isLoading ? (
-            <div className="w-64 h-64 flex justify-center items-center">
+            <div className="w-16 h-16 flex justify-center items-center">
               <Loader />
             </div>
           ) : (
@@ -85,22 +88,24 @@ const LeaveApproval = () => {
                   </Button>
                 </HRTableRow>
 
-                <HRTableRow>
-                  <div className="items-center gap-2">
-                    <button
-                      onClick={() => setIsOpen(true)}
-                      className=" bg-green-100 text-green-500 border border-green-500  rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
-                    >
-                      <FaEdit className="text-base" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(leave?.id)}
-                      className="bg-red-100 border border-red-500 text-red-500  rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
-                    >
-                      <FaTrash className="text-base" />
-                    </button>
-                  </div>
-                </HRTableRow>
+                {user?.role === USER_ROLE?.ADMIN && (
+                  <HRTableRow>
+                    <div className="items-center gap-2">
+                      <button
+                        onClick={() => setIsOpen(true)}
+                        className=" bg-green-100 text-green-500 border border-green-500  rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
+                      >
+                        <FaEdit className="text-base" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(leave?.id)}
+                        className="bg-red-100 border border-red-500 text-red-500  rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center"
+                      >
+                        <FaTrash className="text-base" />
+                      </button>
+                    </div>
+                  </HRTableRow>
+                )}
                 <ApprovedApplicationModal
                   leave={leave}
                   setIsOpen={setIsOpen}
