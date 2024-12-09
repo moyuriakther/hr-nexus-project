@@ -1,6 +1,6 @@
 "use client";
 
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import NoticeData from "./component/NoticeData";
@@ -8,26 +8,37 @@ import { useGetAllNoticeQuery } from "@/app/Redux/api/noticeApi";
 import SearchAndModal from "../../recruitment/component/SearchAndModal";
 import CreateNotice from "./component/CreateNotice";
 import UpdateNotice from "./component/UpdateNotice";
+import Loader from "@/app/components/utils/Loader";
 
 // Array of Input Fields
 
 const NoticePage = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm]=useState('')
-  const { data, isLoading } = useGetAllNoticeQuery({searchTerm});
+  
   const [limit, setLimit]=useState(10)
   const [updateModalIsOpen, setIsUpdateModal]=useState(false)
   const [noticeId, setNoticeId]=useState("");
-  console.log("data: ",data)
   console.log(searchTerm)
+  const [searchKey, setSearchKey] = useState([]);
+  const { data, isLoading } = useGetAllNoticeQuery({searchTerm});
+  useEffect(() => {
+    if (data?.data) {
+      console.log("Data:", data?.data); // Debugging log
+      const extractNoticeBy = data.data.map((item: { noticeBy: string }) => item?.noticeBy);
+      console.log("Extracted noticeBy:", extractNoticeBy); // Debugging log
+      setSearchKey(extractNoticeBy);
+    }
+  }, [data]); 
+  
   const handleSearch: SubmitHandler<FieldValues> =  (data) => {
+    console.log(data)
     try {
-      setSearchTerm(data.search)
+      setSearchTerm(data)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);
     }
-    setSearchTerm("")
   };
   const excelExportParamsData = {
     data:false,
@@ -41,6 +52,8 @@ const NoticePage = () => {
   const paginatedData=data?.data.slice(0,Number(limit))
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
+
+      {isLoading&&<Loader/>}
       <SearchAndModal
         excelExportParamsData={excelExportParamsData}
         menuName={"Notice Board"}
@@ -48,7 +61,8 @@ const NoticePage = () => {
         setIsOpen={setIsOpen}
         handleSearch={handleSearch}
         setLimit={setLimit}
-        searchTerm={searchTerm}
+        // searchTerm={searchTerm}
+        searchKey={searchKey}
         
       ></SearchAndModal>
 

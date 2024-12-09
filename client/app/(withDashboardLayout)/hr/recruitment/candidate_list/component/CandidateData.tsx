@@ -7,10 +7,9 @@ import { candidateTableHeader } from "../fakeData";
 import { TCandidateList } from "../../Type/type";
 import Image from "next/image";
 
-const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean})=>{
+const CandidateData=({data, isLoading,handleEdit }:{data:TCandidateList[],isLoading:boolean, handleEdit:any})=>{
 
-    const [deleteCandidate] = ({});
-  const [updateModalIsOpen, setIsUpdateModal]=useState(false)
+    const [deleteCandidate] = useDeleteCandidateMutation({});
 
     if (isLoading) {
       return <Loader />;
@@ -29,11 +28,7 @@ const CandidateData=({data, isLoading}:{data:TCandidateList[],isLoading:boolean}
         const res = await deleteCandidate(id);
         console.log(res);
       };
-      const handleEdit = (id: number | string) => {
-        setIsUpdateModal(!updateModalIsOpen);
-        console.log(id);
     
-      };
     
     return(
         <div>

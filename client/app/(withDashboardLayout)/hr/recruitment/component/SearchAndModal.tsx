@@ -5,10 +5,12 @@ import { limitCount } from "../fakeData/limitCount";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import ExcelCSVExport from "@/app/utils/ExcelAndCSV";
+import { SetStateAction } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,modalIsOpen,setLimit,searchTerm}:{menuName:string,excelExportParamsData:any, handleSearch:any,setIsOpen:any,modalIsOpen:boolean,setLimit:any,searchTerm:string}) => {
+const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,modalIsOpen,setLimit, searchKey}:{menuName:string,excelExportParamsData:any, handleSearch:any,setIsOpen:any,modalIsOpen:boolean,setLimit:any, searchKey:string[]}) => {
   const {data,baseFileName,isLoading}=excelExportParamsData
+  console.log(searchKey)
   return (
     <div className="mb-5">
       <div className="flex items-center justify-between flex-wrap pb-4 lg:gap-0 gap-2">
@@ -58,18 +60,22 @@ const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,m
 
         </div>
         }
-        <HRForm onSubmit={handleSearch}>
+       
       <div className=" text-md font-semibold flex gap-1 items-center">
         <button className="border-none bg-none" type="submit">Search: </button>
-        <HRInput
-          type="text"
-          className="border-gray-400 h-10 rounded-[5px]"
-          defaultValue={searchTerm}
-          placeholder= {`${menuName=="Notice Board"?"Search By Date":" Search By Candidate ID..."}`}
-          name="search"
-        />
+      
+       <select
+      onChange={(e) => handleSearch(e.target.value)}
+      className="border p-[2px] border-gray-400 h-10 rounded-[5px] min-w-[200px]"
+    >
+      <option value="" disabled selected >Select One</option>
+      {searchKey?.map((item) => (
+        <option key={item} value={item}>
+          {item}
+        </option>
+      ))}
+    </select>
       </div>
-    </HRForm>
       </div>
     </div>
   );
