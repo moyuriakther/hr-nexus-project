@@ -89,7 +89,7 @@ const CandidateData=({data, isLoading,handleEdit, setActionLoading, isActionLoad
                 {candidate?.phone||""}
               </td>
             
-              <td className="w-1/6 border-r border-gray-200 px-3">
+              {user?.role===USER_ROLE.ADMIN&&<td className="w-1/6 border-r border-gray-200 px-3">
                 <ul className="flex gap-2 items-center  p-2 ">
                   <li
                     onClick={() => handleEdit(candidate?.id)}
@@ -123,7 +123,7 @@ const CandidateData=({data, isLoading,handleEdit, setActionLoading, isActionLoad
                     </svg>
                   </li>
                 </ul>
-              </td>
+              </td>}
             </tr>
           );
         })}

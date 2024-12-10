@@ -1,5 +1,5 @@
 export const selectionInputFields = [
-    { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name",required:true },
+    // { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name",required:true },
     {
       id: 2,
       label: "Candidate ID",
@@ -16,14 +16,14 @@ export const selectionInputFields = [
     //   placeholder: "Enter employee ID",
     //   required:true
     // },
-    // {
-    //   id: 3,
-    //   label: "Interview ID",
-    //   key: "interviewId",
-    //   type: "text",
-    //   placeholder: "Enter Interview ID",
-    //   required:true
-    // },
+    {
+      id: 3,
+      label: "Interview ID",
+      key: "interviewId",
+      type: "text",
+      placeholder: "Enter Interview ID",
+      required:true
+    },
    
     {
       id: 5,

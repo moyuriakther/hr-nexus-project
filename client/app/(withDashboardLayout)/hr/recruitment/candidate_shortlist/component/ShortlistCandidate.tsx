@@ -4,8 +4,11 @@ import {  shortlistTableHeader } from "../fakeData";
 import {  TShortList } from "../../Type/type";
 import { useUpdateShortlistCandidateMutation } from "@/app/Redux/api/shortListApi";
 import { toast } from "sonner";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 const ShortlistCandidate=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TShortList[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
+  const user=getUserFromLocalStorage()
 
   if(isActionLoading){
     return <Loader/>
@@ -72,7 +75,7 @@ const ShortlistCandidate=({data, isLoading,handleEdit, setActionLoading, isActio
                 {candidate?.interviewDate}
               </td>
             
-              <td className="w-1/6 border-r border-gray-200 px-3">
+              {user?.role===USER_ROLE.ADMIN&&<td className="w-1/6 border-r border-gray-200 px-3">
                 <ul className="flex gap-2 items-center  p-2 ">
                   <li
                     onClick={() => handleEdit(candidate?.id)}
@@ -106,7 +109,7 @@ const ShortlistCandidate=({data, isLoading,handleEdit, setActionLoading, isActio
                     </svg>
                   </li>
                 </ul>
-              </td>
+              </td>}
             </tr>
           );
         })}

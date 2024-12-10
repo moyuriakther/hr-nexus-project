@@ -11,6 +11,8 @@ import { useGetAllInterviewQuery } from "@/app/Redux/api/interviewListApi";
 import UpdateInterViewCandidate from "./component/UpdateInterviewCandidate";
 import Loader from "@/app/components/utils/Loader";
 import { useGetAllShortlistCandidateQuery } from "@/app/Redux/api/shortListApi";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 
   // Array of Input Fields
@@ -30,6 +32,7 @@ const InterviewPage = () => {
   { value: string; label: string }[]
 >([]);
   const { data:candidateList } = useGetAllShortlistCandidateQuery({});
+  const user=getUserFromLocalStorage()
 
   useEffect(() => {
 
@@ -80,15 +83,19 @@ const InterviewPage = () => {
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
      
         <SearchAndModal excelExportParamsData={excelExportParamsData} searchKey={candidateId}setLimit={setLimit} menuName={"Candidate Interview "} modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} handleSearch={handleSearch} ></SearchAndModal>
+        {
+          user?.role===USER_ROLE.ADMIN&&
         <CreateInterviewCandidate  setIsOpen={setIsOpen}
         modalIsOpen={modalIsOpen}
         setActionLoading={setActionLoading}
         data={{candidateId:formattedCandidateId}}
         />
+        }
+        {user?.role===USER_ROLE.ADMIN&&
         <UpdateInterViewCandidate  modalIsOpen={updateModalIsOpen}
         id={ID}
-        setActionLoading={setActionLoading} />
-
+        setActionLoading={setActionLoading} />} 
+        
         <InterviewCandidate  
         isActionLoading={isActionLoading} 
         data={paginatedData}

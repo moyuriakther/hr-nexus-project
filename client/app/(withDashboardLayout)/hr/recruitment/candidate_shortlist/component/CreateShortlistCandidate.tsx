@@ -17,20 +17,18 @@ const CreateShortlistCandidate = ({ setIsOpen, modalIsOpen , setActionLoading,da
     setIsOpen(false)
     setActionLoading(true)
     const resData = {
+      ...data,
       ...values,
     };
 
-    console.log("short list data: ", resData);
-
-
     const res = await createShortlistCandidate(resData);
+    setActionLoading(false)
     console.log("res-",res)
     if (res?.data) {
       toast.success("successfully created ");
-      setActionLoading(false)
+      
     } else {
       toast.error("Didn't created Shortlist Candidate");
-      setActionLoading(false)
     }
   };
   return (

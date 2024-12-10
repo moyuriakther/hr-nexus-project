@@ -39,14 +39,17 @@ const CreateInterviewCandidate = ({setIsOpen,modalIsOpen, setActionLoading, data
         //   pathname !== "/hr/employees/create"
         //     ? await updateEmployee(userCreatedData)
         //     : await createEmployee(userCreatedData);
-    
-        if (res?.data) {
-          toast.success("successfully created ");
-          setActionLoading(false)
-        } else {
-          toast.error("Didn't created");
-          setActionLoading(false)
+        setActionLoading(false)
+        try {
+          if (res?.data) {
+            toast.success("successfully created ");
+          } 
+        } catch (error) {
+         
+            toast.error(`Didn't created Shortlist Candidate. ${error?.message}`);
+        
         }
+      
       };
 
       const selectionData=[

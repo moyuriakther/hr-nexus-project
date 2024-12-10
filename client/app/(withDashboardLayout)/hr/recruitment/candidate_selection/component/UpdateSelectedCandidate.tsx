@@ -20,7 +20,9 @@ const UpdateSelectedCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:an
     const handleSubmit = async (values:FieldValues) => {
         // const file = values.photograph?.[0];
         setActionLoading(true)
+        setIsOpen(false)
         const resData = {
+          ...data,
            ...values,
           // photograph: await uploadImage(file),
         };

@@ -16,7 +16,7 @@ const CreateSelectedCandidate = ({setIsOpen,modalIsOpen,data, setActionLoading}:
       const [createSelectedCandidate]=useCreateSelectedCandidateMutation()
       const handleSubmit = async (values:FieldValues) => {
         setActionLoading(true)
-
+        setIsOpen(false)
         const resData = {
            ...values,
         };
@@ -45,11 +45,15 @@ const CreateSelectedCandidate = ({setIsOpen,modalIsOpen,data, setActionLoading}:
                 className="mb-5 text-md font-semibold flex  gap-1 items-center"
               >
                 <label className="col-span-1 w-[200px]">{inputField?.label}</label>
-            
                 {
-                  inputField?.key==="candidateId"?
+                  inputField?.key==="interviewId"&&
+                  <HRSelect  className="border-primary h-10 rounded-[5px]  min-w-[340px]" options={data?.interviewId} name={"interviewId"}/>
+                }
+                {
+                  inputField?.key==="candidateId"&&
                   <HRSelect  className="border-primary h-10 rounded-[5px]  min-w-[340px]" options={data?.candidateId} name={"candidateId"}/>
-                  : <HRInput
+                 }
+                {(inputField?.key!="interviewId"&& inputField?.key!="candidateId")&&<HRInput
                   type={inputField?.type}
                   className="border-primary h-10 rounded-[5px]  min-w-[340px]"
                   placeholder={inputField?.placeholder}

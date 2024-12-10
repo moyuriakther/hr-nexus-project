@@ -28,13 +28,16 @@ const UpdateInterViewCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
           id:id,
           body:{...resData}
         })
-     
-    
-        if (res?.data) {
-          toast.success("successfully Update ");
-        } else {
-          toast.error("Didn't Update");
+        try {
+          if (res?.data) {
+            toast.success("successfully Update ");
+          } 
+        } catch (error) {
+         
+            toast.error(`Didn't Update Shortlist Candidate. ${error?.message}`);
+        
         }
+    
       };
       if(isLoading){
         return<Loader/>

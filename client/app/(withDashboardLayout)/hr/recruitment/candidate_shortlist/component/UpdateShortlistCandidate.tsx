@@ -21,6 +21,7 @@ const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:a
         setIsOpen(false)
       setActionLoading(true)
         const resData = {
+          ...data,
            ...values,
            interviewDate:new Date(values?.interviewDate).toISOString()
           // photograph: await uploadImage(file),
@@ -34,11 +35,11 @@ const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:a
           body:{...resData}
         })
      
-     
+        setActionLoading(false)
     
         if (res?.data) {
           toast.success("successfully Update ");
-          setActionLoading(false)
+          
         } else {
           toast.error("Didn't Update");
           setActionLoading(false)

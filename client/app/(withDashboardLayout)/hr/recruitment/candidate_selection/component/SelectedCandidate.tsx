@@ -5,9 +5,11 @@ import { selectionTableHeader } from "../fakeData";
 import { TCandidateSelection } from "../../Type/type";
 import { useUpdateSelectedCandidateMutation } from "@/app/Redux/api/selectedListApi";
 import { toast } from "sonner";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 const SelectedCandidate=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TCandidateSelection[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
-
+  const user=getUserFromLocalStorage()
   if(isActionLoading){
     return <Loader/>
   }
@@ -68,16 +70,16 @@ const SelectedCandidate=({data, isLoading,handleEdit, setActionLoading, isAction
                 {candidate?.interviewId}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {candidate?.position}
+                {candidate?.jobPosition}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
                 {candidate?.selectionTerms}
               </td>
              
             
-              <td className="w-1/6 border-r border-gray-200 px-3">
+              {user?.role===USER_ROLE.ADMIN&&<td className="w-1/6 border-r border-gray-200 px-3">
                 <ul className="flex gap-2 items-center  p-2 ">
-                  <li
+                  {/* <li
                     onClick={() => handleEdit(candidate?.id)}
                     className="cursor-pointer  bg-[#DAE4F3] border-2 border-[#0D6EFD] rounded-lg p-1"
                   >
@@ -90,7 +92,7 @@ const SelectedCandidate=({data, isLoading,handleEdit, setActionLoading, isAction
                       <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
                       <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
                     </svg>
-                  </li>
+                  </li> */}
                   <li
                     className="cursor-pointer  p-1 bg-[#EFDEE0] border-2 border-[#DC3545] rounded-lg"
                     onClick={() => handleDelete(candidate?.id)}
@@ -110,6 +112,7 @@ const SelectedCandidate=({data, isLoading,handleEdit, setActionLoading, isAction
                   </li>
                 </ul>
               </td>
+              }
             </tr>
           );
         })}

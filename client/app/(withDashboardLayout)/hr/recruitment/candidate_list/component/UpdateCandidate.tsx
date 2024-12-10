@@ -18,6 +18,7 @@ const UpdateCandidate = ({setIsOpen,modalIsOpen,id,setActionLoading}:any) => {
     
     const handleSubmit = async (values:FieldValues) => {
         setActionLoading(true)
+        setIsOpen(false)
         const file = values.photograph?.[0];
         let resData;
         if(file){
@@ -27,7 +28,7 @@ const UpdateCandidate = ({setIsOpen,modalIsOpen,id,setActionLoading}:any) => {
          };
         }
         else{
-          resData={...values, candidateId:values?.candidateId}
+          resData={...data,...values, candidateId:data?.candidateId}
         }
        
     
@@ -80,7 +81,7 @@ const UpdateCandidate = ({setIsOpen,modalIsOpen,id,setActionLoading}:any) => {
                   required={inputField?.required}
                   defaultValue={data?.[inputField?.key as keyof TCandidateList]||""}
                 />:
-                <p>{data["candidateId"]}</p>
+                <p>{data?.["candidateId"]}</p>
                 }
               </div>
             );

@@ -84,7 +84,7 @@ const InterviewCandidate=({data, isLoading,handleEdit, setActionLoading, isActio
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
                 {candidate?.isSelected?"Selected":"Not Selected"}
               </td>
-              <td className="w-1/6 border-r border-gray-200 px-3">
+              {user?.role===USER_ROLE.ADMIN&&<td className="w-1/6 border-r border-gray-200 px-3">
                 <ul className="flex gap-2 items-center  p-2 ">
                   <li
                     onClick={() => handleEdit(candidate?.id)}
@@ -118,7 +118,7 @@ const InterviewCandidate=({data, isLoading,handleEdit, setActionLoading, isActio
                     </svg>
                   </li>
                 </ul>
-              </td>
+              </td>}
             </tr>
           );
         })}

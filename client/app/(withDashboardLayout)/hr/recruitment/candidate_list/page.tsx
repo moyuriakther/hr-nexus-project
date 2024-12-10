@@ -50,8 +50,8 @@ const CandidateList = () => {
 
   const handleEdit = (id: string) => {
     setIsUpdateModal(!updateModalIsOpen);
-    setId(ID)
-    console.log(id);
+    setId(id)
+    console.log(ID);
 
   };
   const excelExportParamsData = {

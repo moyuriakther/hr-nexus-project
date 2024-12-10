@@ -10,6 +10,7 @@ import CreateSelectedCandidate from "./component/CreateSelectedCandidate";
 import UpdateSelectedCandidate from "./component/UpdateSelectedCandidate";
 import Loader from "@/app/components/utils/Loader";
 import { useGetAllInterviewQuery } from "@/app/Redux/api/interviewListApi";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 
 // Array of Input Fields
 
@@ -21,13 +22,21 @@ const CandidateSelectionPage = () => {
   const [ID, setId]=useState("");
   const [searchTerm, setSearchTerm]=useState('')
   const [candidateId, setCandidateId] = useState([]);
+
   const [isActionLoading, setActionLoading] = useState(false);
   const query:string=searchTerm==="all"?"":searchTerm
   const { data, isLoading } = useGetAllSelectedCandidateQuery({searchTerm:query});
   const [formattedCandidateId, setFormattedCandidates] = useState<
   { value: string; label: string }[]
 >([]);
-  const { data:candidateList } = useGetAllInterviewQuery({});
+const [formattedInterviewId, setFormattedInterviewId] = useState<
+  { value: string; label: string }[]
+>([]);
+  const { data:interviewlist } = useGetAllInterviewQuery({});
+
+  
+
+
   useEffect(() => {
 
     if (data?.data) {
@@ -40,14 +49,19 @@ const CandidateSelectionPage = () => {
     }
 
   
-    if (candidateList) {
-      const formattedCandidateId = candidateList?.data.map((item) => ({
+    if (interviewlist) {
+      const formattedCandidateId = interviewlist?.data.map((item) => ({
         value: item.candidateId,
         label: item.candidateId, 
       }));
-      setFormattedCandidates(formattedCandidateId);
+      const formattedInterviewId = interviewlist?.data.map((item) => ({
+        value: item.interviewId,
+        label: item.interviewId, 
+      }));
+      setFormattedInterviewId(formattedInterviewId);
+      setFormattedCandidates(formattedCandidateId)
     }
-  }, [data,candidateList]);
+  }, [data,interviewlist]);
   const handleSearch: SubmitHandler<FieldValues> = (data) => {
     setActionLoading(true)
     try {
@@ -78,7 +92,7 @@ const CandidateSelectionPage = () => {
       <CreateSelectedCandidate
        setIsOpen={setIsOpen}
        modalIsOpen={modalIsOpen}
-       data={{candidateId:formattedCandidateId}}
+       data={{candidateId:formattedCandidateId, interviewId:formattedInterviewId}}
        setActionLoading={setActionLoading}
       />
       <UpdateSelectedCandidate
