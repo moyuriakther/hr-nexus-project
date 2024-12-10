@@ -7,31 +7,30 @@ import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { shortlistInputFields } from "../fakeData";
 import { useCreateShortlistCandidateMutation } from "@/app/Redux/api/shortListApi";
+import Select from "../../component/Select";
+import HRSelect from "@/app/components/Form/HRSelect";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateShortlistCandidate = ({ setIsOpen, modalIsOpen }: any) => {
-  const [CreateShortlistCandidate] = useCreateShortlistCandidateMutation({});
+const CreateShortlistCandidate = ({ setIsOpen, modalIsOpen , setActionLoading,data}: any) => {
+  const [createShortlistCandidate] = useCreateShortlistCandidateMutation();
   const handleSubmit = async (values: FieldValues) => {
+    setIsOpen(false)
+    setActionLoading(true)
     const resData = {
       ...values,
     };
 
-    console.log(resData);
-    // let profileImage;
+    console.log("short list data: ", resData);
 
-    // if (file) {
-    //   const formData = new FormData();
-    //   formData.append("image", file[0]);
 
-    //   profileImage = await imageUploadIntoImgbb(formData);
-    // }
-
-    const res = await CreateShortlistCandidate(resData);
-
+    const res = await createShortlistCandidate(resData);
+    console.log("res-",res)
     if (res?.data) {
       toast.success("successfully created ");
+      setActionLoading(false)
     } else {
-      toast.error("Didn't created");
+      toast.error("Didn't created Shortlist Candidate");
+      setActionLoading(false)
     }
   };
   return (
@@ -51,13 +50,18 @@ const CreateShortlistCandidate = ({ setIsOpen, modalIsOpen }: any) => {
                 <label className="col-span-1 w-[200px]">
                   {inputField?.label}
                 </label>
-                <HRInput
+                {
+                  inputField?.key==="candidateId"?
+                  <HRSelect  className="border-primary h-10 rounded-[5px]  min-w-[340px]" options={data?.candidateId} name={"candidateId"}/>
+                  : <HRInput
                   type={inputField?.type}
                   className="border-primary h-10 rounded-[5px]  min-w-[340px]"
                   placeholder={inputField?.placeholder}
                   name={`${inputField?.key}`}
                   required={inputField?.required}
+                
                 />
+                }
               </div>
             );
           })}

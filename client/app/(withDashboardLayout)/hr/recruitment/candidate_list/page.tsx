@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import CandidateData from "./component/CandidateData";
 import { toast } from "sonner";
 import UpdateCandidate from "./component/UpdateCandidate";
+import Loader from "@/app/components/utils/Loader";
 
 // Array of Input Fields
 
@@ -20,22 +21,27 @@ const CandidateList = () => {
   const [updateModalIsOpen, setIsUpdateModal]=useState(false)
   const [ID, setId]=useState("");
   const [searchTerm, setSearchTerm]=useState('')
-  console.log(searchTerm)
-  const [searchKey, setSearchKey] = useState([]);
-  const { data, isLoading } = useGetAllCandidateQuery({searchTerm});
+  const [candidateId, setCandidateId] = useState([]);
+  const [isActionLoading, setActionLoading] = useState(false);
+  const query:string=searchTerm==="all"?"":searchTerm
+  const { data, isLoading } = useGetAllCandidateQuery({searchTerm:query});
   useEffect(() => {
     if (data?.data) {
-      console.log("Data:", data?.data); // Debugging log
-      const extractNoticeBy = data.data.map((item: { noticeBy: string }) => item?.noticeBy);
-      console.log("Extracted noticeBy:", extractNoticeBy); // Debugging log
-      setSearchKey(extractNoticeBy);
+      setActionLoading(false)
+      const extractCandidateID = data.data.map(
+        (item: { candidateId: string }) => item?.candidateId
+      );
+      setCandidateId(extractCandidateID);
     }
-  }, [data]); 
+  }, [data]);
   
-  const handleSearch: SubmitHandler<FieldValues> =  (data) => {
-    console.log(data)
+  const handleSearch: SubmitHandler<FieldValues> =  (searchValue) => {
+   
+    console.log(searchValue)
+    setActionLoading(true)
     try {
-      setSearchTerm(data)
+      setSearchTerm(String(searchValue))
+      
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);
@@ -44,21 +50,22 @@ const CandidateList = () => {
 
   const handleEdit = (id: string) => {
     setIsUpdateModal(!updateModalIsOpen);
-    setId(()=>id)
+    setId(ID)
     console.log(id);
 
   };
   const excelExportParamsData = {
     data,
-    headers: candidateTableHeader,
     baseFileName: "candidate_list",
     isLoading: false,
-    displayField: "CandidateList",
   };
   console.log(limit)
 const paginatedData=data?.data.slice(0,Number(limit))
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
+       {
+            (isLoading)&&<Loader/>
+      }
       <SearchAndModal
         menuName={"Candidate "}
         excelExportParamsData={excelExportParamsData}
@@ -67,11 +74,12 @@ const paginatedData=data?.data.slice(0,Number(limit))
         handleSearch={handleSearch}
         setLimit={setLimit}
         // searchTerm={searchTerm}
-        searchKey={searchKey}   ></SearchAndModal>
+        searchKey={candidateId}   ></SearchAndModal>
       {/* Add New  Modal */}
-      <CreateCandidate setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} />
-      <UpdateCandidate setIsOpen={setIsUpdateModal} modalIsOpen={modalIsOpen} id={ID}/>
-        <CandidateData data={paginatedData}  isLoading={isLoading} handleEdit={handleEdit}/>
+      <CreateCandidate setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} setActionLoading={setActionLoading} />
+      <UpdateCandidate setIsOpen={setIsUpdateModal} modalIsOpen={updateModalIsOpen} id={ID} setActionLoading={setActionLoading}/>
+        <CandidateData data={paginatedData} 
+         isLoading={isLoading} isActionLoading={isActionLoading} handleEdit={handleEdit} setActionLoading={setActionLoading}/>
     </div>
   );
 };

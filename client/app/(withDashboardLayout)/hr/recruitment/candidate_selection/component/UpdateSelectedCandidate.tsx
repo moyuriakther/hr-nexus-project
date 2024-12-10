@@ -8,9 +8,10 @@ import { TCandidateList } from '../../Type/type';
 import { toast } from 'sonner';
 import { FieldValues } from 'react-hook-form';
 import {  useGetSingleSelectedCandidateQuery, useUpdateSelectedCandidateMutation } from '@/app/Redux/api/selectedListApi';
+import { TSelect } from '@/app/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateSelectedCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
+const UpdateSelectedCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:any) => {
     
     const {data,isLoading}=useGetSingleSelectedCandidateQuery(id)
     const [updateSelectedCandidate]=useUpdateSelectedCandidateMutation()
@@ -18,7 +19,7 @@ const UpdateSelectedCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
     
     const handleSubmit = async (values:FieldValues) => {
         // const file = values.photograph?.[0];
-
+        setActionLoading(true)
         const resData = {
            ...values,
           // photograph: await uploadImage(file),
@@ -27,20 +28,25 @@ const UpdateSelectedCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
         console.log(resData);
   
     
-        const res = await updateSelectedCandidate(resData)
+        const res = await updateSelectedCandidate({
+          id:id,
+          body:{...resData}
+        })
      
-    
+        setActionLoading(false)
         if (res?.data) {
           toast.success("successfully Update ");
+          
         } else {
           toast.error("Didn't Update");
         }
       };
-      if(isLoading){
-        return<Loader/>
-      }
+     
     return (
         <div>
+          {
+            isLoading&&<Loader/>
+          }
              <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
@@ -54,14 +60,17 @@ const UpdateSelectedCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
                 className="mb-5 text-md font-semibold flex  gap-1 items-center"
               >
                 <label className="col-span-1 w-[200px]">{inputField?.label}</label>
-                <HRInput
+                {
+                  inputField.key!=="candidateId"?<HRInput
                   type={inputField?.type}
                   className="border-primary h-10 rounded-[5px]  min-w-[340px]"
                   placeholder={inputField?.placeholder}
                   name={`${inputField?.key}`}
                   required={inputField?.required}
-                  defaultValue={data?.[inputField?.key as keyof TCandidateList]||""}
-                />
+                  defaultValue={data?.[inputField?.key as keyof TSelect]||""}
+                />:
+                <p>{data?.["candidateId"]}</p>
+                }
               </div>
             );
           })}

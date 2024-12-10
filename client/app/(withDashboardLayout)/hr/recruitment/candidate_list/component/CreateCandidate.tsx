@@ -11,11 +11,13 @@ import { candidateInputFields } from "../fakeData";
 import HRFileInput from "@/app/components/Form/HRFileInput";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateCandidate = ({ setIsOpen, modalIsOpen }: any) => {
+const CreateCandidate = ({ setIsOpen, modalIsOpen,setActionLoading }: any) => {
   const [createCandidate] = useCreateCandidateMutation();
   const handleSubmit: SubmitHandler<FieldValues> = async (
     values: FieldValues
   ) => {
+    setIsOpen(false)
+    setActionLoading(true)
     const file = values.photograph?.[0] || values.photograph;
     let imageUrl;
 
@@ -40,10 +42,13 @@ const CreateCandidate = ({ setIsOpen, modalIsOpen }: any) => {
     const res = await createCandidate(resData);
 
     if (res?.data) {
-      setIsOpen(false)
-      toast.success("successfully created ");
+      setActionLoading(false)
+      
+      toast.success("Candidate successfully created ");
+      
     } else {
-      toast.error("Didn't created");
+      toast.error("Didn't created, Try Again");
+      setActionLoading(false)
     }
   };
   return (

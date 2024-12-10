@@ -5,7 +5,7 @@ export const interview = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createInterview: build.mutation({
       query: (data) => ({
-        url: "candidates/create-candidate-interview",
+        url: "/candidates/create-candidate-interview",
         method: "POST",
         data,
       }),
@@ -14,14 +14,14 @@ export const interview = baseApi.injectEndpoints({
     getAllInterview: build.query({
      
       query: ({ searchTerm }) => ({
-        url: `/interviews${searchTerm ? `?searchTerm=${searchTerm}` : ""}`,
+        url: `/candidates/interviews${searchTerm ? `?searchTerm=${searchTerm}` : ""}`,
         method: "GET",
       }),
       providesTags: [tagTypes.interview],
     }),
     getSingleInterview: build.query({
       query: (id) => ({
-        url: `/interview/${id}`,
+        url: `/candidates/interviews/${id}`,
         method: "GET",
       }),
       providesTags: [tagTypes.interview],
@@ -29,7 +29,7 @@ export const interview = baseApi.injectEndpoints({
 
     deleteInterview: build.mutation({
       query: (id) => ({
-        url: `/interview/${id}`,
+        url: `/candidates/interviews/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [tagTypes.interview],
@@ -37,7 +37,7 @@ export const interview = baseApi.injectEndpoints({
 
     updateInterview: build.mutation({
       query: (data) => ({
-        url: `/interview/${data.id}`,
+        url: `/candidates/interview/${data.id}`,
         method: "PATCH",
         data: data.body,
       }),

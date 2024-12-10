@@ -11,37 +11,53 @@ import { FieldValues } from 'react-hook-form';
 import { uploadImage } from '@/app/utils/UploadImage';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
+const UpdateCandidate = ({setIsOpen,modalIsOpen,id,setActionLoading}:any) => {
     
     const {data,isLoading}=useGetSingleCandidateQuery(id)
     const [updateCandidate]=useUpdateCandidateMutation()
     
-    
     const handleSubmit = async (values:FieldValues) => {
+        setActionLoading(true)
         const file = values.photograph?.[0];
-
-        const resData = {
-           ...values,
-          photograph: await uploadImage(file),
-        };
+        let resData;
+        if(file){
+          resData = {
+            ...values,
+           photograph: await uploadImage(file),
+         };
+        }
+        else{
+          resData={...values, candidateId:values?.candidateId}
+        }
+       
     
         console.log(resData);
   
     
-        const res = await updateCandidate(resData)
-     
+        const res = await updateCandidate({
+          id: id,
+          body: { ...resData },
+        })
+        setActionLoading(false)
     
         if (res?.data) {
           toast.success("successfully Update ");
+
         } else {
           toast.error("Didn't Update");
+         
         }
       };
+
+    
       if(isLoading){
         return<Loader/>
       }
     return (
         <div>
+            {
+            isLoading&&<Loader/>
+          }
              <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
@@ -55,14 +71,17 @@ const UpdateCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
                 className="mb-5 text-md font-semibold flex  gap-1 items-center"
               >
                 <label className="col-span-1 w-[200px]">{inputField?.label}</label>
-                <HRInput
+                {
+                  inputField.key!=="candidateId"?<HRInput
                   type={inputField?.type}
                   className="border-primary h-10 rounded-[5px]  min-w-[340px]"
                   placeholder={inputField?.placeholder}
                   name={`${inputField?.key}`}
                   required={inputField?.required}
                   defaultValue={data?.[inputField?.key as keyof TCandidateList]||""}
-                />
+                />:
+                <p>{data["candidateId"]}</p>
+                }
               </div>
             );
           })}

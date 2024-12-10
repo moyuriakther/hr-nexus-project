@@ -10,7 +10,7 @@ import { useGetSingleShortlistCandidateQuery, useUpdateShortlistCandidateMutatio
 import { shortlistInputFields } from '../fakeData';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
+const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:any) => {
     
     const {data,isLoading}=useGetSingleShortlistCandidateQuery(id)
     const [updateShortlistCandidate]=useUpdateShortlistCandidateMutation()
@@ -18,22 +18,30 @@ const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
     
     const handleSubmit = async (values:FieldValues) => {
         // const file = values.photograph?.[0];
-
+        setIsOpen(false)
+      setActionLoading(true)
         const resData = {
            ...values,
+           interviewDate:new Date(values?.interviewDate).toISOString()
           // photograph: await uploadImage(file),
         };
     
         console.log(resData);
   
     
-        const res = await updateShortlistCandidate(resData)
+        const res = await updateShortlistCandidate({
+          id:id,
+          body:{...resData}
+        })
+     
      
     
         if (res?.data) {
           toast.success("successfully Update ");
+          setActionLoading(false)
         } else {
           toast.error("Didn't Update");
+          setActionLoading(false)
         }
       };
       if(isLoading){
@@ -54,14 +62,18 @@ const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
                 className="mb-5 text-md font-semibold flex  gap-1 items-center"
               >
                 <label className="col-span-1 w-[200px]">{inputField?.label}</label>
-                <HRInput
+                {
+                  inputField.key!=="candidateId"?<HRInput
                   type={inputField?.type}
                   className="border-primary h-10 rounded-[5px]  min-w-[340px]"
                   placeholder={inputField?.placeholder}
                   name={`${inputField?.key}`}
                   required={inputField?.required}
                   defaultValue={data?.[inputField?.key as keyof TShortList]||""}
-                />
+                />:
+                <p>{data["candidateId"]}</p>
+                }
+                
               </div>
             );
           })}

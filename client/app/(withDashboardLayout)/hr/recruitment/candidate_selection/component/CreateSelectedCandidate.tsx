@@ -7,33 +7,23 @@ import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
 import { selectionInputFields } from '../fakeData';
 import { useCreateSelectedCandidateMutation } from '@/app/Redux/api/selectedListApi';
+import Select from '../../component/Select';
+import HRSelect from '@/app/components/Form/HRSelect';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateCandidate = ({setIsOpen,modalIsOpen}:any) => {
+const CreateSelectedCandidate = ({setIsOpen,modalIsOpen,data, setActionLoading}:any) => {
   
       const [createSelectedCandidate]=useCreateSelectedCandidateMutation()
       const handleSubmit = async (values:FieldValues) => {
-        
+        setActionLoading(true)
 
         const resData = {
            ...values,
         };
     
         console.log(resData);
-        // let profileImage;
-    
-        // if (file) {
-        //   const formData = new FormData();
-        //   formData.append("image", file[0]);
-    
-        //   profileImage = await imageUploadIntoImgbb(formData);
-        // }
-    
         const res = await createSelectedCandidate(resData)
-        //   pathname !== "/hr/employees/create"
-        //     ? await updateEmployee(userCreatedData)
-        //     : await createEmployee(userCreatedData);
-    
+        setActionLoading(false)
         if (res?.data) {
           toast.success("successfully created ");
         } else {
@@ -55,7 +45,11 @@ const CreateCandidate = ({setIsOpen,modalIsOpen}:any) => {
                 className="mb-5 text-md font-semibold flex  gap-1 items-center"
               >
                 <label className="col-span-1 w-[200px]">{inputField?.label}</label>
-                <HRInput
+            
+                {
+                  inputField?.key==="candidateId"?
+                  <HRSelect  className="border-primary h-10 rounded-[5px]  min-w-[340px]" options={data?.candidateId} name={"candidateId"}/>
+                  : <HRInput
                   type={inputField?.type}
                   className="border-primary h-10 rounded-[5px]  min-w-[340px]"
                   placeholder={inputField?.placeholder}
@@ -63,6 +57,7 @@ const CreateCandidate = ({setIsOpen,modalIsOpen}:any) => {
                   required={inputField?.required}
                 
                 />
+                }
               </div>
             );
           })}
@@ -83,4 +78,4 @@ const CreateCandidate = ({setIsOpen,modalIsOpen}:any) => {
     );
 };
 
-export default CreateCandidate;
+export default CreateSelectedCandidate;

@@ -20,7 +20,7 @@ export   const interviewTableHeader: string[] = [
     {
       id: 2,
       label: "Candidate ID",
-      key: "shortListedCandidateId",
+      key: "candidateId",
       type: "text",
       placeholder: "Enter Shortlisted Candidate ID",
       required:true
@@ -34,14 +34,14 @@ export   const interviewTableHeader: string[] = [
     //   required:true
     // },
    
-    {
-      id: 4,
-      label: "Meet Link",
-      key: "meetingLink",
-      type: "text",
-      placeholder: "Enter Meet Link",
-      required:true
-    },
+    // {
+    //   id: 4,
+    //   label: "Meet Link",
+    //   key: "meetingLink",
+    //   type: "text",
+    //   placeholder: "Enter Meet Link",
+    //   required:true
+    // },
     {
         id: 6,
         label: "Viva Marks",
@@ -53,7 +53,7 @@ export   const interviewTableHeader: string[] = [
       {
         id: 7,
         label: "Written Total Marks",
-        key: "writtenTotalMarks",
+        key: "writtenMarks",
         type: "number",
         placeholder: "Enter written total marks",
         required:true
@@ -66,14 +66,14 @@ export   const interviewTableHeader: string[] = [
         placeholder: "Enter MCQ total marks",
         required:true
       },
-      {
-        id: 9,
-        label: "Total Marks",
-        key: "totalMarks",
-        type: "number",
-        placeholder: "Enter total marks",
-        required:true
-      },
+      // {
+      //   id: 9,
+      //   label: "Total Marks",
+      //   key: "totalMarks",
+      //   type: "number",
+      //   placeholder: "Enter total marks",
+      //   required:true
+      // },
       {
         id: 10,
         label: "Selection",

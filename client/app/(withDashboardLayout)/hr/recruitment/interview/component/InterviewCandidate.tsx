@@ -1,21 +1,18 @@
 import HRTable from "@/app/components/Table/HRTable";
 import Loader from "@/app/components/utils/Loader";
-import Pagination from "../../component/Pagination";
-import { SetStateAction, useState } from "react";
 import { TInterview } from "../../Type/type";
-import UpdateInterViewCandidate from "./UpdateInterviewCandidate";
 import { interviewTableHeader } from "../fakeData";
-import { useDeleteInterviewMutation } from "@/app/Redux/api/interviewListApi";
+import { useDeleteInterviewMutation, useUpdateInterviewMutation } from "@/app/Redux/api/interviewListApi";
+import { toast } from "sonner";
 
-const InterviewCandidate=({data,isLoading}:{data:TInterview[],isLoading:boolean})=>{
+const InterviewCandidate=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TInterview[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
 
-    const [deleteCandidate] = useDeleteInterviewMutation({});
-    const [id, setId]=useState<SetStateAction<string|number>>('')
-  const [updateModalIsOpen, setIsUpdateModal]=useState(false)
+  if(isActionLoading){
+    return <Loader/>
+  }
+    const [updateInterview] = useUpdateInterviewMutation({});
 
-    if (isLoading) {
-      return <Loader />;
-    }
+   
   
     if (data?.length === 0) {
       return (
@@ -27,19 +24,26 @@ const InterviewCandidate=({data,isLoading}:{data:TInterview[],isLoading:boolean}
       );
     }
     const handleDelete = async (id: string|number) => {
-        const res = await deleteCandidate(id);
-        console.log(res);
-      };
-      const handleEdit = (id: number | string) => {
-        setId(id)
-        setIsUpdateModal(!updateModalIsOpen);
-        console.log(id);
-    
-      };
-    
+      setActionLoading(true)
+      const resData={
+        isDeleted:true
+      }
+      const res = await updateInterview({id:id, body:{...resData}});
+      console.log(res);
+      setActionLoading(false)
+      if(res.data){
+        toast.success("Candidate Delete")
+      }else{
+        toast.error(res.error?.message)
+      }
+      
+      
+    };
+    if((isLoading||isActionLoading)){
+      return <Loader/>
+    }
     return(
         <div>
-          <UpdateInterViewCandidate setIsOpen={setIsUpdateModal} modalIsOpen={updateModalIsOpen} id={id}/>
           <HRTable tableHeader={interviewTableHeader}>
         {data?.map((candidate, index) => {
           return (
@@ -69,7 +73,7 @@ const InterviewCandidate=({data,isLoading}:{data:TInterview[],isLoading:boolean}
                 {candidate?.vivaMarks}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {candidate?.writtenTotalMarks}
+                {candidate?.writtenMarks}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
                 {candidate?.mcqTotalMarks}
@@ -78,7 +82,7 @@ const InterviewCandidate=({data,isLoading}:{data:TInterview[],isLoading:boolean}
                 {candidate?.totalMarks}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {candidate?.selection}
+                {candidate?.isSelected?"Selected":"Not Selected"}
               </td>
               <td className="w-1/6 border-r border-gray-200 px-3">
                 <ul className="flex gap-2 items-center  p-2 ">

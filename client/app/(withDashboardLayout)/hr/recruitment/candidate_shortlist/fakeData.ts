@@ -20,27 +20,27 @@ export const shortlistTableHeader: string[] = [
       placeholder: "Enter candidate ID",
       required:true
     },
-    {
-      id: 3,
-      label: "Job Position",
-      key: "jobPosition",
-      type: "text",
-      placeholder: "Enter Job Position",
-      required:true
-    },
-    {
-      id: 4,
-      label: "Shortlist Date",
-      key: "shortlistDate",
-      type: "string",
-      placeholder: "Enter Shortlist Date",
-      required:true
-    },
+    // {
+    //   id: 3,
+    //   label: "Job Position",
+    //   key: "jobPosition",
+    //   type: "text",
+    //   placeholder: "Enter Job Position",
+    //   required:true
+    // },
+    // {
+    //   id: 4,
+    //   label: "Shortlist Date",
+    //   key: "shortlistDate",
+    //   type: "date",
+    //   placeholder: "Enter Shortlist Date",
+    //   required:true
+    // },
     {
       id: 5,
       label: "Interview Date",
       key: "interviewDate",
-      type: "text",
+      type: "date",
       placeholder: "Enter Interview Date",
       required:true
     }

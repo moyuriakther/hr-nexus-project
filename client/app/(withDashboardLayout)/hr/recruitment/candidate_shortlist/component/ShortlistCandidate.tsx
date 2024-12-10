@@ -1,17 +1,16 @@
 import HRTable from "@/app/components/Table/HRTable";
 import Loader from "@/app/components/utils/Loader";
-import Pagination from "../../component/Pagination";
-import { SetStateAction, useState } from "react";
 import {  shortlistTableHeader } from "../fakeData";
 import {  TShortList } from "../../Type/type";
-import UpdateShortlistCandidate from "./UpdateShortlistCandidate";
-import { useDeleteShortlistCandidateMutation } from "@/app/Redux/api/shortListApi";
+import { useUpdateShortlistCandidateMutation } from "@/app/Redux/api/shortListApi";
+import { toast } from "sonner";
 
-const ShortlistCandidate=({data,isLoading}:{data:TShortList[],isLoading:boolean})=>{
+const ShortlistCandidate=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TShortList[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
 
-    const [deleteShortlistCandidate] = useDeleteShortlistCandidateMutation({});
-    const [id, setId]=useState<SetStateAction<string|number>>('')
-  const [updateModalIsOpen, setIsUpdateModal]=useState(false)
+  if(isActionLoading){
+    return <Loader/>
+  }
+    const [updateShortlistCandidate] = useUpdateShortlistCandidateMutation();
 
     if (isLoading) {
       return <Loader />;
@@ -27,19 +26,24 @@ const ShortlistCandidate=({data,isLoading}:{data:TShortList[],isLoading:boolean}
       );
     }
     const handleDelete = async (id: string|number) => {
-        const res = await deleteShortlistCandidate(id);
-        console.log(res);
-      };
-      const handleEdit = (id: number | string) => {
-        setId(id)
-        setIsUpdateModal(!updateModalIsOpen);
-        console.log(id);
-    
-      };
+      setActionLoading(true)
+      const resData={
+        isDeleted:true
+      }
+      const res = await updateShortlistCandidate({id:id, body:{...resData}});
+      console.log(res);
+      setActionLoading(false)
+      if(res.data){
+        toast.success("Candidate Delete")
+      }else{
+        toast.error(res.error)
+      }
+      
+      
+    };
     
     return(
         <div>
-          <UpdateShortlistCandidate setIsOpen={setIsUpdateModal} modalIsOpen={updateModalIsOpen} id={id}/>
           <HRTable tableHeader={shortlistTableHeader}>
         {data?.map((candidate, index) => {
           return (

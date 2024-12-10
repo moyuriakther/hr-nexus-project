@@ -67,8 +67,10 @@ const SearchAndModal = ({menuName,excelExportParamsData,handleSearch,setIsOpen,m
        <select
       onChange={(e) => handleSearch(e.target.value)}
       className="border p-[2px] border-gray-400 h-10 rounded-[5px] min-w-[200px]"
+      defaultValue={""}
     >
       <option value="" disabled selected >Select One</option>
+      <option value="all">All</option>
       {searchKey?.map((item) => (
         <option key={item} value={item}>
           {item}

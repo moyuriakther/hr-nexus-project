@@ -1,18 +1,17 @@
 import HRTable from "@/app/components/Table/HRTable";
 import Loader from "@/app/components/utils/Loader";
-import { useDeleteCandidateMutation, useGetAllCandidateQuery } from "@/app/Redux/api/candidateListApi";
-import Pagination from "../../component/Pagination";
-import { SetStateAction, useState } from "react";
+import {  useState } from "react";
 import { selectionTableHeader } from "../fakeData";
 import { TCandidateSelection } from "../../Type/type";
-import UpdateSelectedCandidate from "./UpdateSelectedCandidate";
+import { useUpdateSelectedCandidateMutation } from "@/app/Redux/api/selectedListApi";
+import { toast } from "sonner";
 
-const SelectedCandidate=({data, isLoading}:{data:TCandidateSelection[],isLoading:boolean})=>{
+const SelectedCandidate=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TCandidateSelection[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
 
-    const [deleteCandidate] = useDeleteCandidateMutation({});
-    const [id, setId]=useState<SetStateAction<string|number>>('')
-  const [updateModalIsOpen, setIsUpdateModal]=useState(false)
-
+  if(isActionLoading){
+    return <Loader/>
+  }
+    const [updateSelectedCandidate] = useUpdateSelectedCandidateMutation({});
     if (isLoading) {
       return <Loader />;
     }
@@ -27,19 +26,26 @@ const SelectedCandidate=({data, isLoading}:{data:TCandidateSelection[],isLoading
       );
     }
     const handleDelete = async (id: string|number) => {
-        const res = await deleteCandidate(id);
-        console.log(res);
-      };
-      const handleEdit = (id: number | string) => {
-        setId(id)
-        setIsUpdateModal(!updateModalIsOpen);
-        console.log(id);
-    
-      };
+      setActionLoading(true)
+      const resData={
+        isDeleted:true
+      }
+      const res = await updateSelectedCandidate({id:id, body:{...resData}});
+      console.log(res);
+      setActionLoading(false)
+      if(res.data){
+        toast.success("Candidate Delete")
+      }else{
+        toast.error(res.error)
+      }
+      
+      
+    };
+     
     
     return(
         <div>
-          <UpdateSelectedCandidate setIsOpen={setIsUpdateModal} modalIsOpen={updateModalIsOpen} id={id}/>
+         
                 <HRTable tableHeader={selectionTableHeader}>
         {data?.map((candidate, index) => {
           return (
@@ -57,6 +63,9 @@ const SelectedCandidate=({data, isLoading}:{data:TCandidateSelection[],isLoading
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
                 {candidate?.candidateId}
+              </td>
+              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
+                {candidate?.interviewId}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
                 {candidate?.position}
