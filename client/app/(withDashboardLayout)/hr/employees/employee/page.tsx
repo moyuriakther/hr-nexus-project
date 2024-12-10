@@ -1,13 +1,16 @@
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import HRTable from "@/app/components/Table/HRTable";
+import { USER_ROLE } from "@/app/constants";
 import { pageHeaderData } from "../components/pageHeaderData";
 import CreateEmployee from "./components/CreateEmployee";
 import EmployeeData from "./components/EmployeeData";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 
 const EmployeePage = () => {
+  const user = getUserFromLocalStorage();
+
   const tableHeader = [
     "Sl",
-    // "Employee id",
     "Name of employee",
     "Email",
     "Mobile no",
@@ -15,7 +18,7 @@ const EmployeePage = () => {
     "Designation",
     "Joining data",
     "Status",
-    "Action",
+    `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
   ];
 
   return (

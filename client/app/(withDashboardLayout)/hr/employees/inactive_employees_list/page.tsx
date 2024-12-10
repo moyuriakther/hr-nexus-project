@@ -1,15 +1,19 @@
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
-import { pageHeaderData } from "../components/pageHeaderData";
-import CreateEmployee from "../employee/components/CreateEmployee";
+import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
 import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
+import { USER_ROLE } from "@/app/constants";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { Button } from "@nextui-org/react";
-import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
-import { fakeData } from "../employee/components/employeFakeData";
-import { TfiReload } from "react-icons/tfi";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { TfiReload } from "react-icons/tfi";
+import { pageHeaderData } from "../components/pageHeaderData";
+import CreateEmployee from "../employee/components/CreateEmployee";
+import { fakeData } from "../employee/components/employeFakeData";
 
 const InactiveEmployeesList = () => {
+  const user = getUserFromLocalStorage();
+
   const tableHeader = [
     "Sl",
     "Employee id",
@@ -20,7 +24,7 @@ const InactiveEmployeesList = () => {
     "Designation",
     "Joining data",
     "Status",
-    "Action",
+    `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
   ];
 
   return (
@@ -49,22 +53,24 @@ const InactiveEmployeesList = () => {
                   {position.Status}
                 </Button>
               </HRTableRow>
-              <HRTableRow>
-                <div className="flex items-center gap-2">
-                  <HRIconsButton className=" bg-red-100 border border-red-500 text-red-500">
-                    <TfiReload className="text-base" />
-                  </HRIconsButton>
-                  <HRIconsButton className="bg-blue-100 text-blue-500 border border-blue-500">
-                    <FaEye className="text-base" />
-                  </HRIconsButton>
-                  <HRIconsButton className=" bg-primary text-green-500 border border-green-500 bg-opacity-15">
-                    <FaEdit className="text-base" />
-                  </HRIconsButton>
-                  <HRIconsButton className="bg-red-100 border border-red-500 text-red-500">
-                    <FaTrash className="text-base" />
-                  </HRIconsButton>
-                </div>
-              </HRTableRow>
+              {user?.role === USER_ROLE.ADMIN && (
+                <HRTableRow>
+                  <div className="flex items-center gap-2">
+                    <HRIconsButton className=" bg-red-100 border border-red-500 text-red-500">
+                      <TfiReload className="text-base" />
+                    </HRIconsButton>
+                    <HRIconsButton className="bg-blue-100 text-blue-500 border border-blue-500">
+                      <FaEye className="text-base" />
+                    </HRIconsButton>
+                    <HRIconsButton className=" bg-primary text-green-500 border border-green-500 bg-opacity-15">
+                      <FaEdit className="text-base" />
+                    </HRIconsButton>
+                    <HRIconsButton className="bg-red-100 border border-red-500 text-red-500">
+                      <FaTrash className="text-base" />
+                    </HRIconsButton>
+                  </div>
+                </HRTableRow>
+              )}
             </tr>
           ))}
         </HRTable>

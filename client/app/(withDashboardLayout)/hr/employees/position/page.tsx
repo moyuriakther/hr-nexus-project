@@ -1,12 +1,22 @@
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import HRTable from "@/app/components/Table/HRTable";
+import { USER_ROLE } from "@/app/constants";
+import {
+  getUserFromLocalStorage
+} from "@/app/utils/localStorage";
 import { pageHeaderData } from "../components/pageHeaderData";
 import CreatePosition from "./components/CreatePosition";
 import PositionData from "./components/PositionData";
 
 const PositionPage = () => {
-  const tableHeader = ["SL", "Position Name", "Status", "Action"];
+  const user = getUserFromLocalStorage();
 
+  const tableHeader = [
+    "SL",
+    "Position Name",
+    "Status",
+    `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
+  ];
 
   return (
     <div className="">

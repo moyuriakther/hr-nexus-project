@@ -4,7 +4,13 @@ import { authKey } from "./app/constants";
 import { decodedToken } from "./app/utils/jwt";
 import { TAuthUser } from "./app/types";
 
-const authRoutes = ["/", "/login", "/register"];
+const authRoutes = [
+  "/",
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/reset-password",
+];
 const protectedRoutes = ["/dashboard", "/hr/:page*"];
 
 // This function can be marked `async` if using `await` inside
@@ -50,5 +56,13 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/login", "/register", "/dashboard", "/hr/:page*"],
+  matcher: [
+    "/",
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/dashboard",
+    "/hr/:page*",
+  ],
 };

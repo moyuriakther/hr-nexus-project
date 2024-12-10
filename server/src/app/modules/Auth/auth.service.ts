@@ -139,7 +139,7 @@ const forgotPassword = async (payload: { email: string }) => {
   );
 
   const resetPasswordLink =
-    config.front_end_url + `?email=${userData.email}&token=${token}`;
+    config.reset_password_url + `?email=${userData.email}&token=${token}`;
 
   const html = `
     <div>
