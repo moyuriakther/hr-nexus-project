@@ -14,22 +14,40 @@ import HRSelect from '@/app/components/Form/HRSelect';
 const CreateSelectedCandidate = ({setIsOpen,modalIsOpen,data, setActionLoading}:any) => {
   
       const [createSelectedCandidate]=useCreateSelectedCandidateMutation()
-      const handleSubmit = async (values:FieldValues) => {
-        setActionLoading(true)
-        setIsOpen(false)
+      const handleSubmit = async (values: FieldValues) => {
+        setActionLoading(true);
+        setIsOpen(false);
+      
         const resData = {
-           ...values,
+          ...values,
         };
-    
-        console.log(resData);
-        const res = await createSelectedCandidate(resData)
-        setActionLoading(false)
-        if (res?.data) {
-          toast.success("successfully created ");
-        } else {
-          toast.error("Didn't created");
+      
+        console.log("Request Data:", resData);
+      
+        try {
+          const res = await createSelectedCandidate(resData);
+      
+          if (res?.data) {
+            toast.success("Successfully created!");
+          } else {
+            // Extract error message from response
+            const errorMessage = res?.error?.message || "Candidate creation failed.";
+            toast.error(errorMessage);
+          }
+        } catch (error) {
+          // Handle unexpected errors
+          console.error("Error creating candidate:", error);
+          const errorMessage =
+            error?.response?.data?.message ||
+            error?.message ||
+            "An unexpected error occurred.";
+          toast.error(errorMessage);
+        } finally {
+          // Ensure loading state is reset
+          setActionLoading(false);
         }
       };
+      
     return (
         <div>
                <HRModal

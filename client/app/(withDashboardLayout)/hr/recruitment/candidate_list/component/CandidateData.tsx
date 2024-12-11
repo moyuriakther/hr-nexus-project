@@ -15,9 +15,12 @@ import Image from "next/image";
 import { TCandidateSelection } from "../../Type/type";
 import { useUpdateSelectedCandidateMutation } from "@/app/Redux/api/selectedListApi";
 import { toast } from "sonner";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 const CandidateData=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TCandidateList[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
-
+const user =getUserFromLocalStorage()
+const [imageLoading, setImageLoading]=useState(false)
   if(isActionLoading){
     return <Loader/>
   }
@@ -46,7 +49,7 @@ const CandidateData=({data, isLoading,handleEdit, setActionLoading, isActionLoad
         if(res.data){
           toast.success("Candidate Delete")
         }else{
-          toast.error(res.error)
+          toast.error(res?.error)
         }
         
         
@@ -77,8 +80,20 @@ const CandidateData=({data, isLoading,handleEdit, setActionLoading, isActionLoad
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
                 
-                <Image src={candidate?.photograph||""} alt={`${candidate?.name||""} Photo`}width={50} height={50} className="mx-auto"/>
-              </td>
+              {imageLoading && (
+        <div className="absolute inset-0 flex justify-center items-center bg-gray-200">
+          <span>Loading...</span>
+        </div>
+      )}
+      <Image
+        src={candidate?.photograph || ""}
+        alt={`${candidate?.name || ""} Photo`}
+        width={50}
+        height={50}
+        className="mx-auto"
+        onLoadingComplete={() => setImageLoading(false)}
+      />
+                </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
                 {candidate?.email||""}
               </td>

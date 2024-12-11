@@ -17,32 +17,45 @@ const UpdateSelectedCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:an
     const [updateSelectedCandidate]=useUpdateSelectedCandidateMutation()
     
     
-    const handleSubmit = async (values:FieldValues) => {
-        // const file = values.photograph?.[0];
-        setActionLoading(true)
-        setIsOpen(false)
-        const resData = {
-          ...data,
-           ...values,
-          // photograph: await uploadImage(file),
-        };
+    const handleSubmit = async (values: FieldValues) => {
+      setActionLoading(true);
+      setIsOpen(false);
     
-        console.log(resData);
-  
-    
-        const res = await updateSelectedCandidate({
-          id:id,
-          body:{...resData}
-        })
-     
-        setActionLoading(false)
-        if (res?.data) {
-          toast.success("successfully Update ");
-          
-        } else {
-          toast.error("Didn't Update");
-        }
+      const resData = {
+        ...data,
+        ...values,
+        // photograph: await uploadImage(file), // Uncomment if file upload is needed
       };
+    
+      console.log("Request Data:", resData);
+    
+      try {
+        const res = await updateSelectedCandidate({
+          id: id,
+          body: { ...resData },
+        });
+    
+        if (res?.data) {
+          toast.success("Successfully updated!");
+        } else {
+          // Extract error message from response
+          const errorMessage = res?.error?.message || "Candidate update failed.";
+          toast.error(errorMessage);
+        }
+      } catch (error) {
+        // Handle unexpected errors
+        console.error("Error updating candidate:", error);
+        const errorMessage =
+          error?.response?.data?.message ||
+          error?.message ||
+          "An unexpected error occurred.";
+        toast.error(errorMessage);
+      } finally {
+        // Ensure loading state is reset
+        setActionLoading(false);
+      }
+    };
+    
      
     return (
         <div>
@@ -83,9 +96,11 @@ const UpdateSelectedCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:an
             >
               Close
             </button>
-            <button type="submit" className="bg-primary p-2 px-3 text-white rounded">
+            {
+              data&&<button type="submit" className="bg-primary p-2 px-3 text-white rounded">
               Save
             </button>
+            }
           </div>
         </HRForm>
       </HRModal>

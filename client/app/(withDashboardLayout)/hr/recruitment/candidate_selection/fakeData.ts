@@ -1,3 +1,6 @@
+import { USER_ROLE } from "@/app/constants";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+const user=getUserFromLocalStorage()
 export const selectionInputFields = [
     // { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name",required:true },
     {
@@ -42,5 +45,5 @@ export   const  selectionTableHeader:string[] = [
     "Employee ID",
     "Position",
     "Selection Terms",
-    "Action",
+   `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
   ];

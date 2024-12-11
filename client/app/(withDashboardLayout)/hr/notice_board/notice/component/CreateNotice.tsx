@@ -13,46 +13,77 @@ import HRFileInput from '@/app/components/Form/HRFileInput';
 import Loader from '@/app/components/utils/Loader';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateNotice = ({setIsOpen,modalIsOpen}:any) => {
+const CreateNotice = ({setIsOpen,modalIsOpen,setActionLoading}:any) => {
   
       const [createNotice]=useCreateNoticeMutation()
       const [isLoading, setIsLoading]=useState(false)
-      const handleSubmit: SubmitHandler<FieldValues> = async (
-        values: FieldValues
-      ) => {
-        // const file = values.photograph?.[0] || values.photograph;
-        // let imageUrl;
+      // const handleSubmit: SubmitHandler<FieldValues> = async (
+      //   values: FieldValues
+      // ) => {
+      //   // const file = values.photograph?.[0] || values.photograph;
+      //   // let imageUrl;
     
-        // try {
-        //   if (file) {
-        //     imageUrl = await uploadImage(file);
-        //     console.log("Uploaded Image URL:", imageUrl);
-        //   } else {
-        //     console.error("No file selected for upload.");
-        //   }
-        // } catch (error) {
-        //   console.error("Image upload failed:", error);
-        // }
+      //   // try {
+      //   //   if (file) {
+      //   //     imageUrl = await uploadImage(file);
+      //   //     console.log("Uploaded Image URL:", imageUrl);
+      //   //   } else {
+      //   //     console.error("No file selected for upload.");
+      //   //   }
+      //   // } catch (error) {
+      //   //   console.error("Image upload failed:", error);
+      //   // }
     
+      //   const resData = {
+      //     ...values,
+      //   };
+    
+      //   console.log(resData);
+      //   setIsLoading(true)
+      //   const res = await createNotice(resData);
+    
+      //   if (res?.data) {
+      //     setIsOpen(false)
+      //     setIsLoading(false)
+      //     toast.success("successfully created ");
+
+      //   } else {
+      //     toast.error("Didn't created");
+      //     setIsLoading(false)
+      //   }
+      // };
+      const handleSubmit: SubmitHandler<FieldValues> = async (values: FieldValues) => {
+        setActionLoading(true)
+        setIsOpen(false)
         const resData = {
           ...values,
         };
-    
+      
         console.log(resData);
-        setIsLoading(true)
-        const res = await createNotice(resData);
-    
-        if (res?.data) {
-          setIsOpen(false)
-          setIsLoading(false)
-          toast.success("successfully created ");
-
-        } else {
-          toast.error("Didn't created");
-          setIsLoading(false)
+        setIsLoading(true); // Start loading before making the request
+      
+        try {
+          const res = await createNotice(resData);
+      
+          if (res?.data) {
+            setIsOpen(false);
+            toast.success("Successfully created.");
+          } else {
+            toast.error("Failed to create notice. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error creating notice:", error);
+          const errorMessage =
+            error?.response?.data?.message ||
+            error?.message ||
+            "An unexpected error occurred while creating the notice.";
+          toast.error(errorMessage);
+        } finally {
+          setActionLoading(false); // Ensure loading state is reset after request completes
         }
       };
-    return (
+      
+      return (
         <div>
           {isLoading&&<Loader/>}
              <HRModal

@@ -1,10 +1,13 @@
+import { USER_ROLE } from "@/app/constants";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+const user=getUserFromLocalStorage()
 export   const noticeTableHeader = [
     "SI",
     "Notice type",
     "Description",
     "Notice date",
     "Notice by",
-    "Action",
+   `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
   ];
 
   export const noticeModalInputFiled= [

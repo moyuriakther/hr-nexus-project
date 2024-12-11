@@ -1,6 +1,9 @@
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { TShortlistInputField } from "../Type/type";
+import { USER_ROLE } from "@/app/constants";
 
 
+const user=getUserFromLocalStorage()
 export const shortlistTableHeader: string[] = [
     "Sl",
     "Name",
@@ -8,7 +11,8 @@ export const shortlistTableHeader: string[] = [
     "Job Position",
     "Shortlist Date",
     "Interview Date",
-    "Action",
+    " Meeting Link",
+    `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
   ];
   export   const shortlistInputFields:TShortlistInputField[] = [
     // { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name" ,required:true},
@@ -28,14 +32,14 @@ export const shortlistTableHeader: string[] = [
     //   placeholder: "Enter Job Position",
     //   required:true
     // },
-    // {
-    //   id: 4,
-    //   label: "Shortlist Date",
-    //   key: "shortlistDate",
-    //   type: "date",
-    //   placeholder: "Enter Shortlist Date",
-    //   required:true
-    // },
+    {
+      id: 4,
+      label: "Meeting Link",
+      key: "meetingLink",
+      type: "text",
+      placeholder: "Enter Meeting Link",
+      required:true
+    },
     {
       id: 5,
       label: "Interview Date",

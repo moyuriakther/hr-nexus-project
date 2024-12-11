@@ -325,7 +325,7 @@ model WeeklyHolidays {
 model CandidateList {
   id          String      @id @default(uuid())
   name        String?
-  candidateId String?     @unique
+  candidateId String      @default(uuid()) @unique
   photograph  String?
   email       String?
   ssn         String?
@@ -344,7 +344,7 @@ model ShortList {
   candidateId   String        @unique
   shortlistDate DateTime?
   interviewDate DateTime?
-
+  meetingLink            String?
   candidate CandidateList @relation(fields: [candidateId], references: [candidateId])
   isDeleted Boolean       @default(false)
   createdAt DateTime      @default(now())
@@ -365,7 +365,7 @@ model Interview {
   totalMarks             String?
   meetingLink            String?
   isSelected             Boolean              @default(false)
-  candidateId            String
+  candidateId            String               @unique
   isDeleted              Boolean              @default(false)
   createdAt              DateTime             @default(now())
   updatedAt              DateTime             @updatedAt
@@ -378,12 +378,12 @@ model Interview {
 model CandidateSelection {
   id              String    @id @default(uuid())
   selectionTerms  String?
-  interviewId     String
+  interviewId     String?
   isDeleted       Boolean   @default(false)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   candidateId     String
-  interview       Interview @relation(fields: [interviewId], references: [id])
+  interview       Interview @relation(fields: [candidateId], references: [candidateId])
 
   @@map("candidate_selections")
 }

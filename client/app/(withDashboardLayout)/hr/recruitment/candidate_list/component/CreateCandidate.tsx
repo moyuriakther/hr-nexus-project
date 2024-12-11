@@ -16,12 +16,14 @@ const CreateCandidate = ({ setIsOpen, modalIsOpen,setActionLoading }: any) => {
   const handleSubmit: SubmitHandler<FieldValues> = async (
     values: FieldValues
   ) => {
-    setIsOpen(false)
-    setActionLoading(true)
+    setIsOpen(false);
+    setActionLoading(true);
+  
     const file = values.photograph?.[0] || values.photograph;
     let imageUrl;
-
+  
     try {
+      // Upload the image if a file is provided
       if (file) {
         imageUrl = await uploadImage(file);
         console.log("Uploaded Image URL:", imageUrl);
@@ -30,27 +32,43 @@ const CreateCandidate = ({ setIsOpen, modalIsOpen,setActionLoading }: any) => {
       }
     } catch (error) {
       console.error("Image upload failed:", error);
+      toast.error("Image upload failed. Please try again.");
+      setActionLoading(false);
+      return;
     }
-
+  
+    // Prepare the data for API
     const resData = {
       ...values,
       photograph: imageUrl,
     };
-
-    console.log(resData);
-
-    const res = await createCandidate(resData);
-
-    if (res?.data) {
-      setActionLoading(false)
-      
-      toast.success("Candidate successfully created ");
-      
-    } else {
-      toast.error("Didn't created, Try Again");
-      setActionLoading(false)
+  
+    console.log("Request Data:", resData);
+  
+    try {
+      const res = await createCandidate(resData);
+  
+      if (res?.data) {
+        toast.success("Candidate successfully created!");
+      } else {
+        // Extract error message from response
+        const errorMessage = res?.error?.message || "Candidate creation failed.";
+        toast.error(errorMessage);
+      }
+    } catch (error) {
+      // Handle unexpected errors
+      console.error("Error creating candidate:", error);
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "An unexpected error occurred.";
+      toast.error(errorMessage);
+    } finally {
+      // Ensure loading state is reset
+      setActionLoading(false);
     }
   };
+  
   return (
     <div>
       <HRModal
@@ -70,7 +88,7 @@ const CreateCandidate = ({ setIsOpen, modalIsOpen,setActionLoading }: any) => {
                 </label>
 
                 {inputField?.type == "file" ? (
-                  <HRFileInput name={`${inputField?.key}`} label="" />
+                  <HRFileInput name={inputField?.key}  className="border-primary h-10 rounded-[5px]  min-w-[340px]"  label="" />
                 ) : (
                   <HRInput
                     type={inputField?.type}

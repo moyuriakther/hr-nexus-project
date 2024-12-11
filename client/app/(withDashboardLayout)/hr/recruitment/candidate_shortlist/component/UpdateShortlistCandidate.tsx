@@ -16,38 +16,46 @@ const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:a
     const [updateShortlistCandidate]=useUpdateShortlistCandidateMutation()
     
     
-    const handleSubmit = async (values:FieldValues) => {
-        // const file = values.photograph?.[0];
-        setIsOpen(false)
-      setActionLoading(true)
-        const resData = {
-          ...data,
-           ...values,
-           interviewDate:new Date(values?.interviewDate).toISOString()
-          // photograph: await uploadImage(file),
-        };
+    const handleSubmit = async (values: FieldValues) => {
+      setIsOpen(false);
+      setActionLoading(true);
     
-        console.log(resData);
-  
+      const resData = {
+        ...data,
+        ...values,
+        candidateId:data?.candidateId,
+        interviewDate: new Date(values?.interviewDate).toISOString(),
+      };
     
+      console.log(resData)
+      try {
         const res = await updateShortlistCandidate({
-          id:id,
-          body:{...resData}
-        })
-     
-        setActionLoading(false)
+          id: id,
+          body: { ...resData },
+        });
     
         if (res?.data) {
-          toast.success("successfully Update ");
-          
+          toast.success("Successfully updated shortlist candidate.");
         } else {
-          toast.error("Didn't Update");
-          setActionLoading(false)
+          // Extract error message from response
+          const errorMessage = res?.error?.message || "Failed to update shortlist candidate.";
+          toast.error(errorMessage);
         }
-      };
-      if(isLoading){
-        return<Loader/>
+      } catch (error) {
+        // Handle unexpected errors
+        console.error("Error updating shortlist candidate:", error);
+        const errorMessage =
+          error?.response?.data?.message ||
+          error?.message ||
+          "An unexpected error occurred while updating the shortlist candidate.";
+        toast.error(errorMessage);
+      } finally {
+        setActionLoading(false);
       }
+    };
+    
+    
+    
     return (
         <div>
              <HRModal
@@ -72,7 +80,7 @@ const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:a
                   required={inputField?.required}
                   defaultValue={data?.[inputField?.key as keyof TShortList]||""}
                 />:
-                <p>{data["candidateId"]}</p>
+                <p>{data?.["candidateId"]}</p>
                 }
                 
               </div>
@@ -85,9 +93,11 @@ const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:a
             >
               Close
             </button>
-            <button type="submit" className="bg-primary p-2 px-3 text-white rounded">
+            {
+              data&&<button type="submit" className="bg-primary p-2 px-3 text-white rounded">
               Save
             </button>
+            }
           </div>
         </HRForm>
       </HRModal>

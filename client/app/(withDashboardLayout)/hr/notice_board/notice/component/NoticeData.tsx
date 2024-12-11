@@ -5,13 +5,17 @@ import { noticeTableHeader } from "../fakeData";
 import { TNoticeData } from "../Type/type";
 import { useUpdateNoticeMutation } from "@/app/Redux/api/noticeApi";
 import { toast } from "sonner";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 
-const NoticeData=({data, isLoading,handleEdit}:{data:TNoticeData[],isLoading:boolean,handleEdit:any})=>{
+const NoticeData=({data, isLoading,handleEdit, isActionLoading, setActionLoading}:{data:TNoticeData[],setActionLoading:any, isLoading:boolean,handleEdit:any, isActionLoading:any})=>{
     
+  const user=getUserFromLocalStorage();
+
+  
     const [UpdateNotice] = useUpdateNoticeMutation();
  
-  const [actionLoading, setActionLoading]=useState(false)
     if (isLoading) {
       return <Loader />;
     }
@@ -33,9 +37,9 @@ const NoticeData=({data, isLoading,handleEdit}:{data:TNoticeData[],isLoading:boo
           id:id,
           body:{isDeleted:true}
         });
-
+        setActionLoading(false)
         if(res.data){
-          setActionLoading(false)
+         
           toast.success("Delete Successfully")
         }
         
@@ -50,7 +54,7 @@ const NoticeData=({data, isLoading,handleEdit}:{data:TNoticeData[],isLoading:boo
     return(
         <>
         {
-          isLoading||actionLoading&&<Loader/>
+          isLoading||isActionLoading&&<Loader/>
         }
              <HRTable tableHeader={noticeTableHeader}>
        {data?.map((notice, index) => {
@@ -76,7 +80,7 @@ const NoticeData=({data, isLoading,handleEdit}:{data:TNoticeData[],isLoading:boo
               <td className="py-2 w-1/6 border-r border-gray-200 px-3 text-center">
                 {notice?.noticeBy}
               </td>
-              <td className="w-1/6 border-r border-gray-200 px-3">
+              {user?.role===USER_ROLE.ADMIN&&<td className="w-1/6 border-r border-gray-200 px-3">
                 <ul className="flex gap-2 items-center  p-2 ">
                   <li
                     onClick={() => handleEdit(notice?.id)}
@@ -111,6 +115,7 @@ const NoticeData=({data, isLoading,handleEdit}:{data:TNoticeData[],isLoading:boo
                   </li>
                 </ul>
               </td>
+       }
             </tr>
           );
         })}

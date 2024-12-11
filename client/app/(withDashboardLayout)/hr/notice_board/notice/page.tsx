@@ -21,6 +21,7 @@ const NoticePage = () => {
   const [noticeId, setNoticeId]=useState("");
   console.log(searchTerm)
   const [searchKey, setSearchKey] = useState([]);
+  const [isActionLoading, setActionLoading]=useState(false)
   const { data, isLoading } = useGetAllNoticeQuery({searchTerm});
   useEffect(() => {
     if (data?.data) {
@@ -69,9 +70,10 @@ const NoticePage = () => {
       <CreateNotice
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
+        setActionLoading={setActionLoading}
       />
-      <UpdateNotice setIsOpen={setIsUpdateModal} modalIsOpen={updateModalIsOpen} id={noticeId}/>
-      <NoticeData data={paginatedData} isLoading={isLoading} handleEdit={handleEdit}/>
+      <UpdateNotice setActionLoading={setActionLoading} setIsOpen={setIsUpdateModal} modalIsOpen={updateModalIsOpen} id={noticeId}/>
+      <NoticeData isActionLoading={isActionLoading} setActionLoading={setActionLoading}  data={paginatedData} isLoading={isLoading} handleEdit={handleEdit}/>
     </div>
   );
 };

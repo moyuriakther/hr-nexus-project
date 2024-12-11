@@ -13,44 +13,45 @@ import HRSelect from '@/app/components/Form/HRSelect';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CreateInterviewCandidate = ({setIsOpen,modalIsOpen, setActionLoading, data}:any) => {
   
-      const [createSelectedCandidate]=useCreateInterviewMutation({})
-      const handleSubmit = async (values:FieldValues) => {
-        const {vivaMarks, writtenMarks, mcqTotalMarks}=values
-        const totalMarks=vivaMarks+writtenMarks+mcqTotalMarks
-        setIsOpen(false)
-        setActionLoading(true)
-        const resData = {
-           ...values,
-           isSelected:values?.isSelected==="true"?true:false,
-           totalMarks
-        };
-    
-        console.log(resData);
-        // let profileImage;
-    
-        // if (file) {
-        //   const formData = new FormData();
-        //   formData.append("image", file[0]);
-    
-        //   profileImage = await imageUploadIntoImgbb(formData);
-        // }
-    
-        const res = await createSelectedCandidate(resData)
-        //   pathname !== "/hr/employees/create"
-        //     ? await updateEmployee(userCreatedData)
-        //     : await createEmployee(userCreatedData);
-        setActionLoading(false)
-        try {
-          if (res?.data) {
-            toast.success("successfully created ");
-          } 
-        } catch (error) {
-         
-            toast.error(`Didn't created Shortlist Candidate. ${error?.message}`);
-        
-        }
+      const [createInterview]=useCreateInterviewMutation({})
+      const handleSubmit = async (values: FieldValues) => {
+        const { vivaMarks, writtenMarks, mcqTotalMarks } = values;
+        const totalMarks = vivaMarks + writtenMarks + mcqTotalMarks;
       
+        setIsOpen(false);
+        setActionLoading(true);
+      
+        const resData = {
+          ...values,
+          isSelected: values?.isSelected === "true" ? true : false,
+          totalMarks,
+        };
+      
+        console.log(resData);
+      
+        try {
+          const res = await createInterview(resData);
+      
+          if (res?.data) {
+            toast.success("Successfully created Interview.");
+          } else {
+            // Extract error message from response if available
+            const errorMessage = res?.error?.message || "Failed to create Interview";
+            toast.error(errorMessage);
+          }
+        } catch (error) {
+          // Handle unexpected errors
+          console.error("Error creating Interview", error);
+          const errorMessage =
+            error?.response?.data?.message ||
+            error?.message ||
+            "An unexpected error occurred while creating the Interview";
+          toast.error(errorMessage);
+        } finally {
+          setActionLoading(false);
+        }
       };
+      
 
       const selectionData=[
         {value:true, label:"Selected"

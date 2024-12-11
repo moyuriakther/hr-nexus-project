@@ -10,38 +10,45 @@ import { useGetSingleInterviewQuery, useUpdateInterviewMutation } from '@/app/Re
 import { interviewInputFiled } from '../fakeData';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateInterViewCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
+const UpdateInterViewCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:any) => {
     
     const {data,isLoading}=useGetSingleInterviewQuery(id)
     const [updateInterview]=useUpdateInterviewMutation()
     
     
-    const handleSubmit = async (values:FieldValues) => {
-        const resData = {
-           ...values,
-        };
-    
-        console.log(resData);
-  
-    
-        const res = await updateInterview({
-          id:id,
-          body:{...resData}
-        })
-        try {
-          if (res?.data) {
-            toast.success("successfully Update ");
-          } 
-        } catch (error) {
-         
-            toast.error(`Didn't Update Shortlist Candidate. ${error?.message}`);
-        
-        }
-    
+    const handleSubmit = async (values: FieldValues) => {
+      const resData = {
+        ...values,
       };
-      if(isLoading){
-        return<Loader/>
+    
+      console.log(resData);
+    
+      setActionLoading(true); // Set loading state before starting the request
+    
+      try {
+        const res = await updateInterview({
+          id: id,
+          body: { ...resData },
+        });
+    
+        if (res?.data) {
+          toast.success("Successfully updated.");
+        } else {
+          toast.error("Update failed. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error updating interview:", error);
+        const errorMessage =
+          error?.response?.data?.message ||
+          error?.message ||
+          "An unexpected error occurred while updating the interview.";
+        toast.error(errorMessage);
+      } finally {
+        setActionLoading(false); // Ensure loading state is reset after request completes
       }
+    };
+    
+      
     return (
         <div>
              <HRModal
@@ -78,9 +85,11 @@ const UpdateInterViewCandidate = ({setIsOpen,modalIsOpen,id}:any) => {
             >
               Close
             </button>
-            <button type="submit" className="bg-primary p-2 px-3 text-white rounded">
+            {
+              data&&<button type="submit" className="bg-primary p-2 px-3 text-white rounded">
               Save
             </button>
+            }
           </div>
         </HRForm>
       </HRModal>

@@ -11,31 +11,47 @@ import { TNoticeData } from '../Type/type';
 import HRFileInput from '@/app/components/Form/HRFileInput';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateNotice = ({setIsOpen,modalIsOpen,id}:{setIsOpen:any, modalIsOpen:boolean,id:string}) => {
+const UpdateNotice = ({setIsOpen,modalIsOpen,id, setActionLoading}:{setIsOpen:any, modalIsOpen:boolean,id:string,setActionLoading:any}) => {
     
     const {data,isLoading}=useGetSingleNoticeQuery(id)
     const [UpdateNotice]=useUpdateNoticeMutation()
     
     
     const handleSubmit: SubmitHandler<FieldValues> = async (values) => {
-        // const file = values.noticeAttachment?.[0];
+      setActionLoading(false)
+      setIsOpen(false)
+      try {
+        
+        const res = await UpdateNotice({
+          id: id,
+          body: { ...values },
+        }).unwrap();
+    
+        if (res?.id) {
+         
+          toast.success("Updated Successfully");
+          setIsOpen(false);
+        } else {
       
-        try {
-          const res = await UpdateNotice({
-            id: id,
-            body: { ...values },
-          }).unwrap();
-          if (res?.id) {
-            toast.success("Updated Successfully");
-            setIsOpen(false);
-          }
-          else{
-            toast.error("Something Error. Try again")
-          }
-        } catch (error) {
-          console.log(error);
+          toast.error("Something went wrong. Please try again.");
         }
-      };
+      } catch (error) {
+       
+        console.error("Error occurred while updating notice:", error);
+    
+        if (error instanceof Error) {
+        
+          toast.error(`Error: ${error.message}`);
+        } else {
+        
+          toast.error("An unexpected error occurred. Please try again.");
+        }
+      } finally {
+  
+        setActionLoading(false);
+      }
+    };
+    
     
     return (
         <div>

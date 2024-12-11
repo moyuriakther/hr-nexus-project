@@ -14,23 +14,37 @@ import HRSelect from "@/app/components/Form/HRSelect";
 const CreateShortlistCandidate = ({ setIsOpen, modalIsOpen , setActionLoading,data}: any) => {
   const [createShortlistCandidate] = useCreateShortlistCandidateMutation();
   const handleSubmit = async (values: FieldValues) => {
-    setIsOpen(false)
-    setActionLoading(true)
+    setIsOpen(false);
+    setActionLoading(true);
+  
     const resData = {
       ...data,
       ...values,
     };
-
-    const res = await createShortlistCandidate(resData);
-    setActionLoading(false)
-    console.log("res-",res)
-    if (res?.data) {
-      toast.success("successfully created ");
-      
-    } else {
-      toast.error("Didn't created Shortlist Candidate");
+  
+    try {
+      const res = await createShortlistCandidate(resData);
+  
+      if (res?.data) {
+        toast.success("Successfully created shortlist candidate.");
+      } else {
+        // Extract error message from response
+        const errorMessage = res?.error?.message || "Failed to create shortlist candidate.";
+        toast.error(errorMessage);
+      }
+    } catch (error) {
+      // Handle unexpected errors
+      console.error("Error creating shortlist candidate:", error);
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "An unexpected error occurred while creating the shortlist candidate.";
+      toast.error(errorMessage);
+    } finally {
+      setActionLoading(false);
     }
   };
+  
   return (
     <div>
       <HRModal
