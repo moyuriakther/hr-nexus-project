@@ -4,7 +4,6 @@ import { Prisma } from "@prisma/client";
 import { IPaginationOptions } from "../../Interfaces/IPaginationOptions";
 import { paginationHelper } from "../../../Helpers/paginationHelpers";
 import { employeeSearchableFields } from "./employee.utils";
-import sendMail from "../../../shared/sendEmail";
 import sendEmailResponse from "../../../shared/sendEmailResponse";
 
 const createEmployee = async (payload: any) => {
@@ -100,7 +99,8 @@ const createEmployee = async (payload: any) => {
     await sendEmailResponse({
       to: payload.email,
       subject: "Employee Registration",
-      html: `Hello ${employee.firstName} ${employee.lastName}, your employee registration has been successful. You can now log in using your email and password.`,
+      html: `Hello ${employee.firstName} ${employee.lastName}, your employee registration has been successful.
+      your email is ${employee.email} and your password is ${payload.password}. You can now log in using your email and password.`,
     });
     return employee;
   });
