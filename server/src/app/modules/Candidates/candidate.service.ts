@@ -23,7 +23,11 @@ const createCandidate = async (data: any) => {
   });
 
   if (existingCandidate) {
-    throw new Error("A candidate with the generated ID already exists.");
+    return {
+      success: false,
+      message: "A candidate with the generated ID already exists.",
+    };
+    // throw new Error("A candidate with the generated ID already exists.");
   }
 
   // Create a new candidate record
@@ -49,7 +53,11 @@ const createCandidateShortList = async (data: any) => {
   });
 
   if (!candidate) {
-    throw new Error("Candidate with the given ID does not exist.");
+    return {
+      success: false,
+      message: "Candidate with the given ID does not exist.",
+    };
+    // throw new Error("");
   }
 
   // Check if the candidate has an existing (active or deleted) shortlist
@@ -62,7 +70,11 @@ const createCandidateShortList = async (data: any) => {
   if (existingShortlist) {
     if (!existingShortlist.isDeleted) {
       // If the shortlist is active, throw an error
-      throw new Error("The candidate has already been shortlisted.");
+      return {
+        success: false,
+        message: "The candidate has already been shortlisted.",
+      };
+      // throw new Error("The candidate has already been shortlisted.");
     } else {
       // If the shortlist is deleted, update it instead of creating a new one
       const updatedShortlist = await prisma.shortList.update({
@@ -110,20 +122,29 @@ const createCandidateInterview = async (data: any) => {
   });
 
   if (!shortListedCandidate) {
-    throw new Error("Invalid candidateId. No matching candidate found in the shortlist.");
+    return {
+      success: false,
+      message: "Invalid candidateId. No matching candidate found in the shortlist.",
+    };
+    // throw new Error("Invalid candidateId. No matching candidate found in the shortlist.");
   }
 
   // Check if the candidate already has an interview (active or deleted)
   const existingInterview = await prisma.interview.findFirst({
     where: {
       candidateId: candidateId,
+
     },
   });
 
   if (existingInterview) {
     if (!existingInterview.isDeleted) {
       // If the interview is active, throw an error
-      throw new Error("The candidate has already been selected for this interview.");
+      return {
+        success: false,
+        message: "The candidate has already been selected for this interview.",
+      };
+      // throw new Error("The candidate has already been selected for this interview.");
     } else {
       // If the interview is deleted, update it instead of creating a new one
       const updatedInterview = await prisma.interview.update({
@@ -162,31 +183,40 @@ const createCandidateSelection = async (data: any) => {
   const { candidateId, interviewId, selectionTerms } = data;
 
   // Check if the candidate exists in an interview and is valid
+  console.log(data)
   const interview = await prisma.interview.findFirst({
     where: {
       candidateId,
       interviewId,
+      isSelected:true,
       isDeleted: false, // Ensure the interview record is not deleted
     },
   });
 
   if (!interview) {
-    throw new Error(
-      "Invalid `candidateId`. No associated interview found or the interview has been deleted."
-    );
+    return {
+      success: false,
+      message: "Invalid `candidateId`. No associated interview found or not selected.",
+    };
   }
+  
+
 
   // Check if the candidate has already been selected (active or deleted)
   const existingSelection = await prisma.candidateSelection.findFirst({
     where: {
       candidateId,
+      interviewId
     },
   });
-
+console.log(existingSelection)
   if (existingSelection) {
     if (!existingSelection.isDeleted) {
       // If the selection is active, throw an error
-      throw new Error("The candidate has already been selected.");
+      return {
+        success: false,
+        message: "The candidate has already been selected.",
+      };
     } else {
       // If the selection is deleted, update it instead of creating a new one
       const updatedSelection = await prisma.candidateSelection.update({
@@ -470,9 +500,9 @@ const getCandidateInterviewResults = async (
               photograph: true,
               email: true,
               phone: true,
-              meetingLink:true,
-              jobPosition: true, // Include jobPosition from candidate
+              jobPosition: true,
               ssn: true,
+              meetingLink: true, // Ensure this is included here
             },
           },
         },
@@ -488,14 +518,14 @@ const getCandidateInterviewResults = async (
   // Prepare the result structure
   const formattedResult = result.map(interview => ({
     id: interview.id,
-    interviewId: interview.interviewId, 
+    interviewId: interview.interviewId,
     interviewer: interview.interviewer,
     interviewDate: interview.interviewDate,
     vivaMarks: interview.vivaMarks,
     writtenMarks: interview.writtenMarks,
     mcqTotalMarks: interview.mcqTotalMarks,
     totalMarks: interview.totalMarks,
-    meetingLink: interview?.meetingLink,
+    meetingLink: interview?.shortListedCandidate?.candidate?.meetingLink, // Access meetingLink from candidate
     isSelected: interview?.isSelected,
     isDeleted: interview.isDeleted,
     createdAt: interview.createdAt,
@@ -518,7 +548,6 @@ const getCandidateInterviewResults = async (
     data: formattedResult,
   };
 };
-
 
 
 const getAllSelectedCandidates = async (params: any, options: IPaginationOptions) => {
@@ -695,22 +724,14 @@ const updateCandidate = async (id: string, data: any) => {
 };
 // Update a Candidate by ID
 const updateShortListedCandidate = async (id: string, data: any) => {
-  console.log(data)
-  try {
-    const result = await prisma.shortList.update({
-      where: {
-        id,
-      },
-      data:{
-        ...data,
-        interviewDate: new Date(data.interviewDate)
-      },
-    });
-    return result;
-  } catch (error) {
-    console.error("Error updating shortlisted candidate:", error);
-    throw new Error("Failed to update shortlisted candidate");
-  }
+  console.log("update data",data)
+  const result = await prisma.shortList.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return result;
 };
 // Update a Candidate by ID
 const updateSelectedCandidate = async (id: string, data: any) => {

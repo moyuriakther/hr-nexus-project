@@ -331,6 +331,7 @@ model CandidateList {
   ssn         String?
   phone       String?
   jobPosition String?
+  meetingLink String?
   isDeleted   Boolean     @default(false)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt

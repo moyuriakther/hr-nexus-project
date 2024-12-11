@@ -51,7 +51,7 @@ const InterviewPage = () => {
         value: item.candidateId,
         label: item.candidateId, 
       }));
-      setFormattedCandidates(formattedCandidateId);
+      setFormattedCandidates([{value:"",label:""},...formattedCandidateId]);
     }
   }, [data,candidateList]);
 
@@ -59,12 +59,14 @@ const InterviewPage = () => {
     setActionLoading(true)
     console.log(data);
     try {
-      setSearchTerm(String(data));
-
+      setSearchTerm(String(searchValue))
+      
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      setActionLoading(false)
       toast.error(error.message);
+    }
+    finally{
+      setActionLoading(false)
     }
   };
 

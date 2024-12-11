@@ -66,6 +66,7 @@ const CreateNotice = ({setIsOpen,modalIsOpen,setActionLoading}:any) => {
           const res = await createNotice(resData);
       
           if (res?.data) {
+            setActionLoading(false);
             setIsOpen(false);
             toast.success("Successfully created.");
           } else {
@@ -85,7 +86,6 @@ const CreateNotice = ({setIsOpen,modalIsOpen,setActionLoading}:any) => {
       
       return (
         <div>
-          {isLoading&&<Loader/>}
              <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}

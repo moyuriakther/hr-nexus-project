@@ -55,10 +55,6 @@ const UpdateNotice = ({setIsOpen,modalIsOpen,id, setActionLoading}:{setIsOpen:an
     
     return (
         <div>
-
-          {
-            isLoading&&<Loader/>
-          }
              <HRModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}

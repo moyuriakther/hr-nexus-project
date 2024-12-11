@@ -35,10 +35,14 @@ const NoticePage = () => {
   const handleSearch: SubmitHandler<FieldValues> =  (data) => {
     console.log(data)
     try {
-      setSearchTerm(data)
+      setSearchTerm(String(data))
+      
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);
+    }
+    finally{
+      setActionLoading(false)
     }
   };
   const excelExportParamsData = {

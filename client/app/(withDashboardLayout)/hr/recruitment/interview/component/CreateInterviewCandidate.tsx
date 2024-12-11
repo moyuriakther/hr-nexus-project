@@ -15,7 +15,7 @@ const CreateInterviewCandidate = ({setIsOpen,modalIsOpen, setActionLoading, data
   
       const [createInterview]=useCreateInterviewMutation({})
       const handleSubmit = async (values: FieldValues) => {
-        const { vivaMarks, writtenMarks, mcqTotalMarks } = values;
+        const { vivaMarks, writtenMarks, mcqTotalMarks ,candidateId} = values;
         const totalMarks = vivaMarks + writtenMarks + mcqTotalMarks;
       
         setIsOpen(false);
@@ -32,12 +32,13 @@ const CreateInterviewCandidate = ({setIsOpen,modalIsOpen, setActionLoading, data
         try {
           const res = await createInterview(resData);
       
-          if (res?.data) {
-            toast.success("Successfully created Interview.");
-          } else {
-            // Extract error message from response if available
-            const errorMessage = res?.error?.message || "Failed to create Interview";
+          if (res?.data.success===false) {
+            console.log("error message: ",res)
+            const errorMessage =res?.data?.message || res?.error?.message || "Interview creation failed.";
             toast.error(errorMessage);
+          } else {
+            // Extract error message from response
+            toast.success("Successfully created!");
           }
         } catch (error) {
           // Handle unexpected errors
@@ -50,6 +51,8 @@ const CreateInterviewCandidate = ({setIsOpen,modalIsOpen, setActionLoading, data
         } finally {
           setActionLoading(false);
         }
+
+
       };
       
 
@@ -75,7 +78,8 @@ const CreateInterviewCandidate = ({setIsOpen,modalIsOpen, setActionLoading, data
                 <label className="col-span-1 w-[200px]">{inputField?.label}</label>
                 {
                   inputField?.key==="candidateId"&&
-                  <HRSelect  className="border-primary h-10 rounded-[5px]  min-w-[340px]" options={data?.candidateId} name={"candidateId"}/>
+                  <HRSelect  className="border-primary h-10 rounded-[5px]  min-w-[340px]" options={data?.candidateId}
+                   name={"candidateId"}/>
                 }
                 {
                   inputField?.key==="isSelected"&&

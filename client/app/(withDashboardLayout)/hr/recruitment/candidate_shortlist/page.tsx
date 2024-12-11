@@ -53,11 +53,14 @@ const CandidateShortlist = () => {
   const handleSearch: SubmitHandler<FieldValues> = (data) => {
     setActionLoading(true)
     try {
-      setSearchTerm(String(data));
-
+      setSearchTerm(String(searchValue))
+      
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);
+    }
+    finally{
+      setActionLoading(false)
     }
   };
 

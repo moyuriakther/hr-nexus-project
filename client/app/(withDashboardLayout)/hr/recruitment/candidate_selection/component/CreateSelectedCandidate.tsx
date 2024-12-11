@@ -27,12 +27,13 @@ const CreateSelectedCandidate = ({setIsOpen,modalIsOpen,data, setActionLoading}:
         try {
           const res = await createSelectedCandidate(resData);
       
-          if (res?.data) {
-            toast.success("Successfully created!");
+          if (res?.data.success===false) {
+            console.log("error message: ",res)
+            const errorMessage =res?.data?.message || res?.error?.message || "Candidate creation failed.";
+            toast.error(errorMessage);
           } else {
             // Extract error message from response
-            const errorMessage = res?.error?.message || "Candidate creation failed.";
-            toast.error(errorMessage);
+            toast.success("Successfully created!");
           }
         } catch (error) {
           // Handle unexpected errors

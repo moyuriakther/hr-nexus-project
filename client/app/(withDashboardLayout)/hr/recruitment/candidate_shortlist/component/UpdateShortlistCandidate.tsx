@@ -21,10 +21,10 @@ const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:a
       setActionLoading(true);
     
       const resData = {
-        ...data,
         ...values,
         candidateId:data?.candidateId,
-        interviewDate: new Date(values?.interviewDate).toISOString(),
+        interviewDate: new Date(values?.interviewDate).toISOString()||data?.interviewDate,
+        meetingLink:values?.meetingLink||data?.meetingLink,
       };
     
       console.log(resData)

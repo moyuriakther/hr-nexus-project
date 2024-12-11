@@ -5,6 +5,7 @@ import { interviewTableHeader } from "../fakeData";
 import { useDeleteInterviewMutation, useUpdateInterviewMutation } from "@/app/Redux/api/interviewListApi";
 import { toast } from "sonner";
 import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 const InterviewCandidate=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TInterview[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
  const user=getUserFromLocalStorage()

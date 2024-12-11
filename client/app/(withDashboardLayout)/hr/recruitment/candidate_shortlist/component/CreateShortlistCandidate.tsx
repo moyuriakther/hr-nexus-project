@@ -25,12 +25,13 @@ const CreateShortlistCandidate = ({ setIsOpen, modalIsOpen , setActionLoading,da
     try {
       const res = await createShortlistCandidate(resData);
   
-      if (res?.data) {
-        toast.success("Successfully created shortlist candidate.");
+      if (res?.data.success===false) {
+        console.log("error message: ",res)
+        const errorMessage =res?.data?.message || res?.error?.message || "Shortlist creation failed.";
+        toast.error(errorMessage);
       } else {
         // Extract error message from response
-        const errorMessage = res?.error?.message || "Failed to create shortlist candidate.";
-        toast.error(errorMessage);
+        toast.success("Successfully created!");
       }
     } catch (error) {
       // Handle unexpected errors

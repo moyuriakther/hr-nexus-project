@@ -37,7 +37,6 @@ const CandidateList = () => {
   
   const handleSearch: SubmitHandler<FieldValues> =  (searchValue) => {
    
-    console.log(searchValue)
     setActionLoading(true)
     try {
       setSearchTerm(String(searchValue))
@@ -45,6 +44,9 @@ const CandidateList = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);
+    }
+    finally{
+      setActionLoading(false)
     }
   };
 

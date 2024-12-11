@@ -58,8 +58,8 @@ const [formattedInterviewId, setFormattedInterviewId] = useState<
         value: item.interviewId,
         label: item.interviewId, 
       }));
-      setFormattedInterviewId(formattedInterviewId);
-      setFormattedCandidates(formattedCandidateId)
+      setFormattedInterviewId([{value:"",label:""},...formattedInterviewId]);
+      setFormattedCandidates([{value:"",label:""},...formattedCandidateId]);
     }
   }, [data,interviewlist]);
   const handleSearch: SubmitHandler<FieldValues> = (data) => {
@@ -70,6 +70,9 @@ const [formattedInterviewId, setFormattedInterviewId] = useState<
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);
+    }
+    finally{
+      setActionLoading(false)
     }
   };
 
