@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hi, We're Team **Binary Brains!** 👋
 
-## Getting Started
+# HR NEXUS (Human Resource Management System)
 
-First, run the development server:
+## Team Structure
+
+- [Abdullah Al Habib (Project Manager)](https://github.com/)
+- [Tasmim Rahman (Team Leader & Frontend Developer)](https://github.com/tasmim20)
+- [Mahin Khan (Team Co-Leader & Full Stack Developer)](https://github.com/)
+- [Moyuri Akther (GitHub Manager & Full Stack Developer)](https://github.com/)
+- [Md Masum (Team Member & Backend Developer)](https://github.com/developerMasum)
+- [Mohamad Osman Goni(Team Member & Full Stack Developer)](https://github.com/osmangoni20)
+- [Rakib Hosen(Team Member & Full Stack Developer)](https://github.com/)
+
+## Project Description
+
+**HR Nexus** is an innovative Human Resource Management System tailored for small and medium-sized enterprises. It simplifies and optimizes HR operations by providing tools for recruitment, payroll, attendance tracking, and employee engagement. Designed with a focus on efficiency and user experience, HR Nexus empowers HR managers to streamline workflows and boost organizational productivity.
+
+## DEMO
+
+[Live Site](https://hr-management-app-nine.vercel.app/)
+
+## Technology Stack
+
+- **Frontend**: Next.js
+- **Backend**: PostgreSQL
+- **Styling Tools**: Tailwind CSS
+- **ORM**: Prisma
+- **State Management**: Redux
+- **Authentication**: JWT Authentication
+
+## Documentation
+
+[Documentation](https://docs.google.com/document/d/1TaWfmGoja4vFwXwXBr6rOYcMhutFriDy5cCnk9MdP6s/edit?usp=sharing)
+
+## Features
+
+### **User Roles**
+
+#### **HR Manager**
+
+Responsible for managing HR operations, overseeing employee activities, and ensuring platform functionality.
+
+#### **Employee**
+
+Regular users with access to personal and organizational resources.
+
+---
+
+### **Key Features**
+
+#### **For HR Manager**
+
+1. **Employee Management**
+   - Post employee position
+2. **Award list**
+   - award listing for best performance
+3. **Department and subdepartment management**
+4. **Loan management**
+5. **Payroll Management**
+   - Automate salary calculations
+   - Tax deduction and reimbursement processing
+   - Provide downloadable payslips
+6. **Project Management**
+7. **Report Management**
+
+#### **For Employees**
+
+1. **Attendance**
+2. **Leave Requests**
+
+   - Submit and track leave requests
+
+3. **Payslips & Tax Information**
+
+   - Access and download monthly payslips
+   - View tax details
+
+4. **Task Tracking**
+
+   - View assigned tasks
+   - Monitor completion status
+
+5. **Resource Access**
+   - Access company policies, training materials, and internal resources
+
+---
+
+## Run Locally
+
+Clone the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  git clone https://github.com/moyuriakther/hr-nexus-project
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to the project directory
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+  cd client
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Install dependencies
 
-## Learn More
+```bash
+  npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+Start the server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+  npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Contributors
 
-## Deploy on Vercel
+- [Tasmim Rahman (Team Leader & Frontend Developer)](https://github.com/developerMasum)
+- [Mahin Khan (Team Co-Leader & Full Stack Developer)](https://github.com/developerMasum)
+- [Moyuri Akther (GitHub Manager & Full Stack Developer)](https://github.com/moyuriakther)
+- [(Team Lead)](https://github.com/developerMasum)
+- [Kabir Hossen (Team Member) ](https://github.com/programmer-kabir)
+- [@Saiful Islam ](https://github.com/saifulaija)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Feedback
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+We welcome contributions! Please fork the repository and create a pull request with your proposed changes.
+
+## Contact
+
+For questions or feedback, reach out to [Your Name](tasmim.tr@gmail.com).
