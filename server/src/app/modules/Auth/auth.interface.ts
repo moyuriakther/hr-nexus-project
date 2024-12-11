@@ -1,5 +1,3 @@
-
-
 export type ILoginUser = {
   email: string;
   password: string;
@@ -17,7 +15,6 @@ export type IRefreshTokenResponse = {
 
 export type IVerifiedLoginUser = {
   userId: string;
-
 };
 
 export type IChangePassword = {

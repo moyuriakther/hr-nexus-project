@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signInUser } from "@/app/services/actions/userLogin";
 import { storeUserInfo } from "@/app/services/actions/auth.services";
+import Link from "next/link";
 
 const predefinedUsers = [
   {
@@ -76,7 +77,7 @@ const LoginForm = () => {
             type="email"
             placeholder="Enter Email Address"
             name="email"
-            // value={email}
+            // defaultValue={email}
             // onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -86,7 +87,7 @@ const LoginForm = () => {
             name="password"
             type="password"
             placeholder="Enter Password"
-            // value={password}
+            // defaultValue={password}
             // onChange={(e) => setPassword(e.target.value)}
           />
         </div>
@@ -115,12 +116,12 @@ const LoginForm = () => {
           </table>
         </div>
         <div className="flex justify-end py-3">
-          <p
+          <Link
+            href="/forgot-password"
             className="cursor-pointer text-sm text-primary hover:underline"
-            onClick={() => router.push("/forgot-password")}
           >
             Forgot Password?
-          </p>
+          </Link>
         </div>
         <Button
           type="submit"

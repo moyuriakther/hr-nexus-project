@@ -18,8 +18,10 @@ import { useRouter } from "next/navigation";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { CgMenuRight } from "react-icons/cg";
 import { MdCleaningServices } from "react-icons/md";
+import { useState } from "react";
 
 const Header = () => {
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.sidebar);
   const { data: myProfile } = useGetMyProfileQuery("");
@@ -27,6 +29,23 @@ const Header = () => {
   const handleLogOut = () => {
     logoutUser(router);
   };
+
+  const handleFullscreen = () => {
+    const element = document.documentElement;
+
+    if (!isFullscreen) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    setIsFullscreen(!isFullscreen);
+  };
+
   return (
     <div className="px-4 py-3 shadow-md sticky top-0 bg-white z-[9]">
       <div className="flex items-center justify-between">
@@ -49,6 +68,7 @@ const Header = () => {
         <div className="flex items-center gap-3">
           <Button
             isIconOnly
+            onClick={handleFullscreen}
             className="bg-secondary bg-opacity-70 rounded-full"
           >
             <AiOutlineFullscreen className="size-5" />
@@ -103,12 +123,8 @@ const Header = () => {
 
               {/* Manage Account */}
               <DropdownItem key="settings" className="mt-3">
-
-               
-       
                 <Link
                   href="dashboard/profile"
-
                   className="text-center block text-[#188753] text-[16px]"
                 >
                   Manage your account
