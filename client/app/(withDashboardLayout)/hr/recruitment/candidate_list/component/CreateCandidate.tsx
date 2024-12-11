@@ -11,15 +11,19 @@ import { candidateInputFields } from "../fakeData";
 import HRFileInput from "@/app/components/Form/HRFileInput";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateCandidate = ({ setIsOpen, modalIsOpen }: any) => {
+const CreateCandidate = ({ setIsOpen, modalIsOpen,setActionLoading }: any) => {
   const [createCandidate] = useCreateCandidateMutation();
   const handleSubmit: SubmitHandler<FieldValues> = async (
     values: FieldValues
   ) => {
+    setIsOpen(false);
+    setActionLoading(true);
+  
     const file = values.photograph?.[0] || values.photograph;
     let imageUrl;
-
+  
     try {
+      // Upload the image if a file is provided
       if (file) {
         imageUrl = await uploadImage(file);
         console.log("Uploaded Image URL:", imageUrl);
@@ -28,24 +32,44 @@ const CreateCandidate = ({ setIsOpen, modalIsOpen }: any) => {
       }
     } catch (error) {
       console.error("Image upload failed:", error);
+      toast.error("Image upload failed. Please try again.");
+      setActionLoading(false);
+      return;
     }
-
+  
+    // Prepare the data for API
     const resData = {
       ...values,
       photograph: imageUrl,
     };
-
-    console.log(resData);
-
-    const res = await createCandidate(resData);
-
-    if (res?.data) {
-      setIsOpen(false)
-      toast.success("successfully created ");
-    } else {
-      toast.error("Didn't created");
+  
+    console.log("Request Data:", resData);
+  
+    try {
+      const res = await createCandidate(resData);
+  
+      if (res?.data.success===false) {
+        console.log("error message: ",res)
+        const errorMessage =res?.data?.message || res?.error?.message || "Candidate creation failed.";
+        toast.error(errorMessage);
+      } else {
+        // Extract error message from response
+        toast.success("Successfully created!");
+      }
+    } catch (error) {
+      // Handle unexpected errors
+      console.error("Error creating candidate:", error);
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "An unexpected error occurred.";
+      toast.error(errorMessage);
+    } finally {
+      // Ensure loading state is reset
+      setActionLoading(false);
     }
   };
+  
   return (
     <div>
       <HRModal
@@ -65,7 +89,7 @@ const CreateCandidate = ({ setIsOpen, modalIsOpen }: any) => {
                 </label>
 
                 {inputField?.type == "file" ? (
-                  <HRFileInput name={`${inputField?.key}`} label="" />
+                  <HRFileInput name={inputField?.key}  className="border-primary h-10 rounded-[5px]  min-w-[340px]"  label="" />
                 ) : (
                   <HRInput
                     type={inputField?.type}

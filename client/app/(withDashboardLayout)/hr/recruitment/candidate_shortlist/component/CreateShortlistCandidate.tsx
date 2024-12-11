@@ -7,33 +7,45 @@ import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { shortlistInputFields } from "../fakeData";
 import { useCreateShortlistCandidateMutation } from "@/app/Redux/api/shortListApi";
+import Select from "../../component/Select";
+import HRSelect from "@/app/components/Form/HRSelect";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateShortlistCandidate = ({ setIsOpen, modalIsOpen }: any) => {
-  const [CreateShortlistCandidate] = useCreateShortlistCandidateMutation({});
+const CreateShortlistCandidate = ({ setIsOpen, modalIsOpen , setActionLoading,data}: any) => {
+  const [createShortlistCandidate] = useCreateShortlistCandidateMutation();
   const handleSubmit = async (values: FieldValues) => {
+    setIsOpen(false);
+    setActionLoading(true);
+  
     const resData = {
+      ...data,
       ...values,
     };
-
-    console.log(resData);
-    // let profileImage;
-
-    // if (file) {
-    //   const formData = new FormData();
-    //   formData.append("image", file[0]);
-
-    //   profileImage = await imageUploadIntoImgbb(formData);
-    // }
-
-    const res = await CreateShortlistCandidate(resData);
-
-    if (res?.data) {
-      toast.success("successfully created ");
-    } else {
-      toast.error("Didn't created");
+  
+    try {
+      const res = await createShortlistCandidate(resData);
+  
+      if (res?.data.success===false) {
+        console.log("error message: ",res)
+        const errorMessage =res?.data?.message || res?.error?.message || "Shortlist creation failed.";
+        toast.error(errorMessage);
+      } else {
+        // Extract error message from response
+        toast.success("Successfully created!");
+      }
+    } catch (error) {
+      // Handle unexpected errors
+      console.error("Error creating shortlist candidate:", error);
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "An unexpected error occurred while creating the shortlist candidate.";
+      toast.error(errorMessage);
+    } finally {
+      setActionLoading(false);
     }
   };
+  
   return (
     <div>
       <HRModal
@@ -51,13 +63,18 @@ const CreateShortlistCandidate = ({ setIsOpen, modalIsOpen }: any) => {
                 <label className="col-span-1 w-[200px]">
                   {inputField?.label}
                 </label>
-                <HRInput
+                {
+                  inputField?.key==="candidateId"?
+                  <HRSelect  className="border-primary h-10 rounded-[5px]  min-w-[340px]" options={data?.candidateId} name={"candidateId"}/>
+                  : <HRInput
                   type={inputField?.type}
                   className="border-primary h-10 rounded-[5px]  min-w-[340px]"
                   placeholder={inputField?.placeholder}
                   name={`${inputField?.key}`}
                   required={inputField?.required}
+                
                 />
+                }
               </div>
             );
           })}

@@ -374,15 +374,34 @@ CREATE TABLE "short_lists" (
 );
 
 -- CreateTable
-CREATE TABLE "candidate_selections" (
+CREATE TABLE "interview" (
     "id" TEXT NOT NULL,
-    "position" TEXT,
-    "selectionTerms" TEXT,
-    "shortListedCandidateId" TEXT NOT NULL,
+    "interviewer" TEXT,
+    "interviewDate" TEXT NOT NULL,
+    "interviewId" TEXT NOT NULL,
+    "vivaMarks" TEXT,
+    "writtenMarks" TEXT,
+    "mcqTotalMarks" TEXT,
+    "totalMarks" TEXT,
+    "meetingLink" TEXT,
+    "isSelected" BOOLEAN NOT NULL DEFAULT false,
+    "candidateId" TEXT NOT NULL,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "candidateListId" TEXT,
+
+    CONSTRAINT "interview_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "candidate_selections" (
+    "id" TEXT NOT NULL,
+    "selectionTerms" TEXT,
+    "interviewId" TEXT NOT NULL,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "candidateId" TEXT NOT NULL,
 
     CONSTRAINT "candidate_selections_pkey" PRIMARY KEY ("id")
 );
@@ -399,25 +418,6 @@ CREATE TABLE "notice_boards" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "notice_boards_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "interview" (
-    "id" TEXT NOT NULL,
-    "interviewer" TEXT,
-    "interviewDate" TEXT NOT NULL,
-    "vivaMarks" TEXT,
-    "writtenMarks" TEXT,
-    "mcqTotalMarks" TEXT,
-    "totalMarks" TEXT,
-    "meetingLink" TEXT,
-    "isSelected" BOOLEAN NOT NULL DEFAULT false,
-    "shortListedCandidateId" TEXT NOT NULL,
-    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "interview_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -463,10 +463,10 @@ ALTER TABLE "awards" ADD CONSTRAINT "awards_employeeId_fkey" FOREIGN KEY ("emplo
 ALTER TABLE "loans" ADD CONSTRAINT "loans_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "employees"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "short_lists" ADD CONSTRAINT "short_lists_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "candidate_lists"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "short_lists" ADD CONSTRAINT "short_lists_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "candidate_lists"("candidateId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "candidate_selections" ADD CONSTRAINT "candidate_selections_shortListedCandidateId_fkey" FOREIGN KEY ("shortListedCandidateId") REFERENCES "short_lists"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "interview" ADD CONSTRAINT "interview_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "short_lists"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "interview" ADD CONSTRAINT "interview_shortListedCandidateId_fkey" FOREIGN KEY ("shortListedCandidateId") REFERENCES "short_lists"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "candidate_selections" ADD CONSTRAINT "candidate_selections_interviewId_fkey" FOREIGN KEY ("interviewId") REFERENCES "interview"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

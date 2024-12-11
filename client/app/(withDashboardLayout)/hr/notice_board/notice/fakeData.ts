@@ -1,10 +1,13 @@
+import { USER_ROLE } from "@/app/constants";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+const user=getUserFromLocalStorage()
 export   const noticeTableHeader = [
     "SI",
     "Notice type",
     "Description",
     "Notice date",
     "Notice by",
-    "Action",
+   `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
   ];
 
   export const noticeModalInputFiled= [
@@ -22,20 +25,20 @@ export   const noticeTableHeader = [
       placeholder: "Notice description",
       required: true,
     },
-    {
-      name: "noticeDate",
-      label: "Notice date",
-      type: "date",
-      placeholder: "Notice date",
-      required: true,
-    },
-    {
-      name: "noticeAttachment",
-      label: "Notice attachment",
-      type: "file",
-      placeholder: "Choose File",
-      required: true,
-    },
+    // {
+    //   name: "noticeDate",
+    //   label: "Notice date",
+    //   type: "date",
+    //   placeholder: "Notice date",
+    //   required: true,
+    // },
+    // {
+    //   name: "noticeAttachment",
+    //   label: "Notice attachment",
+    //   type: "file",
+    //   placeholder: "Choose File",
+    //   required: true,
+    // },
     {
       name: "noticeBy",
       label: "Notice by",

@@ -6,7 +6,7 @@ type TSelectProps = {
   label?: string;
   required?: boolean;
   placeholder?: string;
-  options: { value: string | number; label: string }[];
+  options: { value: string | number|boolean; label: string }[];
   className?: string;
   defaultValue?: string | number;
 };
@@ -20,7 +20,7 @@ const HRSelect = ({
   defaultValue,
 }: TSelectProps) => {
   const { control } = useFormContext();
-
+console.log(options)
   return (
     <div>
       <Controller

@@ -1,5 +1,8 @@
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { TInterviewInputField } from "../Type/type";
+import { USER_ROLE } from "@/app/constants";
 
+const user=getUserFromLocalStorage()
 
 export   const interviewTableHeader: string[] = [
     "Sl",
@@ -12,36 +15,36 @@ export   const interviewTableHeader: string[] = [
     "MCQ Marks",
     "Total Marks",
     "Selection",
-    "Action",
+    `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
   ];
 
   export   const interviewInputFiled: TInterviewInputField[] = [
-    { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name" ,required:true},
+    { id: 1, label: "Interviewer Name", key: "interviewer", type: "text", placeholder: "Enter Interviewer name" ,required:true},
     {
       id: 2,
-      label: "Candidate ID (Shortlisted Candidate)",
+      label: "Candidate ID",
       key: "candidateId",
       type: "text",
-      placeholder: "Enter candidate ID",
+      placeholder: "Enter Shortlisted Candidate ID",
       required:true
     },
-    {
-      id: 3,
-      label: "Job Position",
-      key: "jobPosition",
-      type: "text",
-      placeholder: "Enter Job Position",
-      required:true
-    },
+    // {
+    //   id: 3,
+    //   label: "Job Position",
+    //   key: "jobPosition",
+    //   type: "text",
+    //   placeholder: "Enter Job Position",
+    //   required:true
+    // },
    
-    {
-      id: 4,
-      label: "Interview Date",
-      key: "interviewDate",
-      type: "text",
-      placeholder: "Enter Interview Date",
-      required:true
-    },
+    // {
+    //   id: 4,
+    //   label: "Meet Link",
+    //   key: "meetingLink",
+    //   type: "text",
+    //   placeholder: "Enter Meet Link",
+    //   required:true
+    // },
     {
         id: 6,
         label: "Viva Marks",
@@ -53,7 +56,7 @@ export   const interviewTableHeader: string[] = [
       {
         id: 7,
         label: "Written Total Marks",
-        key: "writtenTotalMarks",
+        key: "writtenMarks",
         type: "number",
         placeholder: "Enter written total marks",
         required:true
@@ -66,18 +69,18 @@ export   const interviewTableHeader: string[] = [
         placeholder: "Enter MCQ total marks",
         required:true
       },
-      {
-        id: 9,
-        label: "Total Marks",
-        key: "totalMarks",
-        type: "number",
-        placeholder: "Enter total marks",
-        required:true
-      },
+      // {
+      //   id: 9,
+      //   label: "Total Marks",
+      //   key: "totalMarks",
+      //   type: "number",
+      //   placeholder: "Enter total marks",
+      //   required:true
+      // },
       {
         id: 10,
         label: "Selection",
-        key: "selection",
+        key: "isSelected",
         type: "text",
         placeholder: "Enter selection status",
         required:true
