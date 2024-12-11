@@ -12,13 +12,19 @@ import { pageHeaderData } from "../components/pageHeaderData";
 import { useState } from "react";
 
 import Link from "next/link";
-
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 const WeeklyHolidayPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const user = getUserFromLocalStorage();
 
   const { data: holidays } = useGetAllWeekDaysQuery({ searchTerm });
-  const tableHeader = ["Sl", "Day Name", "Action"];
+  const tableHeader = [
+    "Sl",
+    "Day Name",
+    `${user?.role === USER_ROLE.ADMIN && "Action"}`,
+  ];
 
   return (
     <div className="min-h-[89vh]">
@@ -35,15 +41,17 @@ const WeeklyHolidayPage = () => {
               <HRTableRow>{i + 1}</HRTableRow>
               <HRTableRow>{holiday.dayName.join(", ")}</HRTableRow>
 
-              <HRTableRow>
-                <div className="flex items-center gap-2">
-                  <Link href={`weekly_holiday/edit/${holiday?.id}`}>
-                    <button className="bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center">
-                      <FaEdit className="text-base" />
-                    </button>
-                  </Link>
-                </div>
-              </HRTableRow>
+              {user?.role === USER_ROLE.ADMIN && (
+                <HRTableRow>
+                  <div className="flex items-center gap-2">
+                    <Link href={`weekly_holiday/edit/${holiday?.id}`}>
+                      <button className="bg-blue-100 text-blue-500 border border-blue-500 rounded-[4px] p-1 w-8 h-8 font-[400] flex justify-center items-center">
+                        <FaEdit className="text-base" />
+                      </button>
+                    </Link>
+                  </div>
+                </HRTableRow>
+              )}
             </tr>
           ))}
         </HRTable>
