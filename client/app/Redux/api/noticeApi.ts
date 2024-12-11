@@ -5,22 +5,22 @@ export const notice = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createNotice: build.mutation({
       query: (data) => ({
-        url: "/notice/create-notice",
+        url: "/noticeboard/create",
         method: "POST",
         data,
       }),
       invalidatesTags: [tagTypes.notice],
     }),
     getAllNotice: build.query({
-      query: () => ({
-        url: "/notice",
+      query: ({ searchTerm }) => ({
+        url: `/noticeboard${searchTerm ? `?searchTerm=${searchTerm}` : ""}`,
         method: "GET",
       }),
       providesTags: [tagTypes.notice],
     }),
     getSingleNotice: build.query({
       query: (id) => ({
-        url: `/notice/${id}`,
+        url: `/noticeboard/${id}`,
         method: "GET",
       }),
       providesTags: [tagTypes.notice],
@@ -28,7 +28,7 @@ export const notice = baseApi.injectEndpoints({
 
     deleteNotice: build.mutation({
       query: (id) => ({
-        url: `/notice/${id}`,
+        url: `/noticeboard/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [tagTypes.notice],
@@ -36,7 +36,7 @@ export const notice = baseApi.injectEndpoints({
 
     updateNotice: build.mutation({
       query: (data) => ({
-        url: `/notice/${data.id}`,
+        url: `/noticeboard/${data.id}`,
         method: "PATCH",
         data: data.body,
       }),

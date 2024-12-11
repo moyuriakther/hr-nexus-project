@@ -1,5 +1,8 @@
+import { USER_ROLE } from "@/app/constants";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+const user=getUserFromLocalStorage()
 export const selectionInputFields = [
-    { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name",required:true },
+    // { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name",required:true },
     {
       id: 2,
       label: "Candidate ID",
@@ -8,22 +11,23 @@ export const selectionInputFields = [
       placeholder: "Enter candidate ID"
       ,required:true
     },
+    // {
+    //   id: 3,
+    //   label: "Employee ID",
+    //   key: "employeeId",
+    //   type: "text",
+    //   placeholder: "Enter employee ID",
+    //   required:true
+    // },
     {
       id: 3,
-      label: "Employee ID",
-      key: "employeeId",
+      label: "Interview ID",
+      key: "interviewId",
       type: "text",
-      placeholder: "Enter employee ID",
+      placeholder: "Enter Interview ID",
       required:true
     },
-    {
-      id: 4,
-      label: "Position",
-      key: "position",
-      type: "text",
-      placeholder: "Enter position",
-      required:true
-    },
+   
     {
       id: 5,
       label: "Selection Terms",
@@ -41,5 +45,5 @@ export   const  selectionTableHeader:string[] = [
     "Employee ID",
     "Position",
     "Selection Terms",
-    "Action",
+   `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
   ];

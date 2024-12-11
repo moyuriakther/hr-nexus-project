@@ -28,7 +28,7 @@ export const candidateListApi = baseApi.injectEndpoints({
 
     deleteCandidate: build.mutation({
       query: (id) => ({
-        url: `candidates/${id}`,
+        url: `/candidates/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [tagTypes.candidateList],
@@ -36,7 +36,7 @@ export const candidateListApi = baseApi.injectEndpoints({
 
     updateCandidate: build.mutation({
       query: (data) => ({
-        url: `candidates/${data.id}`,
+        url: `/candidates/${data.id}`,
         method: "PATCH",
         data: data.body,
       }),

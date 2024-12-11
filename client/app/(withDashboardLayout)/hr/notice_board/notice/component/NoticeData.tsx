@@ -1,21 +1,21 @@
 import HRTable from "@/app/components/Table/HRTable";
 import Loader from "@/app/components/utils/Loader";
-import { useDeleteCandidateMutation } from "@/app/Redux/api/candidateListApi";
-import {  useState } from "react";
+import {  SetStateAction, useState } from "react";
 import { noticeTableHeader } from "../fakeData";
 import { TNoticeData } from "../Type/type";
-import PaginationSoluation from "@/app/(withDashboardLayout)/components/UI/Pagination";
+import { useUpdateNoticeMutation } from "@/app/Redux/api/noticeApi";
+import { toast } from "sonner";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
 
 
-const NoticeData=({data, isLoading}:{data:TNoticeData[],isLoading:boolean})=>{
+const NoticeData=({data, isLoading,handleEdit, isActionLoading, setActionLoading}:{data:TNoticeData[],setActionLoading:any, isLoading:boolean,handleEdit:any, isActionLoading:any})=>{
     
-    const [deleteCandidate] = useDeleteCandidateMutation({});
-  const [updateModalIsOpen, setIsUpdateModal]=useState(false)
+  const user=getUserFromLocalStorage();
 
-  const [currentPage, setCurrentPage]=useState(1)
-  const totalPage=Math.round(data?.length/5)
-  const startIndex=Number(currentPage)*5-5
-  const lastIndex=startIndex+5
+  
+    const [UpdateNotice] = useUpdateNoticeMutation();
+ 
     if (isLoading) {
       return <Loader />;
     }
@@ -30,19 +30,34 @@ const NoticeData=({data, isLoading}:{data:TNoticeData[],isLoading:boolean})=>{
       );
     }
     const handleDelete = async (id: string|number) => {
-        const res = await deleteCandidate(id);
-        console.log(res);
+      setActionLoading(true)
+      
+      try {
+       const res= await UpdateNotice({
+          id:id,
+          body:{isDeleted:true}
+        });
+        setActionLoading(false)
+        if(res.data){
+         
+          toast.success("Delete Successfully")
+        }
+        
+      } catch (error) {
+        setActionLoading(false)
+        toast.error(error?.message)
+      }
+       
       };
-      const handleEdit = (id: number | string) => {
-        setIsUpdateModal(!updateModalIsOpen);
-        console.log(id);
-    
-      };
+      
     
     return(
         <>
+        {
+          isLoading||isActionLoading&&<Loader/>
+        }
              <HRTable tableHeader={noticeTableHeader}>
-       {data?.slice(startIndex,lastIndex).map((notice, index) => {
+       {data?.map((notice, index) => {
           return (
             <tr
               className={`${
@@ -59,13 +74,13 @@ const NoticeData=({data, isLoading}:{data:TNoticeData[],isLoading:boolean})=>{
               <td className="py-2 w-2/6 border-r border-gray-200 px-3">
                 {notice?.description}
               </td>
-              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
-                {notice?.noticeDate}
+              <td className="py-2 w-1/6 border-r border-gray-200 px-3 text-center">
+                {notice?.createdAt}
               </td>
-              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
+              <td className="py-2 w-1/6 border-r border-gray-200 px-3 text-center">
                 {notice?.noticeBy}
               </td>
-              <td className="w-1/6 border-r border-gray-200 px-3">
+              {user?.role===USER_ROLE.ADMIN&&<td className="w-1/6 border-r border-gray-200 px-3">
                 <ul className="flex gap-2 items-center  p-2 ">
                   <li
                     onClick={() => handleEdit(notice?.id)}
@@ -100,14 +115,15 @@ const NoticeData=({data, isLoading}:{data:TNoticeData[],isLoading:boolean})=>{
                   </li>
                 </ul>
               </td>
+       }
             </tr>
           );
         })}
       </HRTable>
-      <div className="flex justify-between items-center my-4">
+      {/* <div className="flex justify-between items-center my-4">
         <p>Showing 1 to 5 entries</p>
         <PaginationSoluation currentPage={currentPage} totalPage={totalPage} setCurrentPage={setCurrentPage}/>
-      </div>
+      </div> */}
         </>
     )
 }

@@ -3,36 +3,104 @@
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import SearchAndModal from "../component/SearchAndModal";
-import { selectionTableHeader } from "./fakeData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectedCandidate from "./component/SelectedCandidate";
 import { useGetAllSelectedCandidateQuery } from "@/app/Redux/api/selectedListApi";
+import CreateSelectedCandidate from "./component/CreateSelectedCandidate";
+import UpdateSelectedCandidate from "./component/UpdateSelectedCandidate";
+import Loader from "@/app/components/utils/Loader";
+import { useGetAllInterviewQuery } from "@/app/Redux/api/interviewListApi";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 
 // Array of Input Fields
 
 const CandidateSelectionPage = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetAllSelectedCandidateQuery({});
+
   const [limit, setLimit]=useState(10)
-  const handleSearch: SubmitHandler<FieldValues> = async (data) => {
+  const [updateModalIsOpen, setIsUpdateModal]=useState(false)
+  const [ID, setId]=useState("");
+  const [searchTerm, setSearchTerm]=useState('')
+  const [candidateId, setCandidateId] = useState([]);
+
+  const [isActionLoading, setActionLoading] = useState(false);
+  const query:string=searchTerm==="all"?"":searchTerm
+  const { data, isLoading } = useGetAllSelectedCandidateQuery({searchTerm:query});
+  const [formattedCandidateId, setFormattedCandidates] = useState<
+  { value: string; label: string }[]
+>([]);
+const [formattedInterviewId, setFormattedInterviewId] = useState<
+  { value: string; label: string }[]
+>([]);
+  const { data:interviewlist } = useGetAllInterviewQuery({});
+
+  
+
+
+  useEffect(() => {
+
+    if (data?.data) {
+      setActionLoading(false)
+      const extractCandidateID = data.data.map(
+        (item: { candidateId: string }) => item?.candidateId
+      );
+      console.log("Extracted Candidate Id:", extractCandidateID);
+      setCandidateId(extractCandidateID);
+    }
+
+  
+    if (interviewlist) {
+      const formattedCandidateId = interviewlist?.data.map((item) => ({
+        value: item.candidateId,
+        label: item.candidateId, 
+      }));
+      const formattedInterviewId = interviewlist?.data.map((item) => ({
+        value: item.interviewId,
+        label: item.interviewId, 
+      }));
+      setFormattedInterviewId(formattedInterviewId);
+      setFormattedCandidates(formattedCandidateId)
+    }
+  }, [data,interviewlist]);
+  const handleSearch: SubmitHandler<FieldValues> = (data) => {
+    setActionLoading(true)
     try {
-      console.log(data);
+      setSearchTerm(String(data));
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);
     }
   };
 
+  const handleEdit = (id: string) => {
+    setIsUpdateModal(!updateModalIsOpen);
+    setId(ID)
+    console.log(id);
+
+  };
   const excelExportParamsData = {
     data,
-    headers: selectionTableHeader,
     baseFileName: "candidate_selection_list",
     isLoading: false,
-    displayField: "CandidateSelectionList",
   };
-  const paginatedData=data?.data.slice(0,Number(limit))
+
+  const paginatedData = data?.data.slice(0, Number(limit));
   return (
     <div className="bg-white w-full min-h-screen rounded-2xl p-4 ">
+      {(isLoading || isActionLoading) && <Loader />}
+      <CreateSelectedCandidate
+       setIsOpen={setIsOpen}
+       modalIsOpen={modalIsOpen}
+       data={{candidateId:formattedCandidateId, interviewId:formattedInterviewId}}
+       setActionLoading={setActionLoading}
+      />
+      <UpdateSelectedCandidate
+        setIsOpen={setIsUpdateModal}
+        modalIsOpen={updateModalIsOpen}
+        id={ID}
+        setActionLoading={setActionLoading}
+      />
       <SearchAndModal
         excelExportParamsData={excelExportParamsData}
         menuName={"Candidate Selection "}
@@ -40,8 +108,16 @@ const CandidateSelectionPage = () => {
         setIsOpen={setIsOpen}
         handleSearch={handleSearch}
         setLimit={setLimit}
+        searchKey={candidateId}
       ></SearchAndModal>
-      <SelectedCandidate data={paginatedData} isLoading={isLoading}/>
+
+      <SelectedCandidate
+      isActionLoading={isActionLoading}
+        data={paginatedData}
+        setActionLoading={setActionLoading}
+        isLoading={isLoading}
+        handleEdit={handleEdit}
+      />
     </div>
   );
 };

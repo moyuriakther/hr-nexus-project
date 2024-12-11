@@ -1,3 +1,6 @@
+import { USER_ROLE } from "@/app/constants";
+import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+const user =getUserFromLocalStorage()
 export  const candidateTableHeader = [
   "SI",
   "Candidate Name",
@@ -6,19 +9,19 @@ export  const candidateTableHeader = [
   "Email",
   "SSN",
   "Phone",
-  "Action"
+ `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
 ];
 
 export const candidateInputFields = [
   { id: 1, label: "Name", key: "name", type: "text", placeholder: "Enter name" ,required:true},
-  {
-    id: 2,
-    label: "Candidate ID",
-    key: "candidateId",
-    type: "text",
-    placeholder: "Enter candidate ID",
-    required:true
-  },
+  // {
+  //   id: 2,
+  //   label: "Candidate ID",
+  //   key: "candidateId",
+  //   type: "text",
+  //   placeholder: "Enter candidate ID",
+  //   required:true
+  // },
   {
     id: 3,
     label: "Photograph",

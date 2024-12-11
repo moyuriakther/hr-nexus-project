@@ -30,10 +30,10 @@ export type TInterview = {
     jobPosition: string;
     interviewDate: string;
     vivaMarks: number;
-    writtenTotalMarks: number;
+    writtenMarks: number;
     mcqTotalMarks: number;
     totalMarks: number;
-    selection: string;
+    isSelected: string;
 }
 export type TInterviewInputField = {
     id: number;       

@@ -7,7 +7,7 @@ import { NoticeboardSearchableFields } from "./noticeboard.utils";
 
 // Create a new Noticeboard
 const createNoticeboard = async (data: any) => {
-  const result = await prisma.noticeBoard.create({
+  const result = await prisma.noticeData.create({
     data: {
       ...data,
     },
@@ -20,7 +20,7 @@ const getAllNoticeboards = async (params: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
-  const andConditions: Prisma.NoticeBoardWhereInput[] = [
+  const andConditions: Prisma.NoticeDataWhereInput[] = [
     {
       isDeleted: false,
     },
@@ -50,11 +50,11 @@ const getAllNoticeboards = async (params: any, options: IPaginationOptions) => {
   }
 
   // Combine conditions
-  const whereConditions: Prisma.NoticeBoardWhereInput =
+  const whereConditions: Prisma.NoticeDataWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
   // Fetch data with pagination and sorting
-  const result = await prisma.noticeBoard.findMany({
+  const result = await prisma.noticeData.findMany({
     where: whereConditions,
     skip,
     take: limit,
@@ -65,7 +65,7 @@ const getAllNoticeboards = async (params: any, options: IPaginationOptions) => {
   });
 
   // Get total count
-  const total = await prisma.noticeBoard.count({ where: whereConditions });
+  const total = await prisma.noticeData.count({ where: whereConditions });
 
   return {
     meta: {
@@ -79,7 +79,7 @@ const getAllNoticeboards = async (params: any, options: IPaginationOptions) => {
 
 // Get a single Noticeboard by ID
 const getSingleNoticeboard = async (id: string) => {
-  const result = await prisma.noticeBoard.findUniqueOrThrow({
+  const result = await prisma.noticeData.findUniqueOrThrow({
     where: {
       id,
     },
@@ -89,7 +89,7 @@ const getSingleNoticeboard = async (id: string) => {
 
 // Update a Noticeboard by ID
 const updateNoticeboard = async (id: string, data: any) => {
-  const result = await prisma.noticeBoard.update({
+  const result = await prisma.noticeData.update({
     where: {
       id,
     },
@@ -100,7 +100,7 @@ const updateNoticeboard = async (id: string, data: any) => {
 
 // Delete a Noticeboard by ID
 const deleteNoticeboard = async (id: string) => {
-  const result = await prisma.noticeBoard.delete({
+  const result = await prisma.noticeData.delete({
     where: {
       id,
     },
