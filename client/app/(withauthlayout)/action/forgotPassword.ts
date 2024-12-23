@@ -7,13 +7,16 @@ export type TLoginProps = {
 };
 
 export const forgotPassword = async (payload: FieldValues) => {
-  const res = await fetch(`http://localhost:5000/api/auth/forgot-password`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+  const res = await fetch(
+    `https://hr-server-kappa.vercel.app/api/auth/forgot-password`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }
+  );
 
   const data = await res.json();
 

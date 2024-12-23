@@ -6,7 +6,7 @@ import {
   FaIndustry,
   FaNewspaper,
   FaPlane,
-  FaStar,
+  // FaStar,
   FaTasks,
   FaUser,
   FaUsers,
@@ -35,7 +35,7 @@ export const employeesMenu: TSidebarMenus[] = [
       },
     ],
   },
-  
+
   {
     name: "Leave",
     icon: <FaPlane className="text-[17px] text-gray-700" />,
@@ -54,7 +54,6 @@ export const employeesMenu: TSidebarMenus[] = [
       },
     ],
   },
-
 
   {
     name: "Project management",
@@ -152,9 +151,27 @@ export const Menus: TSidebarMenus[] = [
         title: "Employee",
         path: "/hr/employees/employee",
       },
+      // {
+      //   title: "Employee performance",
+      //   path: "/hr/employees/employee_performance",
+      // },
+    ],
+  },
+  {
+    name: "Leave",
+    icon: <FaPlane className="text-[17px] text-gray-700" />,
+    children: [
       {
-        title: "Employee performance",
-        path: "/hr/employees/employee_performance",
+        title: "Weekly holiday",
+        path: "/hr/leave/weekly_holiday",
+      },
+      {
+        title: "Holiday",
+        path: "/hr/leave/holiday",
+      },
+      {
+        title: "Leave application",
+        path: "/hr/leave/leave_application",
       },
     ],
   },
@@ -193,10 +210,10 @@ export const Menus: TSidebarMenus[] = [
         title: "Salary list",
         path: "/hr/payroll/salary_generate",
       },
-      // {
-      //   title: "Manage employee salary",
-      //   path: "/hr/payroll/manage_employee_salary",
-      // },
+      {
+        title: "Manage employee salary",
+        path: "/hr/payroll/manage_employee_salary",
+      },
     ],
   },
   {
@@ -284,36 +301,36 @@ export const Menus: TSidebarMenus[] = [
     ],
   },
 
-  {
-    name: "Reward points",
-    icon: <FaStar className="text-[17px] text-gray-700" />,
-    children: [
-      {
-        title: "Point settings",
-        path: "/hr/reward_points/point_settings",
-      },
-      {
-        title: "Point categories",
-        path: "/hr/reward_points/point_categories",
-      },
-      {
-        title: "Management points",
-        path: "/hr/reward_points/management_points",
-      },
-      {
-        title: "Collaborative points",
-        path: "/hr/reward_points/collaborative_points",
-      },
-      {
-        title: "Attendance points",
-        path: "/hr/reward_points/attendance_points",
-      },
-      {
-        title: "Employee points",
-        path: "/hr/reward_points/employee_points",
-      },
-    ],
-  },
+  // {
+  //   name: "Reward points",
+  //   icon: <FaStar className="text-[17px] text-gray-700" />,
+  //   children: [
+  //     {
+  //       title: "Point settings",
+  //       path: "/hr/reward_points/point_settings",
+  //     },
+  //     {
+  //       title: "Point categories",
+  //       path: "/hr/reward_points/point_categories",
+  //     },
+  //     {
+  //       title: "Management points",
+  //       path: "/hr/reward_points/management_points",
+  //     },
+  //     {
+  //       title: "Collaborative points",
+  //       path: "/hr/reward_points/collaborative_points",
+  //     },
+  //     {
+  //       title: "Attendance points",
+  //       path: "/hr/reward_points/attendance_points",
+  //     },
+  //     {
+  //       title: "Employee points",
+  //       path: "/hr/reward_points/employee_points",
+  //     },
+  //   ],
+  // },
 
   {
     name: "Recruitment",

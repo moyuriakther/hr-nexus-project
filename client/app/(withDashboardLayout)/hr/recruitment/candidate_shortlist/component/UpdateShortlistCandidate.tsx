@@ -1,8 +1,7 @@
 import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
-import React from 'react';
-import Loader from '@/app/components/utils/Loader';
+import React, { SetStateAction } from 'react';
 import {  TShortList } from '../../Type/type';
 import { toast } from 'sonner';
 import { FieldValues } from 'react-hook-form';
@@ -10,9 +9,18 @@ import { useGetSingleShortlistCandidateQuery, useUpdateShortlistCandidateMutatio
 import { shortlistInputFields } from '../fakeData';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateShortlistCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:any) => {
+interface Props {
+  modalIsOpen: boolean;
+  data:{candidateId:{
+    value: string;
+    label: string;
+}[]};
+  setActionLoading: (value: SetStateAction<boolean>) => void;
+  setIsOpen: (value: SetStateAction<boolean>) => void;
+}
+const UpdateShortlistCandidate:React.FC<Props> = ({setIsOpen,modalIsOpen,id, setActionLoading}) => {
     
-    const {data,isLoading}=useGetSingleShortlistCandidateQuery(id)
+    const {data}=useGetSingleShortlistCandidateQuery(id)
     const [updateShortlistCandidate]=useUpdateShortlistCandidateMutation()
     
     

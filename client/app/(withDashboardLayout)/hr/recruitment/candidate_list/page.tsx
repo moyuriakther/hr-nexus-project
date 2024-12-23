@@ -1,7 +1,6 @@
 "use client";
 
 import { useGetAllCandidateQuery } from "@/app/Redux/api/candidateListApi";
-import { candidateTableHeader } from "./fakeData";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import SearchAndModal from "../component/SearchAndModal";
 import CreateCandidate from "./component/CreateCandidate";

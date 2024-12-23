@@ -17,8 +17,8 @@ import {
 import { TLeave } from "@/app/types";
 import { toast } from "sonner";
 import Loader from "@/app/components/utils/Loader";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 const LeaveTypePage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -27,8 +27,7 @@ const LeaveTypePage = () => {
   const { data: leaveTypes, isLoading: isLeaveTypeLoading } =
     useGetAllLeaveQuery({ searchTerm });
   const [deleteLeaveType] = useDeleteLeaveMutation();
-  const user = getUserFromLocalStorage();
-
+  const { data: user } = useGetMyProfileQuery({});
   const handleDelete = async (id: string) => {
     const res = await deleteLeaveType(id).unwrap();
 

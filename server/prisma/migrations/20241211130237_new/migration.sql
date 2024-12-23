@@ -347,7 +347,7 @@ CREATE TABLE "weekly_holidays" (
 CREATE TABLE "candidate_lists" (
     "id" TEXT NOT NULL,
     "name" TEXT,
-    "candidateId" TEXT,
+    "candidateId" TEXT NOT NULL,
     "photograph" TEXT,
     "email" TEXT,
     "ssn" TEXT,
@@ -366,6 +366,7 @@ CREATE TABLE "short_lists" (
     "candidateId" TEXT NOT NULL,
     "shortlistDate" TIMESTAMP(3),
     "interviewDate" TIMESTAMP(3),
+    "meetingLink" TEXT,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -376,9 +377,9 @@ CREATE TABLE "short_lists" (
 -- CreateTable
 CREATE TABLE "interview" (
     "id" TEXT NOT NULL,
+    "interviewId" TEXT NOT NULL,
     "interviewer" TEXT,
     "interviewDate" TEXT NOT NULL,
-    "interviewId" TEXT NOT NULL,
     "vivaMarks" TEXT,
     "writtenMarks" TEXT,
     "mcqTotalMarks" TEXT,
@@ -397,7 +398,7 @@ CREATE TABLE "interview" (
 CREATE TABLE "candidate_selections" (
     "id" TEXT NOT NULL,
     "selectionTerms" TEXT,
-    "interviewId" TEXT NOT NULL,
+    "interviewId" TEXT,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -420,6 +421,19 @@ CREATE TABLE "notice_boards" (
     CONSTRAINT "notice_boards_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "positions" (
+    "id" TEXT NOT NULL,
+    "positionName" TEXT,
+    "PositionDetails" TEXT,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "positions_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
@@ -428,6 +442,15 @@ CREATE UNIQUE INDEX "employees_email_key" ON "employees"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "candidate_lists_candidateId_key" ON "candidate_lists"("candidateId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "short_lists_candidateId_key" ON "short_lists"("candidateId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "interview_interviewId_key" ON "interview"("interviewId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "interview_candidateId_key" ON "interview"("candidateId");
 
 -- AddForeignKey
 ALTER TABLE "employees" ADD CONSTRAINT "employees_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "departments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -466,7 +489,7 @@ ALTER TABLE "loans" ADD CONSTRAINT "loans_employeeId_fkey" FOREIGN KEY ("employe
 ALTER TABLE "short_lists" ADD CONSTRAINT "short_lists_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "candidate_lists"("candidateId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "interview" ADD CONSTRAINT "interview_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "short_lists"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "interview" ADD CONSTRAINT "interview_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "short_lists"("candidateId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "candidate_selections" ADD CONSTRAINT "candidate_selections_interviewId_fkey" FOREIGN KEY ("interviewId") REFERENCES "interview"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "candidate_selections" ADD CONSTRAINT "candidate_selections_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "interview"("candidateId") ON DELETE RESTRICT ON UPDATE CASCADE;

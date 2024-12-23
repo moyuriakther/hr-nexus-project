@@ -32,11 +32,11 @@ const UpdateSubDepartmentModal = ({ subDepartment }: any) => {
   };
   const radioOptions = [
     {
-      value: "true",
+      value: true,
       label: "Active",
     },
     {
-      value: "false",
+      value: false,
       label: "Inactive",
     },
   ];
@@ -80,9 +80,9 @@ const UpdateSubDepartmentModal = ({ subDepartment }: any) => {
           <div className="flex items-center gap-x-20">
             <p className="font-medium mr-6">Is Active</p>
             <HRRadioInput
-              checked={subDepartment?.isActive === true}
               name="isActive"
               options={radioOptions}
+              defaultValue={subDepartment?.isActive === true ? "true" : "false"}
             />
           </div>
 

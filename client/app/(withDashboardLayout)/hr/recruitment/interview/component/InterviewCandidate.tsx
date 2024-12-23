@@ -1,20 +1,39 @@
 import HRTable from "@/app/components/Table/HRTable";
 import Loader from "@/app/components/utils/Loader";
 import { TInterview } from "../../Type/type";
-import { interviewTableHeader } from "../fakeData";
-import { useDeleteInterviewMutation, useUpdateInterviewMutation } from "@/app/Redux/api/interviewListApi";
+import {  useUpdateInterviewMutation } from "@/app/Redux/api/interviewListApi";
 import { toast } from "sonner";
 import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { USER_ROLE } from "@/app/constants";
+import { SetStateAction } from "react";
 
-const InterviewCandidate=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TInterview[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
+interface Props {
+  data: TInterview[];
+  isLoading: boolean;
+  handleEdit: (id: string) => void // Replace with the appropriate type if needed
+  setActionLoading: (value: SetStateAction<boolean>) => void
+  isActionLoading: boolean;
+}
+const InterviewCandidate:React.FC<Props>=({data, isLoading,handleEdit, setActionLoading, isActionLoading})=>{
  const user=getUserFromLocalStorage()
-  if(isActionLoading){
-    return <Loader/>
-  }
-    const [updateInterview] = useUpdateInterviewMutation({});
+const [updateInterview] = useUpdateInterviewMutation({})
 
-   
-  
+const interviewTableHeader: string[] = [
+  "Sl",
+  "Name",
+  "Candidate ID",
+  "Job Position",
+  "Interview Date",
+  "Viva Marks",
+  "Written Marks",
+  "MCQ Marks",
+  "Total Marks",
+  "Selection",
+  `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
+];
+    if(isActionLoading){
+      return <Loader/>
+    }
     if (data?.length === 0) {
       return (
         <tr>
@@ -62,6 +81,9 @@ const InterviewCandidate=({data, isLoading,handleEdit, setActionLoading, isActio
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
                 {candidate?.candidateId}
+              </td>
+              <td className="py-2 w-1/6 border-r border-gray-200 px-3">
+                {candidate?.interviewId}
               </td>
               <td className="py-2 w-1/6 border-r border-gray-200 px-3">
                 {candidate?.jobPosition}

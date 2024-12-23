@@ -325,7 +325,7 @@ model WeeklyHolidays {
 model CandidateList {
   id          String      @id @default(uuid())
   name        String?
-  candidateId String      @default(uuid()) @unique
+  candidateId String      @unique @default(uuid())
   photograph  String?
   email       String?
   ssn         String?
@@ -340,50 +340,51 @@ model CandidateList {
 }
 
 model ShortList {
-  id            String         @id @default(uuid())
+  id            String        @id @default(uuid())
   candidateId   String        @unique
   shortlistDate DateTime?
   interviewDate DateTime?
-  meetingLink            String?
-  candidate CandidateList @relation(fields: [candidateId], references: [candidateId])
-  isDeleted Boolean       @default(false)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  meetingLink   String?
+  candidate     CandidateList @relation(fields: [candidateId], references: [candidateId])
+  isDeleted     Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   interview Interview[]
 
   @@map("short_lists")
 }
+
 model Interview {
-  id                     String               @id @default(uuid())
-  interviewId            String               @default(uuid()) @unique
-  interviewer            String?
-  interviewDate          String
-  vivaMarks              String?
-  writtenMarks           String?
-  mcqTotalMarks          String?
-  totalMarks             String?
-  meetingLink            String?
-  isSelected             Boolean              @default(false)
-  candidateId            String               @unique
-  isDeleted              Boolean              @default(false)
-  createdAt              DateTime             @default(now())
-  updatedAt              DateTime             @updatedAt
-  CandidateSelection     CandidateSelection[]
-  shortListedCandidate   ShortList            @relation(fields: [candidateId], references: [candidateId])
+  id                   String               @id @default(uuid())
+  interviewId          String               @unique @default(uuid())
+  interviewer          String?
+  interviewDate        String
+  vivaMarks            String?
+  writtenMarks         String?
+  mcqTotalMarks        String?
+  totalMarks           String?
+  meetingLink          String?
+  isSelected           Boolean              @default(false)
+  candidateId          String               @unique
+  isDeleted            Boolean              @default(false)
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  CandidateSelection   CandidateSelection[]
+  shortListedCandidate ShortList            @relation(fields: [candidateId], references: [candidateId])
 
   @@map("interview")
 }
 
 model CandidateSelection {
-  id              String    @id @default(uuid())
-  selectionTerms  String?
-  interviewId     String?
-  isDeleted       Boolean   @default(false)
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  candidateId     String
-  interview       Interview @relation(fields: [candidateId], references: [candidateId])
+  id             String    @id @default(uuid())
+  selectionTerms String?
+  interviewId    String?
+  isDeleted      Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  candidateId    String
+  interview      Interview @relation(fields: [candidateId], references: [candidateId])
 
   @@map("candidate_selections")
 }
@@ -401,6 +402,17 @@ model NoticeData {
   @@map("notice_boards")
 }
 
+model Position {
+  id              String   @id @default(uuid())
+  positionName    String?
+  PositionDetails String?
+  isActive        Boolean  @default(true)
+  isDeleted       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("positions")
+}
 
 enum EmployeeType {
   FULL_TIME

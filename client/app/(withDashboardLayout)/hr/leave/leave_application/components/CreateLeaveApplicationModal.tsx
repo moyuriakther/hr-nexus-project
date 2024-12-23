@@ -23,7 +23,7 @@ type TProps = {
 const CreateLeaveApplicationModal = ({ modalIsOpen, setIsOpen }: TProps) => {
   const { data: employees, isLoading: isEmployeeLoading } =
     useGetAllEmployeeQuery("");
-  const { data: holidayType } = useGetAllLeaveQuery("");
+  const { data: holidayType } = useGetAllLeaveQuery({});
   const [createHoliday, { isLoading }] = useCreateLeaveMutation();
 
   const employeeOptions = employees?.map((employee: Employee) => ({
@@ -76,7 +76,7 @@ const CreateLeaveApplicationModal = ({ modalIsOpen, setIsOpen }: TProps) => {
           <div className="mt-1">
             <div className="mt-4 w-[790px]">
               <HRSelectDropdown
-                options={holidayTypeOptions}
+                options={holidayTypeOptions ? holidayTypeOptions : []}
                 name="leaveType"
                 placeholder="Select Leave Type"
                 label="Leave Type"

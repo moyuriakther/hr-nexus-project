@@ -1,17 +1,21 @@
 import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import Loader from '@/app/components/utils/Loader';
 import {  selectionInputFields } from '../fakeData';
-import { TCandidateList } from '../../Type/type';
 import { toast } from 'sonner';
 import { FieldValues } from 'react-hook-form';
 import {  useGetSingleSelectedCandidateQuery, useUpdateSelectedCandidateMutation } from '@/app/Redux/api/selectedListApi';
 import { TSelect } from '@/app/types';
-
+interface Props {
+  modalIsOpen: boolean;
+  setActionLoading: (value: SetStateAction<boolean>) => void;
+  setIsOpen: (value: SetStateAction<boolean>) => void;
+  id: string;
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateSelectedCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:any) => {
+const UpdateSelectedCandidate:React.FC<Props> = ({setIsOpen,modalIsOpen,id, setActionLoading}) => {
     
     const {data,isLoading}=useGetSingleSelectedCandidateQuery(id)
     const [updateSelectedCandidate]=useUpdateSelectedCandidateMutation()

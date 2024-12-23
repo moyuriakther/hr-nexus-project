@@ -15,9 +15,9 @@ import { pageHeaderData } from "../components/pageHeaderData";
 import CreateHolyday from "./components/CreateHolyday";
 import UpdateHolidayModal from "./components/UpdateHolidayModal";
 import { toast } from "sonner";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
 import Loader from "@/app/components/utils/Loader";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 const HolydayPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -26,8 +26,7 @@ const HolydayPage = () => {
   const { data: holidays, isLoading: isLoadingHolidays } =
     useGetAllHolidayQuery({ searchTerm });
   const [deleteHoliday, { isLoading }] = useDeleteHolidayMutation();
-  const user = getUserFromLocalStorage();
-
+  const { data: user } = useGetMyProfileQuery({});
   const tableHeader = [
     "Sl",
     "Holyday Name",

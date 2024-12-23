@@ -21,9 +21,9 @@ import ComponentHeader from "./components/ComponentHeader";
 import { toast } from "sonner";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
 import Loader from "@/app/components/utils/Loader";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 const AttendancePage = () => {
   // const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -32,7 +32,7 @@ const AttendancePage = () => {
   const { data: attendances, isLoading: isAttendanceLoading } =
     useGetAllAttendanceQuery({ searchTerm });
   const [deleteAttendance, { isLoading }] = useDeleteAttendanceMutation();
-  const user = getUserFromLocalStorage();
+  const { data: user } = useGetMyProfileQuery({});
 
   const tableHeader = [
     "Sl",

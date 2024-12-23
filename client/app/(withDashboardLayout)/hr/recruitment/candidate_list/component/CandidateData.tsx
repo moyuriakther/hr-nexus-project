@@ -1,31 +1,38 @@
 import HRTable from "@/app/components/Table/HRTable";
 import Loader from "@/app/components/utils/Loader";
-import { useDeleteCandidateMutation, useUpdateCandidateMutation } from "@/app/Redux/api/candidateListApi";
-import Pagination from "../../component/Pagination";
-import { useState } from "react";
-import { candidateTableHeader } from "../fakeData";
+import { useUpdateCandidateMutation } from "@/app/Redux/api/candidateListApi";
+import { SetStateAction, useState } from "react";
 import { TCandidateList } from "../../Type/type";
 import Image from "next/image";
 
-
-// import HRTable from "@/app/components/Table/HRTable";
-// import Loader from "@/app/components/utils/Loader";
-// import {  useState } from "react";
-// import { selectionTableHeader } from "../fakeData";
-import { TCandidateSelection } from "../../Type/type";
-import { useUpdateSelectedCandidateMutation } from "@/app/Redux/api/selectedListApi";
 import { toast } from "sonner";
 import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
-
-const CandidateData=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TCandidateList[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
+interface CandidateDataProps {
+  data: TCandidateList[];
+  isLoading: boolean;
+  handleEdit: (id: string) => void // Replace with the appropriate type if needed
+  setActionLoading: (value: SetStateAction<boolean>) => void
+  isActionLoading: boolean;
+}
+const CandidateData:React.FC<CandidateDataProps>=({data, isLoading,handleEdit, setActionLoading, isActionLoading})=>{
 const user =getUserFromLocalStorage()
 const [imageLoading, setImageLoading]=useState(false)
-  if(isActionLoading){
-    return <Loader/>
-  }
-    const [updateCandidate] = useUpdateCandidateMutation();
-    if (isLoading) {
+  const [updateCandidate] = useUpdateCandidateMutation();
+
+  const candidateTableHeader = [
+    "SI",
+    "Candidate Name",
+    "Candidate ID",
+    "Photograph",
+    "Email",
+    "SSN",
+    "Phone",
+   `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
+  ];
+
+  
+    if (isLoading||isActionLoading) {
       return <Loader />;
     }
   

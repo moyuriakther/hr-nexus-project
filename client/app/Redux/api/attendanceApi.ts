@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TAttendance } from "@/app/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";

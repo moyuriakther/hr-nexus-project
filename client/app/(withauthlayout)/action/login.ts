@@ -12,7 +12,7 @@ export const loginUser = async (
   payload: FieldValues,
   redirect?: string | undefined
 ) => {
-  const res = await fetch(`http://localhost:5000/api/auth/login`, {
+  const res = await fetch(`https://hr-server-kappa.vercel.app/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

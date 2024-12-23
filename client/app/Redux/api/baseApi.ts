@@ -7,7 +7,7 @@ import { tagTypesList } from "../tagTypes";
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: axiosBaseQuery({
-    baseUrl: "http://localhost:5000/api",
+    baseUrl: "https://hr-server-kappa.vercel.app/api",
   }),
   endpoints: () => ({}),
   tagTypes: tagTypesList,

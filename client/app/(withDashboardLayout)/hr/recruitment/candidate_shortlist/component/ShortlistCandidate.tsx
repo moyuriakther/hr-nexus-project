@@ -1,21 +1,36 @@
 import HRTable from "@/app/components/Table/HRTable";
 import Loader from "@/app/components/utils/Loader";
-import {  shortlistTableHeader } from "../fakeData";
 import {  TShortList } from "../../Type/type";
 import { useUpdateShortlistCandidateMutation } from "@/app/Redux/api/shortListApi";
 import { toast } from "sonner";
 import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
+import { SetStateAction } from "react";
 
-const ShortlistCandidate=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TShortList[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
+interface Props {
+  data: TShortList[];
+  isLoading: boolean;
+  handleEdit: (id: string) => void // Replace with the appropriate type if needed
+  setActionLoading: (value: SetStateAction<boolean>) => void
+  isActionLoading: boolean;
+}
+const ShortlistCandidate:React.FC<Props>=({data, isLoading,handleEdit, setActionLoading, isActionLoading})=>{
   const user=getUserFromLocalStorage()
+  const [updateShortlistCandidate] = useUpdateShortlistCandidateMutation();
 
-  if(isActionLoading){
-    return <Loader/>
-  }
-    const [updateShortlistCandidate] = useUpdateShortlistCandidateMutation();
 
-    if (isLoading) {
+  const shortlistTableHeader: string[] = [
+    "Sl",
+    "Name",
+    "Candidate ID",
+    "Job Position",
+    "Shortlist Date",
+    "Interview Date",
+    " Meeting Link",
+    `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
+  ];
+
+    if (isLoading||isActionLoading) {
       return <Loader />;
     }
   

@@ -4,7 +4,7 @@ import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
 // import { imageUploadIntoImgbb } from '@/app/components/utils/uploadImageIntoImgbb';
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { toast } from 'sonner';
 import { noticeModalInputFiled } from '../fakeData';
@@ -12,8 +12,15 @@ import { useCreateNoticeMutation } from '@/app/Redux/api/noticeApi';
 import HRFileInput from '@/app/components/Form/HRFileInput';
 import Loader from '@/app/components/utils/Loader';
 
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateNotice = ({setIsOpen,modalIsOpen,setActionLoading}:any) => {
+
+interface Props {
+  modalIsOpen: boolean;
+  setActionLoading: (value: SetStateAction<boolean>) => void;
+  setIsOpen: (value: SetStateAction<boolean>) => void;
+}
+const CreateNotice:React.FC<Props> = ({setIsOpen,modalIsOpen,setActionLoading}) => {
   
       const [createNotice]=useCreateNoticeMutation()
       const [isLoading, setIsLoading]=useState(false)

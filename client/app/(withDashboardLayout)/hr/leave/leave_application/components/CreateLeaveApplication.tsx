@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
 import { USER_ROLE } from "@/app/constants";
 import { TLeave } from "@/app/types";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { Button, Divider } from "@nextui-org/react";
 import React, { useState } from "react";
 import { FaFilter, FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../../employees/position/components/fakeData/limitCount";
 import CreateLeaveApplicationModal from "./CreateLeaveApplicationModal";
-import { headers } from "./tableHeader";
+// import { headers } from "./tableHeader";
 import ExcelCSVExport from "@/app/utils/ExcelAndCSV";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 interface ComponentHeaderProps {
   onSearch: (searchTerm: string) => void;
@@ -21,13 +22,12 @@ interface ComponentHeaderProps {
 const CreateLeaveApplication = ({
   onSearch,
   data,
-  loading,
-}: ComponentHeaderProps) => {
+}: // loading,
+ComponentHeaderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState("");
   const [limit, setLimit] = useState<string>("10");
-  const user = getUserFromLocalStorage();
-
+  const { data: user } = useGetMyProfileQuery({});
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
     onSearch(e.target.value); // Trigger search on every change

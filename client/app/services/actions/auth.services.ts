@@ -43,7 +43,7 @@ export const removeUser = () => {
 
 export const getNewAccessToken = async () => {
   return await axiosInstance({
-    url: "http://localhost:5000/api/auth/refresh-token",
+    url: "https://hr-server-kappa.vercel.app/api/auth/refresh-token",
     method: "POST",
     headers: {
       "Content-Type": "application/json",

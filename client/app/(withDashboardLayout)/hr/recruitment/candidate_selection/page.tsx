@@ -10,7 +10,6 @@ import CreateSelectedCandidate from "./component/CreateSelectedCandidate";
 import UpdateSelectedCandidate from "./component/UpdateSelectedCandidate";
 import Loader from "@/app/components/utils/Loader";
 import { useGetAllInterviewQuery } from "@/app/Redux/api/interviewListApi";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 
 // Array of Input Fields
 
@@ -50,11 +49,11 @@ const [formattedInterviewId, setFormattedInterviewId] = useState<
 
   
     if (interviewlist) {
-      const formattedCandidateId = interviewlist?.data.map((item) => ({
+      const formattedCandidateId = interviewlist?.data.map((item: { candidateId: string; }) => ({
         value: item.candidateId,
         label: item.candidateId, 
       }));
-      const formattedInterviewId = interviewlist?.data.map((item) => ({
+      const formattedInterviewId = interviewlist?.data.map((item: { interviewId: string; }) => ({
         value: item.interviewId,
         label: item.interviewId, 
       }));

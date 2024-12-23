@@ -19,13 +19,13 @@ import UpdateSalaryAdvanceModal from "./components/UpdateSalaryAdvanceModal";
 import { toast } from "sonner";
 import Loader from "@/app/components/utils/Loader";
 import { USER_ROLE } from "@/app/constants";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 const SalaryAdvancePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const user = getUserFromLocalStorage();
+  const { data: user } = useGetMyProfileQuery({});
 
   const { data: payments, isLoading } = useGetAllPaymentQuery({ searchTerm });
   const [deletePayment, { isLoading: isDeleteLoading }] =

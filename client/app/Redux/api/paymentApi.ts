@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Payment } from "@/app/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";

@@ -1,31 +1,23 @@
 "use client";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import HRForm from "@/app/components/Form/HRForm";
-import HRInput from "@/app/components/Form/HRInput";
-import { FieldValues, SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  loginDefaultValues,
-  loginValidationSchema,
-} from "@/app/Validations/loginValidation";
-import { Button } from "@nextui-org/react";
 
+import { storeUserInfo } from "@/app/services/actions/auth.services";
+import { signInUser } from "@/app/services/actions/userLogin";
+import { Button } from "@nextui-org/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { signInUser } from "@/app/services/actions/userLogin";
-import { storeUserInfo } from "@/app/services/actions/auth.services";
-import Link from "next/link";
+import { toast } from "sonner";
 
 const predefinedUsers = [
   {
-    email: "admin@admin.com",
+    email: "adminhr@gmail.com",
     password: "123456",
     role: "Admin",
   },
   {
-    email: "user@user.com",
+    email: "employee@gmail.com",
     password: "1234567",
     role: "User",
   },
@@ -38,8 +30,13 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   console.log(email, password);
 
-  const handleLogin: SubmitHandler<FieldValues> = async (data) => {
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
     setLoading(true);
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    const data = { email, password };
     try {
       const res = await signInUser(data);
       if (res?.data?.accessToken) {
@@ -66,29 +63,27 @@ const LoginForm = () => {
 
   return (
     <div>
-      <HRForm
-        onSubmit={handleLogin}
-        defaultValues={loginDefaultValues}
-        resolver={zodResolver(loginValidationSchema)}
-      >
+      <form onSubmit={handleLogin}>
         <div className="mb-5">
-          <HRInput
-            label="Email Address"
-            type="email"
-            placeholder="Enter Email Address"
-            name="email"
-            // defaultValue={email}
-            // onChange={(e) => setEmail(e.target.value)}
-          />
+          <div>
+            <label className="mb-2 block font-medium">Email Address</label>
+            <input
+              type="email"
+              placeholder="Enter Email Address"
+              name="email"
+              className="h-10 rounded-none border w-full px-4 outline-[#198754]  transition duration-200 outline-[1px]"
+              defaultValue={email}
+            />
+          </div>
         </div>
         <div className="pb-2 relative">
-          <HRInput
-            label="Password"
+          <label className="mb-2 block font-medium">Password</label>
+          <input
             name="password"
             type="password"
             placeholder="Enter Password"
-            // defaultValue={password}
-            // onChange={(e) => setPassword(e.target.value)}
+            className="h-10 rounded-none border w-full px-4 outline-[#198754]  transition duration-200 outline-[1px]"
+            defaultValue={password}
           />
         </div>
         <div className="mt-5">
@@ -133,7 +128,7 @@ const LoginForm = () => {
         >
           {loading ? "Logging in..." : "Sign In"}
         </Button>
-      </HRForm>
+      </form>
     </div>
   );
 };

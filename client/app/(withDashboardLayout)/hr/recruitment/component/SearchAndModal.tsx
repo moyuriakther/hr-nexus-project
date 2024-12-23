@@ -1,13 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
 import { Button, Divider } from "@nextui-org/react";
 import { FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../fakeData/limitCount";
-import HRForm from "@/app/components/Form/HRForm";
-import HRInput from "@/app/components/Form/HRInput";
 import ExcelCSVExport from "@/app/utils/ExcelAndCSV";
-import { SetStateAction } from "react";
 import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
+import { SetStateAction } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SearchAndModal = ({
@@ -21,10 +20,10 @@ const SearchAndModal = ({
 }: {
   menuName: string;
   excelExportParamsData: any;
-  handleSearch: any;
-  setIsOpen: any;
+  handleSearch:  any
+  setIsOpen: (value: SetStateAction<boolean>) => void
   modalIsOpen: boolean;
-  setLimit: any;
+  setLimit: (value: SetStateAction<number>) => void
   searchKey: string[];
 }) => {
   const { data, baseFileName, isLoading } = excelExportParamsData;

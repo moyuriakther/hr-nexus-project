@@ -1,23 +1,34 @@
 import HRTable from "@/app/components/Table/HRTable";
 import Loader from "@/app/components/utils/Loader";
-import {  useState } from "react";
-import { selectionTableHeader } from "../fakeData";
 import { TCandidateSelection } from "../../Type/type";
 import { useUpdateSelectedCandidateMutation } from "@/app/Redux/api/selectedListApi";
 import { toast } from "sonner";
 import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
+import { SetStateAction } from "react";
 
-const SelectedCandidate=({data, isLoading,handleEdit, setActionLoading, isActionLoading}:{isActionLoading:boolean, data:TCandidateSelection[],isLoading:boolean,handleEdit:any,setActionLoading:any})=>{
+interface Props {
+  data: TCandidateSelection[];
+  isLoading: boolean;
+  handleEdit: (id: string) => void // Replace with the appropriate type if needed
+  setActionLoading: (value: SetStateAction<boolean>) => void
+  isActionLoading: boolean;
+}
+const SelectedCandidate:React.FC<Props>=({data, isLoading, setActionLoading, isActionLoading})=>{
   const user=getUserFromLocalStorage()
-  if(isActionLoading){
-    return <Loader/>
-  }
-    const [updateSelectedCandidate] = useUpdateSelectedCandidateMutation({});
-    if (isLoading) {
-      return <Loader />;
+      const [updateSelectedCandidate] = useUpdateSelectedCandidateMutation({});
+      const  selectionTableHeader:string[] = [
+        "SL",
+        "Name",
+        "Candidate ID",
+        "Employee ID",
+        "Position",
+        "Selection Terms",
+       `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
+      ];
+    if(isActionLoading ||isLoading){
+      return <Loader/>
     }
-  
     if (data?.length === 0) {
       return (
         <tr>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TLoan } from "../../types/loan";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";

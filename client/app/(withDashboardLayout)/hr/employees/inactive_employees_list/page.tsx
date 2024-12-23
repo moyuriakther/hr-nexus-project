@@ -1,18 +1,19 @@
+"use client";
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import HRIconsButton from "@/app/(withDashboardLayout)/components/UI/HRIconsButton";
 import HRTable from "@/app/components/Table/HRTable";
 import HRTableRow from "@/app/components/Table/HRTableRow";
 import { USER_ROLE } from "@/app/constants";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { Button } from "@nextui-org/react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { TfiReload } from "react-icons/tfi";
 import { pageHeaderData } from "../components/pageHeaderData";
 import CreateEmployee from "../employee/components/CreateEmployee";
 import { fakeData } from "../employee/components/employeFakeData";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 const InactiveEmployeesList = () => {
-  const user = getUserFromLocalStorage();
+  const { data: user } = useGetMyProfileQuery({});
 
   const tableHeader = [
     "Sl",

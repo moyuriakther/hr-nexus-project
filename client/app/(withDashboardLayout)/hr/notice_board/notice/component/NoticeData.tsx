@@ -1,21 +1,36 @@
 import HRTable from "@/app/components/Table/HRTable";
 import Loader from "@/app/components/utils/Loader";
-import {  SetStateAction, useState } from "react";
-import { noticeTableHeader } from "../fakeData";
 import { TNoticeData } from "../Type/type";
 import { useUpdateNoticeMutation } from "@/app/Redux/api/noticeApi";
 import { toast } from "sonner";
 import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
+import { SetStateAction } from "react";
 
-
-const NoticeData=({data, isLoading,handleEdit, isActionLoading, setActionLoading}:{data:TNoticeData[],setActionLoading:any, isLoading:boolean,handleEdit:any, isActionLoading:any})=>{
+interface Props {
+  data: TNoticeData[];
+  isLoading: boolean;
+  handleEdit: (id: string) => void // Replace with the appropriate type if needed
+  setActionLoading: (value: SetStateAction<boolean>) => void
+  isActionLoading: boolean;
+}
+const NoticeData:React.FC<Props>=({data, isLoading,handleEdit, isActionLoading, setActionLoading})=>{
     
   const user=getUserFromLocalStorage();
 
   
     const [UpdateNotice] = useUpdateNoticeMutation();
  
+    const noticeTableHeader = [
+      "SI",
+      "Notice type",
+      "Description",
+      "Notice date",
+      "Notice by",
+     `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
+    ];
+
+
     if (isLoading) {
       return <Loader />;
     }

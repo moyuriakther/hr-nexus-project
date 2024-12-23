@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
@@ -8,6 +9,7 @@ import Link from "next/link";
 import { useGetAllEmployeeQuery } from "@/app/Redux/api/employeeApi";
 import Loader from "@/app/components/utils/Loader";
 import ExcelCSVExport from "@/app/utils/ExcelAndCSV";
+import { SetStateAction } from "react";
 
 const CreateEmployee = () => {
   const { data: employee, isLoading } = useGetAllEmployeeQuery({});
@@ -45,7 +47,12 @@ const CreateEmployee = () => {
       <div className="mt-6 flex items-center justify-between flex-wrap lg:gap-0 gap-2">
         <div className="flex items-center gap-1">
           <p>Show</p>
-          <HRSelect data={limitCount} />
+          <HRSelect
+            data={limitCount}
+            setLimit={function (value: SetStateAction<string>): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
           <p>entries</p>
         </div>
 

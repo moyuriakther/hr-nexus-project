@@ -2,7 +2,7 @@
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
 import { useCreateLoanMutation } from "@/app/Redux/api/loanApi";
-import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
+// import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
 import { generateNumber } from "@/app/utils/createRandomNumber";
@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { loanPageHeaderData } from "../../employees/components/pageHeaderData";
 import { useGetAllEmployeeQuery } from "@/app/Redux/api/employeeApi";
 import { Employee } from "@/app/types";
-import HRMultipleSelect from "@/app/components/Form/HRMultipleSelect";
+// import HRMultipleSelect from "@/app/components/Form/HRMultipleSelect";
 import HRSelectDropdown from "@/app/components/Form/HRSelectDropdown";
 
 const CreateLoanPage = () => {

@@ -12,22 +12,20 @@ import {
   useGetAllLeaveQuery,
 } from "@/app/Redux/api/leaveApi";
 import { toast } from "sonner";
-import { tableHeader } from "./components/tableHeader";
 import { TLeave } from "@/app/types";
 import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import Loader from "@/app/components/utils/Loader";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 const LeaveApplicationPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const { data: holidays, isLoading } = useGetAllLeaveQuery({ searchTerm });
   const [deleteHoliday] = useDeleteLeaveMutation();
-  const user = getUserFromLocalStorage();
-
+  const { data: user } = useGetMyProfileQuery({});
   const handleDelete = async (id: string) => {
     const res = await deleteHoliday(id).unwrap();
 
@@ -47,7 +45,25 @@ const LeaveApplicationPage = () => {
           onSearch={setSearchTerm}
         />
 
-        <HRTable tableHeader={tableHeader}>
+        <HRTable
+          tableHeader={[
+            "Sl",
+            "Employee Name",
+            "Type",
+            "Apply Date",
+            "Leave Start Date",
+            "Leave End Date",
+            "Days",
+            "Reason",
+            "Approved Date",
+            "Approved Start Date",
+            "Approved End Date",
+            "Approved Days",
+            "Manager Comments",
+            "Status",
+            `${user?.role === USER_ROLE.ADMIN && "Action"}`,
+          ]}
+        >
           {isLoading ? (
             <div className="flex items-center justify-center w-16 h-16">
               <Loader />

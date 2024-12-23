@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import PageHeader from "@/app/(withDashboardLayout)/components/PageHeader/PageHeader";
@@ -7,7 +8,7 @@ import {
 } from "@/app/Redux/api/loanApi";
 import HRForm from "@/app/components/Form/HRForm";
 import HRInput from "@/app/components/Form/HRInput";
-import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
+// import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
 import { Button, Divider } from "@nextui-org/react";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";

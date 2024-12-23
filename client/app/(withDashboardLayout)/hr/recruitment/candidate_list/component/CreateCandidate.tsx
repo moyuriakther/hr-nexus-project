@@ -4,14 +4,23 @@ import HRModal from "@/app/components/Modal/HRModal";
 // import { imageUploadIntoImgbb } from '@/app/components/utils/uploadImageIntoImgbb';
 import { useCreateCandidateMutation } from "@/app/Redux/api/candidateListApi";
 import { uploadImage } from "@/app/utils/UploadImage";
-import React from "react";
+import React, { SetStateAction } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { candidateInputFields } from "../fakeData";
 import HRFileInput from "@/app/components/Form/HRFileInput";
 
+interface Props {
+  modalIsOpen: boolean;
+  data:{candidateId:{
+    value: string;
+    label: string;
+}[]};
+  setActionLoading: (value: SetStateAction<boolean>) => void;
+  setIsOpen: (value: SetStateAction<boolean>) => void;
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateCandidate = ({ setIsOpen, modalIsOpen,setActionLoading }: any) => {
+const CreateCandidate:React.FC<Props> = ({ setIsOpen, modalIsOpen,setActionLoading }: any) => {
   const [createCandidate] = useCreateCandidateMutation();
   const handleSubmit: SubmitHandler<FieldValues> = async (
     values: FieldValues

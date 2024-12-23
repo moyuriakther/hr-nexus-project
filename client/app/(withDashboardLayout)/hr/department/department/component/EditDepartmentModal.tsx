@@ -34,11 +34,11 @@ const EditDepartmentModal = ({ departmentId }: any) => {
   };
   const radioOptions = [
     {
-      value: "true",
+      value: true,
       label: "Active",
     },
     {
-      value: "false",
+      value: false,
       label: "Inactive",
     },
   ];
@@ -65,7 +65,6 @@ const EditDepartmentModal = ({ departmentId }: any) => {
               type="text"
               className="lg:w-[560px]"
               placeholder="Department name"
-             
             />
           </div>
           <div className="flex items-center gap-x-20">

@@ -16,11 +16,9 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
 import { loanPageHeaderData } from "../employees/components/pageHeaderData";
 import ComponentHeader from "./components/ComponentHeader";
-import { tableHeader } from "./components/common";
 import { useState } from "react";
 import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import Loader from "@/app/components/utils/Loader";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
 
 const LoanPage = () => {
@@ -30,8 +28,17 @@ const LoanPage = () => {
   });
   const [deleteAttendance, { isLoading }] = useDeleteLoanMutation();
   const { data: myProfile } = useGetMyProfileQuery({});
-  const user = getUserFromLocalStorage();
+  const { data: user } = useGetMyProfileQuery({});
 
+  /*************  ✨ Codeium Command ⭐  *************/
+  /**
+   * Handles the deletion of a loan, given its id.
+   *
+   * @param {string} id - the id of the loan to be deleted
+   *
+   * @returns {Promise<void>}
+   */
+  /******  5e20f36b-1bee-4dbc-8e6b-98d36b0afdbb  *******/
   const handleDelete = async (id: string) => {
     const res = await deleteAttendance(id).unwrap();
     if (res?.id) {
@@ -45,7 +52,23 @@ const LoanPage = () => {
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
         <ComponentHeader onSearch={setSearchTerm} />
 
-        <HRTable tableHeader={tableHeader}>
+        <HRTable
+          tableHeader={[
+            "Sl",
+            "Employee name",
+            "Permitted by",
+            "Loan no",
+            "Amount",
+            "Interest rate",
+            "Installment period",
+            "Installment cleared",
+            "Repayment amount",
+            "Approved date",
+            "Repayment from",
+            "Status",
+            `${user?.role === USER_ROLE.ADMIN && "Action"}`,
+          ]}
+        >
           {isLoanLoading ? (
             <div className="flex items-center justify-center w-16 h-16">
               <Loader />

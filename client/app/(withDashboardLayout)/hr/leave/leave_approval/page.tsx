@@ -16,10 +16,9 @@ import { toast } from "sonner";
 import { pageHeaderData } from "../components/pageHeaderData";
 import AddLeaveApproval from "./components/AddLeaveApproval";
 import ApprovedApplicationModal from "./components/ApprovedApplicationModal";
-import { tableHeader } from "./components/tableHeader";
 import Loader from "@/app/components/utils/Loader";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 const LeaveApproval = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -27,8 +26,7 @@ const LeaveApproval = () => {
 
   const { data: leaveTypes, isLoading } = useGetAllLeaveQuery({ searchTerm });
   const [deleteLeaveType] = useDeleteLeaveMutation();
-  const user = getUserFromLocalStorage();
-
+  const { data: user } = useGetMyProfileQuery({});
   const handleDelete = async (id: string) => {
     const res = await deleteLeaveType(id).unwrap();
 
@@ -44,7 +42,23 @@ const LeaveApproval = () => {
       <div className="bg-white rounded-[3px] mt-4 px-6 py-4">
         <AddLeaveApproval onSearch={setSearchTerm} />
 
-        <HRTable tableHeader={tableHeader}>
+        <HRTable
+          tableHeader={[
+            "Sl",
+            "Employee Name",
+            "Type",
+            "Apply Date",
+            "Leave Start Date",
+            "Leave End Date",
+            "Days",
+            "Approved Date",
+            "Approved Start Date",
+            "Approved End Date",
+            "Approved Days",
+            "Status",
+            `${user?.role === USER_ROLE.ADMIN && "Action"}`,
+          ]}
+        >
           {isLoading ? (
             <div className="w-16 h-16 flex justify-center items-center">
               <Loader />

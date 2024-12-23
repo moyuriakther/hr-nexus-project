@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
 import { Divider } from "@nextui-org/react";
 import React, { useState } from "react";

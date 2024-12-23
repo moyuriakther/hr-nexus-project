@@ -1,22 +1,5 @@
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { TInterviewInputField } from "../Type/type";
-import { USER_ROLE } from "@/app/constants";
 
-const user=getUserFromLocalStorage()
-
-export   const interviewTableHeader: string[] = [
-    "Sl",
-    "Name",
-    "Candidate ID",
-    "Job Position",
-    "Interview Date",
-    "Viva Marks",
-    "Written Marks",
-    "MCQ Marks",
-    "Total Marks",
-    "Selection",
-    `${user?.role === USER_ROLE.ADMIN ? "Action" : ""}`,
-  ];
 
   export   const interviewInputFiled: TInterviewInputField[] = [
     { id: 1, label: "Interviewer Name", key: "interviewer", type: "text", placeholder: "Enter Interviewer name" ,required:true},

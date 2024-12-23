@@ -3,7 +3,7 @@
 
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
 import { Button, Divider } from "@nextui-org/react";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import {
   FaFileCsv,
   FaFileExcel,
@@ -35,7 +35,12 @@ const ManageSalaryTableHeader = () => {
       <div className="mt-6 flex items-center justify-between flex-wrap lg:gap-0 gap-2">
         <div className="flex items-center gap-1">
           <p>Show</p>
-          <HRSelect data={limitCount} />
+          <HRSelect
+            data={limitCount}
+            setLimit={function (value: SetStateAction<string>): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
           <p>entries</p>
         </div>
 

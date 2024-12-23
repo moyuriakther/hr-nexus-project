@@ -6,7 +6,7 @@ type TSelectProps = {
   label?: string;
   required?: boolean;
   placeholder?: string;
-  options: { value: string | number|boolean; label: string }[];
+  options: { value: string | number | boolean; label: string }[];
   className?: string;
   defaultValue?: string | number;
 };
@@ -20,7 +20,7 @@ const HRSelect = ({
   defaultValue,
 }: TSelectProps) => {
   const { control } = useFormContext();
-console.log(options)
+  console.log(options);
   return (
     <div>
       <Controller
@@ -44,7 +44,10 @@ console.log(options)
                 </option>
               )}
               {options?.map((option) => (
-                <option key={option.value} value={option.value}>
+                <option
+                  key={option.value.toString()}
+                  value={option.value.toString()}
+                >
                   {option.label}
                 </option>
               ))}

@@ -17,13 +17,13 @@ import {
   useDeleteAwardMutation,
   useGetAllAwardQuery,
 } from "@/app/Redux/api/awardApi";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 const AwardList = () => {
   const { data } = useGetAllAwardQuery({});
   const [deleteAward] = useDeleteAwardMutation();
-  const user = getUserFromLocalStorage();
+  const { data: user } = useGetMyProfileQuery({});
 
   const tableHeader = [
     "Sl",

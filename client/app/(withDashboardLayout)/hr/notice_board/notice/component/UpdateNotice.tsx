@@ -1,7 +1,7 @@
 import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import Loader from '@/app/components/utils/Loader';
 import { noticeModalInputFiled } from '../fakeData';
 import { toast } from 'sonner';
@@ -11,7 +11,14 @@ import { TNoticeData } from '../Type/type';
 import HRFileInput from '@/app/components/Form/HRFileInput';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateNotice = ({setIsOpen,modalIsOpen,id, setActionLoading}:{setIsOpen:any, modalIsOpen:boolean,id:string,setActionLoading:any}) => {
+
+interface Props {
+  modalIsOpen: boolean;
+  setActionLoading: (value: SetStateAction<boolean>) => void;
+  setIsOpen: (value: SetStateAction<boolean>) => void;
+  id: string;
+}
+const UpdateNotice:React.FC<Props> = ({setIsOpen,modalIsOpen,id, setActionLoading}) => {
     
     const {data,isLoading}=useGetSingleNoticeQuery(id)
     const [UpdateNotice]=useUpdateNoticeMutation()

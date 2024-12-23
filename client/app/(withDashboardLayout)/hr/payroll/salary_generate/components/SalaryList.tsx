@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useGetAllPaymentQuery } from "@/app/Redux/api/paymentApi";
@@ -8,12 +9,11 @@ import { getMonthAndYear } from "@/app/utils/getYearAndMonth";
 import { Button, Divider } from "@nextui-org/react";
 
 import Loader from "@/app/components/utils/Loader";
-
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 const SalaryList = () => {
   const { data: payments, isLoading } = useGetAllPaymentQuery({});
-  const user = getUserFromLocalStorage();
+  const { data: user } = useGetMyProfileQuery({});
   const tableHeader = [
     "Sl",
     "Employee name",

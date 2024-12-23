@@ -9,8 +9,9 @@ import {
   useDeleteEmployeeMutation,
   useGetAllEmployeeQuery,
 } from "@/app/Redux/api/employeeApi";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import { getDayMonthAndYear } from "@/app/utils/getYearAndMonth";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import React from "react";
@@ -21,8 +22,7 @@ const EmployeeData = () => {
   const { data: employees, isLoading } = useGetAllEmployeeQuery({});
   const [deleteEmployee] = useDeleteEmployeeMutation({});
 
-  const user = getUserFromLocalStorage();
-  
+  const { data: user } = useGetMyProfileQuery({});
 
   const handleDelete = async (id: string) => {
     const res = await deleteEmployee({ id });

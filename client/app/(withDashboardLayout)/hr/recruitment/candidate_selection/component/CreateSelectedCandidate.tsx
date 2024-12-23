@@ -2,16 +2,30 @@ import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
 // import { imageUploadIntoImgbb } from '@/app/components/utils/uploadImageIntoImgbb';
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
 import { selectionInputFields } from '../fakeData';
 import { useCreateSelectedCandidateMutation } from '@/app/Redux/api/selectedListApi';
-import Select from '../../component/Select';
 import HRSelect from '@/app/components/Form/HRSelect';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateSelectedCandidate = ({setIsOpen,modalIsOpen,data, setActionLoading}:any) => {
+
+interface Props {
+  modalIsOpen: boolean;
+  data:{candidateId:{
+    value: string;
+    label: string;
+}[],
+interviewId:{
+  value: string;
+  label: string;
+}[],
+};
+setActionLoading: (value: SetStateAction<boolean>) => void;
+setIsOpen: (value: SetStateAction<boolean>) => void;
+}
+const CreateSelectedCandidate:React.FC<Props> = ({setIsOpen,modalIsOpen,data, setActionLoading}) => {
   
       const [createSelectedCandidate]=useCreateSelectedCandidateMutation()
       const handleSubmit = async (values: FieldValues) => {

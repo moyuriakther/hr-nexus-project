@@ -124,7 +124,7 @@ const Header = () => {
               {/* Manage Account */}
               <DropdownItem key="settings" className="mt-3">
                 <Link
-                  href="dashboard/profile"
+                  href="/dashboard/profile"
                   className="text-center block text-[#188753] text-[16px]"
                 >
                   Manage your account

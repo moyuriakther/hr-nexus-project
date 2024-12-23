@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import SearchAndModal from "../component/SearchAndModal";
-import { shortlistTableHeader } from "./fakeData";
 import ShortlistCandidate from "./component/ShortlistCandidate";
 import CreateShortlistCandidate from "./component/CreateShortlistCandidate";
 import { useGetAllShortlistCandidateQuery } from "@/app/Redux/api/shortListApi";

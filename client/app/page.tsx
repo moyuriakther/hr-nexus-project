@@ -4,7 +4,7 @@ import LoginPage from "./(withauthlayout)/login/page";
 export default function Home() {
   return (
     <div className="min-h-screen">
-       <Toaster />
+      <Toaster />
       <LoginPage />
     </div>
   );

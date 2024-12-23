@@ -13,6 +13,8 @@ export type TCandidateSelection = {
     candidateId: string;
     employeeId: string;
     position: string;
+    interviewId:string,
+    jobPosition?:string,
     selectionTerms: string;
 }
 export type TShortList = {
@@ -28,6 +30,7 @@ export type TInterview = {
     name: string;
     candidateId: string;
     jobPosition: string;
+    interviewId:string;
     interviewDate: string;
     vivaMarks: number;
     writtenMarks: number;

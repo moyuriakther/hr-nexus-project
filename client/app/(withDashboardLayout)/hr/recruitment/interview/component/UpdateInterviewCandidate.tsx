@@ -1,18 +1,23 @@
 import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
-import React from 'react';
-import Loader from '@/app/components/utils/Loader';
-import { TCandidateList, TInterview } from '../../Type/type';
+import React, { SetStateAction } from 'react';
+import {  TInterview } from '../../Type/type';
 import { toast } from 'sonner';
 import { FieldValues } from 'react-hook-form';
 import { useGetSingleInterviewQuery, useUpdateInterviewMutation } from '@/app/Redux/api/interviewListApi';
 import { interviewInputFiled } from '../fakeData';
 
+interface Props {
+  modalIsOpen: boolean;
+  setActionLoading: (value: SetStateAction<boolean>) => void;
+  setIsOpen: (value: SetStateAction<boolean>) => void;
+  id: string;
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateInterViewCandidate = ({setIsOpen,modalIsOpen,id, setActionLoading}:any) => {
+const UpdateInterViewCandidate:React.FC<Props> = ({setIsOpen,modalIsOpen,id, setActionLoading}) => {
     
-    const {data,isLoading}=useGetSingleInterviewQuery(id)
+    const {data}=useGetSingleInterviewQuery(id)
     const [updateInterview]=useUpdateInterviewMutation()
     
     

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import React, { Suspense, useState } from "react";
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { resetPassword } from "../../action/resetPassword";
 import { loginUser } from "../../action/login";
 import { toast } from "sonner";
@@ -13,15 +12,14 @@ import { storeUserInfo } from "@/app/services/actions/auth.services";
 const ResetPasswordForm = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const params = useSearchParams();
+  const params = useSearchParams(); // Requires Suspense
   const token = params.get("token");
   const email = params.get("email");
 
-  // Handle form submission
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const form = e.target;
+    const form = e.target as HTMLFormElement;
     const password = form.password.value;
     const data = { email, password };
 
@@ -84,4 +82,10 @@ const ResetPasswordForm = () => {
   );
 };
 
-export default ResetPasswordForm;
+const ResetPasswordPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <ResetPasswordForm />
+  </Suspense>
+);
+
+export default ResetPasswordPage;

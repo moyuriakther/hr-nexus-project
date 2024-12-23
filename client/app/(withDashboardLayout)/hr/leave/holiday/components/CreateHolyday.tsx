@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
@@ -6,8 +7,8 @@ import { useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 import { limitCount } from "../../../employees/position/components/fakeData/limitCount";
 import CreateHolidayModal from "./CreateHolidayModal";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
 import { USER_ROLE } from "@/app/constants";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 
 interface ComponentHeaderProps {
   onSearch: (searchTerm: string) => void;
@@ -17,7 +18,7 @@ const CreateHolyday = ({ onSearch }: ComponentHeaderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState("");
   const [limit, setLimit] = useState<string>("10");
-  const user = getUserFromLocalStorage();
+  const { data: user } = useGetMyProfileQuery({});
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);

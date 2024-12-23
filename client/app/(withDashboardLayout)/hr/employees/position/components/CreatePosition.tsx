@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import HRSelect from "@/app/(withDashboardLayout)/components/UI/HRSelect";
@@ -15,10 +16,10 @@ const CreatePosition = () => {
       name: "limit",
       value: limit,
     },
-    {
-      name: "page",
-      value: currentPage,
-    },
+    // {
+    //   name: "page",
+    //   value: currentPage,
+    // },
     {
       name: "searchTerm",
       value: searchTerm,

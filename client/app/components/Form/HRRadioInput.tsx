@@ -1,19 +1,21 @@
 import { cn } from "@/app/utils/cn";
 import { Controller, useFormContext } from "react-hook-form";
 
+// Define the type for radio options
 type TRadioOption = {
-  value: string | number;
+  value: string | number | boolean;
   label: string;
 };
 
+// Define the props for the RadioInput component
 type TRadioInputProps = {
   name: string;
-  checked?: boolean;
   options: TRadioOption[];
   required?: boolean;
   label?: string;
   className?: string;
   radioClassName?: string;
+  defaultValue?: string | number | boolean;
 };
 
 const HRRadioInput = ({
@@ -27,7 +29,10 @@ const HRRadioInput = ({
 
   return (
     <div className={className}>
+      {/* Render the label if provided */}
       {label && <label className="mb-2 block font-medium">{label}</label>}
+
+      {/* Use the Controller from react-hook-form for form state management */}
       <Controller
         name={name}
         control={control}
@@ -36,12 +41,12 @@ const HRRadioInput = ({
             <div className="space-y-2">
               {options.map((option) => (
                 <label
-                  key={option.value}
+                  key={String(option.value)}
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <input
                     type="radio"
-                    value={option.value}
+                    value={String(option.value)}
                     checked={value === option.value}
                     onChange={() => onChange(option.value)}
                     className={cn(
@@ -53,7 +58,11 @@ const HRRadioInput = ({
                 </label>
               ))}
             </div>
-            <p className="text-red-500 text-sm my-1">{error?.message}</p>
+
+            {/* Render the error message if validation fails */}
+            {error && (
+              <p className="text-red-500 text-sm my-1">{error.message}</p>
+            )}
           </>
         )}
       />

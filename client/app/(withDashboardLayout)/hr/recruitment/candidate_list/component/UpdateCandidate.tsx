@@ -1,7 +1,7 @@
 import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import { useGetSingleCandidateQuery, useUpdateCandidateMutation } from "@/app/Redux/api/candidateListApi";
 import Loader from '@/app/components/utils/Loader';
 import { candidateInputFields } from '../fakeData';
@@ -11,8 +11,14 @@ import { FieldValues } from 'react-hook-form';
 import { uploadImage } from '@/app/utils/UploadImage';
 import HRFileInput from '@/app/components/Form/HRFileInput';
 
+interface Props {
+  modalIsOpen: boolean;
+  setActionLoading: (value: SetStateAction<boolean>) => void;
+  setIsOpen: (value: SetStateAction<boolean>) => void;
+  id: string;
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UpdateCandidate = ({setIsOpen,modalIsOpen,id,setActionLoading}:any) => {
+const UpdateCandidate:React.FC<Props> = ({setIsOpen,modalIsOpen,id,setActionLoading}) => {
     
     const {data,isLoading}=useGetSingleCandidateQuery(id)
     const [updateCandidate]=useUpdateCandidateMutation()

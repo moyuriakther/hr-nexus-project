@@ -1,6 +1,6 @@
 "use client";
 
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import NoticeData from "./component/NoticeData";
@@ -14,7 +14,7 @@ import Loader from "@/app/components/utils/Loader";
 
 const NoticePage = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm]=useState('')
+  const [searchTerm, setSearchTerm]=useState <string>('')
   
   const [limit, setLimit]=useState(10)
   const [updateModalIsOpen, setIsUpdateModal]=useState(false)
@@ -35,7 +35,7 @@ const NoticePage = () => {
   const handleSearch: SubmitHandler<FieldValues> =  (data) => {
     console.log(data)
     try {
-      setSearchTerm(data)
+      setSearchTerm(String(data))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);

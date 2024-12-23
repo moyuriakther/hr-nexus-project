@@ -2,16 +2,25 @@ import HRForm from '@/app/components/Form/HRForm';
 import HRInput from '@/app/components/Form/HRInput';
 import HRModal from '@/app/components/Modal/HRModal';
 // import { imageUploadIntoImgbb } from '@/app/components/utils/uploadImageIntoImgbb';
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useCreateInterviewMutation } from '@/app/Redux/api/interviewListApi';
 import { interviewInputFiled } from '../fakeData';
-import Select from '../../component/Select';
 import HRSelect from '@/app/components/Form/HRSelect';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CreateInterviewCandidate = ({setIsOpen,modalIsOpen, setActionLoading, data}:any) => {
+
+interface Props {
+  modalIsOpen: boolean;
+  data:{candidateId:{
+    value: string;
+    label: string;
+}[]};
+  setActionLoading: (value: SetStateAction<boolean>) => void;
+  setIsOpen: (value: SetStateAction<boolean>) => void;
+}
+const CreateInterviewCandidate:React.FC<Props> = ({setIsOpen,modalIsOpen, setActionLoading, data}) => {
   
       const [createInterview]=useCreateInterviewMutation({})
       const handleSubmit = async (values: FieldValues) => {

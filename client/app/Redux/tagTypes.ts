@@ -1,4 +1,3 @@
-
 export enum tagTypes {
   admin = "admin",
   employee = "employee",
@@ -8,18 +7,18 @@ export enum tagTypes {
   award = "award",
   client = "client",
   project = "project",
+  position = "position",
   leave = "leave",
   payment = "payment",
   weekdaysHoliday = "weekdaysHoliday",
   holiday = "holiday",
   user = "user",
   loan = "loan",
-  candidateList="candidates",
-  candidateSelection="candidate_selection",
-  candidateShortlist="candidate_shortlist",
-  interview="interview",
-  notice="noticeboard"
-
+  candidateList = "candidates",
+  candidateSelection = "candidate_selection",
+  candidateShortlist = "candidate_shortlist",
+  interview = "interview",
+  notice = "noticeboard",
 }
 
 export const tagTypesList = [
@@ -34,6 +33,7 @@ export const tagTypesList = [
   tagTypes.client,
   tagTypes.attendance,
   tagTypes.award,
+  tagTypes.position,
   tagTypes.project,
   tagTypes.user,
   tagTypes.loan,
@@ -41,5 +41,5 @@ export const tagTypesList = [
   tagTypes.candidateList,
   tagTypes.candidateSelection,
   tagTypes.candidateShortlist,
-  tagTypes.interview
+  tagTypes.interview,
 ];

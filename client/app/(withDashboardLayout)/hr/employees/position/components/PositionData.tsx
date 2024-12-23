@@ -6,15 +6,15 @@ import HRTableRow from "@/app/components/Table/HRTableRow";
 import Loader from "@/app/components/utils/Loader";
 import { USER_ROLE } from "@/app/constants";
 import { useGetAllPositionQuery } from "@/app/Redux/api/positionApi";
-import { getUserFromLocalStorage } from "@/app/utils/localStorage";
+import { useGetMyProfileQuery } from "@/app/Redux/api/userApi";
 import { Button } from "@nextui-org/react";
 import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 const PositionData = () => {
   const { data: positions, isLoading } = useGetAllPositionQuery({});
-  const user = getUserFromLocalStorage();
-
+  const { data: user } = useGetMyProfileQuery({});
+  console.log("positions", positions);
   if (isLoading) {
     return <Loader />;
   }
@@ -31,7 +31,7 @@ const PositionData = () => {
 
   return (
     <React.Fragment>
-      {positions.map((position: any, i: number) => (
+      {positions?.map((position: any, i: number) => (
         <tr
           className={`${i % 2 === 0 ? "bg-gray-100" : ""} hover:bg-gray-50`}
           key={position.id}

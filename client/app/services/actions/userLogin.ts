@@ -6,7 +6,7 @@ import setAccessToken from "./setAccessToken";
 import { jwtDecode } from "jwt-decode";
 
 export const signInUser = async (data: FieldValues) => {
-  const res = await fetch("http://localhost:5000/api/auth/login", {
+  const res = await fetch("https://hr-server-kappa.vercel.app/api/auth/login", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
